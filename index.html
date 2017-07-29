@@ -1,46 +1,46 @@
 <HTML><HEAD>
-  <TITLE>Specifications</TITLE>
+  <TITLE>规格</TITLE>
   <META NAME="GENERATOR" CONTENT="nocash XED2HTM converter">
 </HEAD><BODY bgcolor="#ffffff" text="#000000" link="#0033cc" vlink="#0033cc" alink="#0033cc">
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="pandocs"></A><FONT SIZE=+2>&nbsp;Pan Docs</FONT></TD></TR></TABLE><BR>
-<B>Overview<BR>
-</B><A HREF="#aboutthepandocs">About the Pan Docs</A><BR>
-<A HREF="#gameboytechnicaldata">Game Boy Technical Data</A><BR>
-<A HREF="#memorymap">Memory Map</A><BR>
+<B>概览<BR>
+</B><A HREF="#aboutthepandocs">关于 Pan Docs</A><BR>
+<A HREF="#gameboytechnicaldata">Game Boy 技术数据</A><BR>
+<A HREF="#memorymap">内存映射</A><BR>
 <BR>
-<B>I/O Ports<BR>
-</B><A HREF="#videodisplay">Video Display</A><BR>
-<A HREF="#soundcontroller">Sound Controller</A><BR>
-<A HREF="#joypadinput">Joypad Input</A><BR>
-<A HREF="#serialdatatransferlinkcable">Serial Data Transfer (Link Cable)</A><BR>
-<A HREF="#timeranddividerregisters">Timer and Divider Registers</A><BR>
-<A HREF="#interrupts">Interrupts</A><BR>
-<A HREF="#cgbregisters">CGB Registers</A><BR>
-<A HREF="#sgbfunctions">SGB Functions</A><BR>
+<B>输入/输出端口<BR>
+</B><A HREF="#videodisplay">视频显示</A><BR>
+<A HREF="#soundcontroller">声音控制</A><BR>
+<A HREF="#joypadinput">手柄输入</A><BR>
+<A HREF="#serialdatatransferlinkcable">串行数据传输器 (连接线)</A><BR>
+<A HREF="#timeranddividerregisters">定时与分频寄存器</A><BR>
+<A HREF="#interrupts">中断</A><BR>
+<A HREF="#cgbregisters">CGB 寄存器</A><BR>
+<A HREF="#sgbfunctions">SGB 功能</A><BR>
 <BR>
-<B>CPU Specifications<BR>
-</B><A HREF="#cpuregistersandflags">CPU Registers and Flags</A><BR>
-<A HREF="#cpuinstructionset">CPU Instruction Set</A><BR>
-<A HREF="#cpucomparisionwithz80">CPU Comparision with Z80</A><BR>
+<B>CPU 规格<BR>
+</B><A HREF="#cpuregistersandflags">CPU 寄存器与标志位</A><BR>
+<A HREF="#cpuinstructionset">CPU 指令集</A><BR>
+<A HREF="#cpucomparisionwithz80">CPU 与 Z80 的比较</A><BR>
 <BR>
-<B>Cartridges<BR>
-</B><A HREF="#thecartridgeheader">The Cartridge Header</A><BR>
-<A HREF="#memorybankcontrollers">Memory Bank Controllers</A><BR>
-<A HREF="#gamegeniesharkcheats">Gamegenie/Shark Cheats</A><BR>
+<B>卡带<BR>
+</B><A HREF="#thecartridgeheader">卡带头</A><BR>
+<A HREF="#memorybankcontrollers">MBC (存储页面控制器)</A><BR>
+<A HREF="#gamegeniesharkcheats">Gamegenie/Shark 作弊</A><BR>
 <BR>
-<B>Other<BR>
-</B><A HREF="#powerupsequence">Power Up Sequence</A><BR>
-<A HREF="#reducingpowerconsumption">Reducing Power Consumption</A><BR>
-<A HREF="#spriterambug">Sprite RAM Bug</A><BR>
-<A HREF="#externalconnectors">External Connectors</A><BR>
+<B>其他<BR>
+</B><A HREF="#powerupsequence">开机流程</A><BR>
+<A HREF="#reducingpowerconsumption">降低功耗</A><BR>
+<A HREF="#spriterambug">活动块 RAM 的错误</A><BR>
+<A HREF="#externalconnectors">外设连接</A><BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="aboutthepandocs"></A><FONT SIZE=+2>&nbsp;About the Pan Docs</FONT></TD></TR></TABLE><BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="aboutthepandocs"></A><FONT SIZE=+2>&nbsp;关于 Pan Docs</FONT></TD></TR></TABLE><BR>
 <TABLE><TR><TD><PRE> =================================================================
-       Everything You Always Wanted To Know About GAMEBOY *
+               你能在这里知道有关 GAMEBOY 的一切 *
  =================================================================
 </TD></TR></TABLE><BR>
-<TABLE><TR><TD><PRE>                     * but were afraid to ask
+<TABLE><TR><TD><PRE>                       * 这种事情开心就好
 </TD></TR></TABLE><BR>
 <TABLE><TR><TD><PRE>        Pan of -ATX- Document Updated by contributions from:
      Marat Fayzullin, Pascal Felber, Paul Robson, Martin Korth
@@ -68,174 +68,137 @@ thanks and best wishes go to hell) I have currently no intention to
 publish any such or further no$gmb updates though.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="gameboytechnicaldata"></A><FONT SIZE=+2>&nbsp;Game Boy Technical Data</FONT></TD></TR></TABLE><BR>
-<TABLE><TR><TD><PRE>  CPU          - 8-bit (Similar to the Z80 processor)
-  Clock Speed  - 4.194304MHz (4.295454MHz for SGB, max. 8.4MHz for CGB)
-  Work RAM     - 8K Byte (32K Byte for CGB)
-  Video RAM    - 8K Byte (16K Byte for CGB)
-  Screen Size  - 2.6"
-  Resolution   - 160x144 (20x18 tiles)
-  Max sprites  - Max 40 per screen, 10 per line
-  Sprite sizes - 8x8 or 8x16
-  Palettes     - 1x4 BG, 2x3 OBJ (for CGB: 8x4 BG, 8x3 OBJ)
-  Colors       - 4 grayshades (32768 colors for CGB)
-  Horiz Sync   - 9198 KHz (9420 KHz for SGB)
-  Vert Sync    - 59.73 Hz (61.17 Hz for SGB)
-  Sound        - 4 channels with stereo sound
-  Power        - DC6V 0.7W (DC3V 0.7W for GB Pocket, DC3V 0.6W for CGB)
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="gameboytechnicaldata"></A><FONT SIZE=+2>&nbsp;Game Boy 技术数据</FONT></TD></TR></TABLE><BR>
+<TABLE><TR><TD><PRE>  CPU          - 8位 (与 Z80 处理器相似)
+  时钟主频     - 4.194304 MHz (SGB 是 4.295454 MHz, CGB 最高可达 8.4 MHz)
+  工作 RAM     - 8K 字节 (CGB 为 32K 字节)
+  显示 RAM     - 8K 字节 (CGB 为 16K 字节)
+  屏幕大小     - 2.6 寸
+  分辨率       - 160x144 (20x18 图块)
+  最大活动块   - 屏幕最多40个, 每行最多10个
+  活动块大小   - 8x8 或者 8x16
+  调色板       - BG 1x4 ,OBJ 2x3 (CGB 为BG 8x4 ,OBJ 8x3)
+  颜色         - 4级灰度 (CGB 为32768色)
+  横向同步     - 9198 KHz (SGB 为 9420 KHz)
+  纵向同步     - 59.73 Hz (SGB 为 61.17 Hz)
+  声音         - 4通道立体声
+  电源         - DC6V 0.7W (GB Pocket 为 DC3V 0.7W, CGB 为 DC3V 0.6W)
 </TD></TR></TABLE><BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="memorymap"></A><FONT SIZE=+2>&nbsp;Memory Map</FONT></TD></TR></TABLE><BR>
-The gameboy is having a 16bit address bus, that is used to address ROM, 
-RAM, and I/O registers.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="memorymap"></A><FONT SIZE=+2>&nbsp;内存映射</FONT></TD></TR></TABLE><BR>
+Gameboy 的地址总线宽度为16位, 用于 ROM 或 RAM 以及 I/O 寄存器的寻址.<BR>
 <BR>
-<B>General Memory Map<BR>
-</B><TABLE><TR><TD><PRE>  0000-3FFF   16KB ROM Bank 00     (in cartridge, fixed at bank 00)
-  4000-7FFF   16KB ROM Bank 01..NN (in cartridge, switchable bank number)
-  8000-9FFF   8KB Video RAM (VRAM) (switchable bank 0-1 in CGB Mode)
-  A000-BFFF   8KB External RAM     (in cartridge, switchable bank, if any)
-  C000-CFFF   4KB Work RAM Bank 0 (WRAM)
-  D000-DFFF   4KB Work RAM Bank 1 (WRAM)  (switchable bank 1-7 in CGB Mode)
-  E000-FDFF   Same as C000-DDFF (ECHO)    (typically not used)
-  FE00-FE9F   Sprite Attribute Table (OAM)
-  FEA0-FEFF   Not Usable
-  FF00-FF7F   I/O Ports
-  FF80-FFFE   High RAM (HRAM)
-  FFFF        Interrupt Enable Register
+<B>常规内存映射<BR>
+</B><TABLE><TR><TD><PRE>  0000-3FFF   16KB ROM Bank 00           (于卡带内, 固定为 Bank 00)
+  4000-7FFF   16KB ROM Bank 01 到 NN     (于卡带内, 可切 Bank)
+  8000-9FFF   8KB 显示 RAM        (VRAM) (在 CGB 模式中可以切 Bank 0 或 1)
+  A000-BFFF   8KB 外部 RAM   (ERAM/SRAM) (于卡带内, 如果条件允许可切 Bank)
+  C000-CFFF   4KB 工作 RAM Bank 0 (WRAM)
+  D000-DFFF   4KB 工作 RAM Bank 1 (WRAM) (在 CGB 模式中可以切 Bank 1 到 7)
+  E000-FDFF   与 C000-DDFF 一致   (ECHO) (一般不用)
+  FE00-FE9F   活动块属性表        (OAM)
+  FEA0-FEFF   不可用
+  FF00-FF7F   I/O 端口
+  FF80-FFFE   高位 RAM            (HRAM)
+  FFFF        中断启用寄存器
 </TD></TR></TABLE><BR>
-<B>Jump Vectors in First ROM Bank<BR>
-</B>The following addresses are supposed to be used as jump vectors:<BR>
-<TABLE><TR><TD><PRE>  0000,0008,0010,0018,0020,0028,0030,0038   for RST commands
-  0040,0048,0050,0058,0060                  for Interrupts
-</TD></TR></TABLE>However, the memory may be used for any other purpose in case that your 
-program doesn't use any (or only some) RST commands or Interrupts. RST 
-commands are 1-byte opcodes that work similiar to CALL opcodes, except 
-that the destination address is fixed.<BR>
+<B>ROM 首个 Bank 的跳转向量<BR>
+</B>下面的地址可作为跳转向量:<BR>
+<TABLE><TR><TD><PRE>  0000,0008,0010,0018,0020,0028,0030,0038   通过使用 RST 指令
+  0040,0048,0050,0058,0060                  通过中断
+</TD></TR></TABLE>然而,在你的程序不使用任何或部分 RST 指令或者中断时, 你可以将这些内存另作他用. RST 是一个1字节的操作码, 除了目标地址是固定的之外, 与 CALL 操作码的工作方式相似.<BR>
 <BR>
-<B>Cartridge Header in First ROM Bank<BR>
-</B>The memory at 0100-014F contains the cartridge header. This area 
-contains information about the program, its entry point, checksums, 
-information about the used MBC chip, the ROM and RAM sizes, etc. Most of 
-the bytes in this area are required to be specified correctly. For more 
-information read the chapter about The Cartridge Header.<BR>
+<B>ROM 首个 Bank 的卡带头<BR>
+</B>内存 0100-014F 为卡带头. 这个区域含有程序的信息, 程序的入口, 校验和, 所用 MBC 芯片的信息, ROM 和 RAM 的大小等等. 这个区域的大部分字节需要正确设定. 更多详情请阅读卡带头相关章节.<BR>
 <BR>
-<B>External Memory and Hardware<BR>
-</B>The areas from 0000-7FFF and A000-BFFF may be used to connect external 
-hardware. The first area is typically used to address ROM (read only, of 
-course), cartridges with Memory Bank Controllers (MBCs) are additionally 
-using this area to output data (write only) to the MBC chip. The second 
-area is often used to address external RAM, or to address other external 
-hardware (Real Time Clock, etc). External memory is often battery 
-buffered, and may hold saved game positions and high scrore tables 
-(etc.) even when the gameboy is turned of, or when the cartridge is 
-removed. For specific information read the chapter about Memory Bank 
-Controllers.<BR>
+<B>外部存储与硬件<BR>
+</B>内存 0000-7FFF 和 A000-BFFF 一般用于连接外部硬件. 第一个区域一般用于 ROM 寻址 (当然是只读的), 有着 MBC 的卡带会额外使用这个区域来输出数据 (只写) 到 MBC 芯片. 第二个区域一般用于外部 RAM 的寻址, 或者其他外部硬件的寻址 (实时时钟等). 外部 RAM 常常配有电池, 用于在 Gameboy 关机时或者卡带被拔出时仍能维持已记录下的游戏进度以及高分表之类的东西. 具体详情请阅读 MBC 相关章节.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="videodisplay"></A><FONT SIZE=+2>&nbsp;Video Display</FONT></TD></TR></TABLE><BR>
-<B>Video I/O Registers<BR>
-</B><A HREF="#lcdcontrolregister">LCD Control Register</A><BR>
-<A HREF="#lcdstatusregister">LCD Status Register</A><BR>
-<A HREF="#lcdinterrupts">LCD Interrupts</A><BR>
-<A HREF="#lcdpositionandscrolling">LCD Position and Scrolling</A><BR>
-<A HREF="#lcdmonochromepalettes">LCD Monochrome Palettes</A><BR>
-<A HREF="#lcdcolorpalettescgbonly">LCD Color Palettes (CGB only)</A><BR>
-<A HREF="#lcdvrambankcgbonly">LCD VRAM Bank (CGB only)</A><BR>
-<A HREF="#lcdoamdmatransfers">LCD OAM DMA Transfers</A><BR>
-<A HREF="#lcdvramdmatransferscgbonly">LCD VRAM DMA Transfers (CGB only)</A><BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="videodisplay"></A><FONT SIZE=+2>&nbsp;视频显示</FONT></TD></TR></TABLE><BR>
+<B>视频 I/O 寄存器<BR>
+</B><A HREF="#lcdcontrolregister">LCD 控制寄存器</A><BR>
+<A HREF="#lcdstatusregister">LCD 状态寄存器</A><BR>
+<A HREF="#lcdinterrupts">LCD 中断</A><BR>
+<A HREF="#lcdpositionandscrolling">LCD 位置与卷轴</A><BR>
+<A HREF="#lcdmonochromepalettes">LCD 单色调色板</A><BR>
+<A HREF="#lcdcolorpalettescgbonly">LCD 彩色调色板 (仅 CGB)</A><BR>
+<A HREF="#lcdvrambankcgbonly">LCD VRAM 页面 (仅 CGB)</A><BR>
+<A HREF="#lcdoamdmatransfers">LCD OAM DMA 传输器</A><BR>
+<A HREF="#lcdvramdmatransferscgbonly">LCD VRAM DMA 传输器 (仅 CGB)</A><BR>
 <BR>
 <B>Video Memory<BR>
-</B><A HREF="#vramtiledata">VRAM Tile Data</A><BR>
-<A HREF="#vrambackgroundmaps">VRAM Background Maps</A><BR>
-<A HREF="#vramspriteattributetableoam">VRAM Sprite Attribute Table (OAM)</A><BR>
-<A HREF="#accessingvramandoam">Accessing VRAM and OAM</A><BR>
+</B><A HREF="#vramtiledata">VRAM 图块数据</A><BR>
+<A HREF="#vrambackgroundmaps">VRAM 背景布局</A><BR>
+<A HREF="#vramspriteattributetableoam">VRAM 活动块属性表 (OAM)</A><BR>
+<A HREF="#accessingvramandoam">访问 VRAM 与 OAM</A><BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdcontrolregister"></A><FONT SIZE=+2>&nbsp;LCD Control Register</FONT></TD></TR></TABLE><BR>
-<B>FF40 - LCDC - LCD Control (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7 - LCD Display Enable             (0=Off, 1=On)
-  Bit 6 - Window Tile Map Display Select (0=9800-9BFF, 1=9C00-9FFF)
-  Bit 5 - Window Display Enable          (0=Off, 1=On)
-  Bit 4 - BG & Window Tile Data Select   (0=8800-97FF, 1=8000-8FFF)
-  Bit 3 - BG Tile Map Display Select     (0=9800-9BFF, 1=9C00-9FFF)
-  Bit 2 - OBJ (Sprite) Size              (0=8x8, 1=8x16)
-  Bit 1 - OBJ (Sprite) Display Enable    (0=Off, 1=On)
-  Bit 0 - BG Display (for CGB see below) (0=Off, 1=On)
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdcontrolregister"></A><FONT SIZE=+2>&nbsp;LCD 控制寄存器</FONT></TD></TR></TABLE><BR>
+<B>FF40 - LCDC - LCD 控制 (读写)<BR>
+</B><TABLE><TR><TD><PRE>  Bit 7 - 开启 LCD 显示                 (0=关, 1=开)
+  Bit 6 - 窗口图块 Map 显示选择         (0=9800-9BFF, 1=9C00-9FFF)
+  Bit 5 - 开启窗口显示                  (0=关, 1=开)
+  Bit 4 - BG & 窗口图块数据源选择       (0=8800-97FF, 1=8000-8FFF)
+  Bit 3 - BG 图块 Map 显示选择          (0=9800-9BFF, 1=9C00-9FFF)
+  Bit 2 - OBJ (活动块) 大小             (0=8x8, 1=8x16)
+  Bit 1 - 开启 OBJ (活动块) 显示        (0=关, 1=开)
+  Bit 0 - BG 显示 (对于 CGB, 见下)      (0=关, 1=开)
 </TD></TR></TABLE><BR>
-<B>LCDC.7 - LCD Display Enable<BR>
-</B>CAUTION: Stopping LCD operation (Bit 7 from 1 to 0) may be performed 
-during V-Blank ONLY, disabeling the display outside of the V-Blank 
-period may damage the hardware. This appears to be a serious issue, 
-Nintendo is reported to reject any games that do not follow this rule.<BR>
-V-blank can be confirmed when the value of LY is greater than or equal 
-to 144. When the display is disabled the screen is blank (white), and 
-VRAM and OAM can be accessed freely.<BR>
+<B>LCDC.7 - 开启 LCD 显示<BR>
+</B>警告: 关闭 LCD 的操作 (Bit 7 由 1 设为 0) 仅可在 V-Blank 内进行, 在 V-Blank 时期之外关闭显示可能损坏硬件. 这是一个非常严重的问题, 据报道任天堂已宣布拒绝所有不符合这个规则的游戏. <BR>
+V-Blank 可以利用 LY 大于等于 144 来判断. 当显示关闭时屏幕呈现空白 (白色), 此时 VRAM 和 OAM 可以随意访问.<BR>
 <BR>
---- LCDC.0 has different Meanings depending on Gameboy Type ---<BR>
+--- LCDC.0 根据 Gameboy 类型有不同意义 ---<BR>
 <BR>
-<B>LCDC.0 - 1) Monochrome Gameboy and SGB: BG Display<BR>
-</B>When Bit 0 is cleared, the background becomes blank (white). Window and 
-Sprites may still be displayed (if enabled in Bit 1 and/or Bit 5).<BR>
+<B>LCDC.0 - 1) 单色 Gameboy 和 SGB: BG 显示<BR>
+</B>当 Bit 0 处于清除时, BG 变为空白. 窗口和活动块仍可能在显示 (如果启用了 Bit 1 或 Bit 5).<BR>
 <BR>
-<B>LCDC.0 - 2) CGB in CGB Mode: BG and Window Master Priority<BR>
-</B>When Bit 0 is cleared, the background and window lose their priority - 
-the sprites will be always displayed on top of background and window, 
-independently of the priority flags in OAM and BG Map attributes.<BR>
+<B>LCDC.0 - 2) CGB 运行于 CGB 模式: BG 和窗口优先级<BR>
+</B>当 Bit 0 处于清除时, BG 和窗口失去他们的优先级 - 活动块将总是显示在 BG 和窗口之上, 独立于 OAM 与 BG Map 属性中的优先级设置.<BR>
 <BR>
-<B>LCDC.0 - 3) CGB in Non CGB Mode: BG and Window Display<BR>
-</B>When Bit 0 is cleared, both background and window become blank (white), 
-ie. the Window Display Bit (Bit 5) is ignored in that case. Only Sprites 
-may still be displayed (if enabled in Bit 1).<BR>
-This is a possible compatibility problem - any monochrome games (if any) 
-that disable the background, but still want to display the window 
-wouldn't work properly on CGBs.<BR>
+<B>LCDC.0 - 3) CGB 运行于非 CGB 模式: BG 和窗口显示<BR>
+</B>当 Bit 0 处于清除时, BG 和窗口变为空白, 在此情况下窗口显示位 (Bit 5) 将被忽略. 只有活动块仍可能在显示 (如果启用了Bit 1).<BR>
+这可能造成兼容性问题 - 任何关闭了屏幕, 但仍想显示窗口的单色游戏可能不能在 CGB 上正确工作.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdstatusregister"></A><FONT SIZE=+2>&nbsp;LCD Status Register</FONT></TD></TR></TABLE><BR>
-<B>FF41 - STAT - LCDC Status   (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 6 - LYC=LY Coincidence Interrupt (1=Enable) (Read/Write)
-  Bit 5 - Mode 2 OAM Interrupt         (1=Enable) (Read/Write)
-  Bit 4 - Mode 1 V-Blank Interrupt     (1=Enable) (Read/Write)
-  Bit 3 - Mode 0 H-Blank Interrupt     (1=Enable) (Read/Write)
-  Bit 2 - Coincidence Flag  (0:LYC&lt;&gt;LY, 1:LYC=LY) (Read Only)
-  Bit 1-0 - Mode Flag       (Mode 0-3, see below) (Read Only)
-            0: During H-Blank
-            1: During V-Blank
-            2: During Searching OAM-RAM
-            3: During Transfering Data to LCD Driver
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdstatusregister"></A><FONT SIZE=+2>&nbsp;LCD 状态寄存器</FONT></TD></TR></TABLE><BR>
+<B>FF41 - STAT - LCDC 状态   (R/W)<BR>
+</B><TABLE><TR><TD><PRE>  Bit 6 - LYC=LY 一致中断                (1=启用) (读写)
+  Bit 5 - 模式 2 OAM 中断                (1=启用) (读写)
+  Bit 4 - 模式 1 V-Blank 中断            (1=启用) (读写)
+  Bit 3 - 模式 0 H-Blank 中断            (1=启用) (读写)
+  Bit 2 - 一致标志位        (0:LYC&lt;&gt;LY, 1:LYC=LY) (只读)
+  Bit 1-0 - 模式标志位           (模式 0-3, 见下) (只读)
+            0: 处于 H-Blank
+            1: 处于 V-Blank
+            2: 处于检索 OAM-RAM 的状态
+            3: 处于传送数据至 LCD 驱动的状态
 </TD></TR></TABLE><BR>
-The two lower STAT bits show the current status of the LCD controller.<BR>
-<TABLE><TR><TD><PRE>  Mode 0: The LCD controller is in the H-Blank period and
-          the CPU can access both the display RAM (8000h-9FFFh)
-          and OAM (FE00h-FE9Fh)
+STAT 的低两位表示当前 LCD 控制器的状态.<BR>
+<TABLE><TR><TD><PRE>  模式 0: LCD 控制器处于 H-Blank 时期,
+          CPU 可以访问显示 RAM (8000h-9FFFh) 和 OAM (FE00h-FE9Fh).
 </TD></TR></TABLE><BR>
-<TABLE><TR><TD><PRE>  Mode 1: The LCD contoller is in the V-Blank period (or the
-          display is disabled) and the CPU can access both the
-          display RAM (8000h-9FFFh) and OAM (FE00h-FE9Fh)
+<TABLE><TR><TD><PRE>  模式 1: LCD 控制器处于 V-Blank 时期
+          (或者屏幕处于关闭状态),
+          CPU 可以访问显示 RAM (8000h-9FFFh) 和 OAM (FE00h-FE9Fh).
 </TD></TR></TABLE><BR>
-<TABLE><TR><TD><PRE>  Mode 2: The LCD controller is reading from OAM memory.
-          The CPU &lt;cannot&gt; access OAM memory (FE00h-FE9Fh)
-          during this period.
+<TABLE><TR><TD><PRE>  模式 2: LCD 控制器正在从 OAM 存储中读取数据.
+          CPU &lt;不可以&gt;在这个时期访问 OAM 存储 (FE00h-FE9Fh).
 </TD></TR></TABLE><BR>
-<TABLE><TR><TD><PRE>  Mode 3: The LCD controller is reading from both OAM and VRAM,
-          The CPU &lt;cannot&gt; access OAM and VRAM during this period.
-          CGB Mode: Cannot access Palette Data (FF69,FF6B) either.
+<TABLE><TR><TD><PRE>  模式 3: LCD 控制器正在从 OAM 和 VRAM 中读取数据,
+          CPU &lt;不可以&gt;在这个时期访问 OAM 和 VRAM.
+          CGB 模式: 也不可以放访问调色板数据 (FF69,FF6B).
 </TD></TR></TABLE><BR>
-The following are typical when the display is enabled:<BR>
-<TABLE><TR><TD><PRE>  Mode 2  2_____2_____2_____2_____2_____2___________________2____
-  Mode 3  _33____33____33____33____33____33__________________3___
-  Mode 0  ___000___000___000___000___000___000________________000
-  Mode 1  ____________________________________11111111111111_____
+下面是当显示开启时的典型时序:<BR>
+<TABLE><TR><TD><PRE>  模式 2  2_____2_____2_____2_____2_____2___________________2____
+  模式 3  _33____33____33____33____33____33__________________3___
+  模式 0  ___000___000___000___000___000___000________________000
+  模式 1  ____________________________________11111111111111_____
 </TD></TR></TABLE><BR>
-The Mode Flag goes through the values 0, 2, and 3 at a cycle of about 
-109uS. 0 is present about 48.6uS, 2 about 19uS, and 3 about 41uS. This 
-is interrupted every 16.6ms by the VBlank (1). The mode flag stays set 
-at 1 for about 1.08 ms.<BR>
+模式标志位经过值 0, 2, 3 一个时段大约需要 109 微秒. 模式 0 出现大约 48.6 微秒, 模式 2 大约 19 微秒, 模式 3 大约 41微秒. 这个周期每 16.6 毫秒被 VBlank (模式 1) 打断一次. 模式标志位设为 1 大约持续 1.08 毫秒.<BR>
 <BR>
-Mode 0 is present between 201-207 clks, 2 about 77-83 clks, and 3 about 
-169-175 clks. A complete cycle through these states takes 456 clks. 
-VBlank lasts 4560 clks. A complete screen refresh occurs every 70224 
-clks.)<BR>
+模式 0 出现大约 201-207 个 CPU 时钟, 模式 2 大约 77-83 个 CPU 时钟, 模式 3 大约 169 - 175 个 CPU 时钟. 完整经过这几个状态的时段耗费 456 个 CPU 时钟. VBlank 持续 4560 个 CPU 时钟. 每 70224 个 CPU 时钟产生一次完整的屏幕刷新.<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdinterrupts"></A><FONT SIZE=+2>&nbsp;LCD Interrupts</FONT></TD></TR></TABLE><BR>
@@ -2077,42 +2040,33 @@ gameboy BG tile memory at following addresses:<BR>
   The other bit specifies the OBJ size (8x8 or 16x16 pixels).
 </TD></TR></TABLE><BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="cpuregistersandflags"></A><FONT SIZE=+2>&nbsp;CPU Registers and Flags</FONT></TD></TR></TABLE><BR>
-<B>Registers<BR>
-</B><TABLE><TR><TD><PRE>  16bit Hi   Lo   Name/Function
-  AF    A    -    Accumulator & Flags
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="cpuregistersandflags"></A><FONT SIZE=+2>&nbsp;CPU 寄存器与标志位</FONT></TD></TR></TABLE><BR>
+<B>寄存器<BR>
+</B><TABLE><TR><TD><PRE>  16位  高   低   名字/功能
+  AF    A    -    累加器 & 标志位
   BC    B    C    BC
   DE    D    E    DE
   HL    H    L    HL
-  SP    -    -    Stack Pointer
-  PC    -    -    Program Counter/Pointer
-</TD></TR></TABLE>As shown above, most registers can be accessed either as one 16bit 
-register, or as two separate 8bit registers.<BR>
+  SP    -    -    堆栈指针
+  PC    -    -    程序计数器/指针
+</TD></TR></TABLE>如上所示, 大部分寄存器能以1个16位寄存器, 或者2个独立的8位寄存器来访问.<BR>
 <BR>
-<B>The Flag Register (lower 8bit of AF register)<BR>
-</B><TABLE><TR><TD><PRE>  Bit  Name  Set Clr  Expl.
-  7    zf    Z   NZ   Zero Flag
-  6    n     -   -    Add/Sub-Flag (BCD)
-  5    h     -   -    Half Carry Flag (BCD)
-  4    cy    C   NC   Carry Flag
-  3-0  -     -   -    Not used (always zero)
-</TD></TR></TABLE>Conatins the result from the recent instruction which has affected 
-flags.<BR>
+<B>标志位寄存器 (AF 寄存器的低8位)<BR>
+</B><TABLE><TR><TD><PRE>  位   名字  设置 清除 说明
+  7    zf    Z    NZ   零标志位
+  6    n     -    -    加减标志位 (BCD)
+  5    h     -    -    半溢出标志位 (BCD)
+  4    cy    C    NC   溢出标志位
+  3-0  -     -    -    不使用 (总是为0)
+</TD></TR></TABLE>装有近期影响标志位的指令的结果.<BR>
 <BR>
-<B>The Zero Flag (Z)<BR>
-</B>This bit becomes set (1) if the result of an operation has been zero 
-(0). Used for conditional jumps.<BR>
+<B>零标志位 (Z)<BR>
+</B>这个标志位将在一个操作的结果为零 (0) 时被设置 (1). 用于条件跳转.<BR>
 <BR>
-<B>The Carry Flag (C, or Cy)<BR>
-</B>Becomes set when the result of an addition became bigger than FFh (8bit) 
-or FFFFh (16bit). Or when the result of a subtraction or comparision 
-became less than zero (much as for Z80 and 80x86 CPUs, but unlike as for 
-65XX and ARM CPUs). Also the flag becomes set when a rotate/shift 
-operation has shifted-out a "1"-bit.<BR>
-Used for conditional jumps, and for instructions such like ADC, SBC, RL, 
-RLA, etc.<BR>
+<B>溢出标志位 (C 或者叫 Cy)<BR>
+</B>当一个加法结果大于 FFh (8位) 或者 FFFFh (16位) 时, 或者当减法/比较的结果小于零时, 这个标志位被设置 (减法的溢出设置方式与 Z80 与 80x86 的 CPU 相同, 但和 65XX 与 ARM 的 CPU 不同). 另外, 当移位/循环移位移出的位是 "1" 时, 这个标志位也被设置. 用于条件跳转, 以及如 ADC, SBC, RL, RLA 等指令.<BR>
 <BR>
-<B>The BCD Flags (N, H)<BR>
+<B>BCD 标志位 (N, H)<BR>
 </B>These flags are (rarely) used for the DAA instruction only, N Indicates 
 whether the previous instruction has been an addition or subtraction, 
 and H indicates carry for lower 4bits of the result, also for DAA, the C 
@@ -2125,41 +2079,42 @@ be used for 16bit operations (which have 4 digits), or for INC/DEC
 operations (which do not affect C-flag).<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="cpuinstructionset"></A><FONT SIZE=+2>&nbsp;CPU Instruction Set</FONT></TD></TR></TABLE><BR>
-Tables below specify the mnemonic, opcode bytes, clock cycles, affected 
-flags (ordered as znhc), and explanatation.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="cpuinstructionset"></A><FONT SIZE=+2>&nbsp;CPU 指令集</FONT></TD></TR></TABLE><BR>
+下面的表格依次列出了助记符, 操作码, 时钟周期, 影响的标志位 (顺序是 znhc), 指令说明.<BR>
+<!--时间 CPU 的时钟频率设定于 4.194304 MHz (在 CGB 倍速模式下为 8.4 MHz), 因为 Gameboy 所有的-->
 The timings assume a CPU clock frequency of 4.194304 MHz (or 8.4<BR>
 MHz for CGB in double speed mode), as all gameboy timings are divideable<BR>
 by 4, many people specify timings and clock frequency divided by 4.<BR>
 <BR>
-<B>GMB 8bit-Loadcommands<BR>
+<B>GMB 8位装载指令<BR>
 </B><TABLE><TR><TD><PRE>  ld   r,r         xx         4 ---- r=r
   ld   r,n         xx nn      8 ---- r=n
   ld   r,(HL)      xx         8 ---- r=(HL)
   ld   (HL),r      7x         8 ---- (HL)=r
-  ld   (HL),n      36 nn     12 ----
-  ld   A,(BC)      0A         8 ----
-  ld   A,(DE)      1A         8 ----
-  ld   A,(nn)      FA        16 ----
-  ld   (BC),A      02         8 ----
-  ld   (DE),A      12         8 ----
-  ld   (nn),A      EA        16 ----
-  ld   A,(FF00+n)  F0 nn     12 ---- read from io-port n (memory FF00+n)
-  ld   (FF00+n),A  E0 nn     12 ---- write to io-port n (memory FF00+n)
-  ld   A,(FF00+C)  F2         8 ---- read from io-port C (memory FF00+C)
-  ld   (FF00+C),A  E2         8 ---- write to io-port C (memory FF00+C)
+  ld   (HL),n      36 nn     12 ---- (HL)=n
+  ld   A,(BC)      0A         8 ---- A=(BC)
+  ld   A,(DE)      1A         8 ---- A=(DE)
+  ld   A,(nn)      FA        16 ---- A=(nn)
+  ld   (BC),A      02         8 ---- (BC)=A
+  ld   (DE),A      12         8 ---- (DE)=A
+  ld   (nn),A      EA        16 ---- (nn)=A
+  ld   A,(FF00+n)  F0 nn     12 ---- 从输入输出端口 n 读取 (内存 FF00+n)
+  ld   (FF00+n),A  E0 nn     12 ---- 向输入输入端口 n 写入 (内存 FF00+n)
+  ld   A,(FF00+C)  F2         8 ---- 从输入输出端口 C 读取 (内存 FF00+C)
+  ld   (FF00+C),A  E2         8 ---- 向输入输出端口 C 写入 (内存 FF00+C)
   ldi  (HL),A      22         8 ---- (HL)=A, HL=HL+1
   ldi  A,(HL)      2A         8 ---- A=(HL), HL=HL+1
   ldd  (HL),A      32         8 ---- (HL)=A, HL=HL-1
   ldd  A,(HL)      3A         8 ---- A=(HL), HL=HL-1
 </TD></TR></TABLE><BR>
-<B>GMB 16bit-Loadcommands<BR>
-</B><TABLE><TR><TD><PRE>  ld   rr,nn       x1 nn nn  12 ---- rr=nn (rr may be BC,DE,HL or SP)
+<B>GMB 16位装载指令<BR>
+</B><TABLE><TR><TD><PRE>  ld   rr,nn       x1 nn nn  12 ---- rr=nn            ;rr 可以是 BC,DE,HL,SP
   ld   SP,HL       F9         8 ---- SP=HL
-  push rr          x5        16 ---- SP=SP-2  (SP)=rr   (rr may be BC,DE,HL,AF)
-  pop  rr          x1        12 (AF) rr=(SP)  SP=SP+2   (rr may be BC,DE,HL,AF)
+  ld   (nn),SP     08 nn nn  20 ---- (nn)=SP
+  push rr          x5        16 ---- SP=SP-2  (SP)=rr ;rr 可以是 BC,DE,HL,AF
+  pop  rr          x1        12 (AF) rr=(SP)  SP=SP+2 ;rr 可以是 BC,DE,HL,AF
 </TD></TR></TABLE><BR>
-<B>GMB 8bit-Arithmetic/logical Commands<BR>
+<B>GMB 8位算术运算/逻辑运算指令<BR>
 </B><TABLE><TR><TD><PRE>  add  A,r         8x         4 z0hc A=A+r
   add  A,n         C6 nn      8 z0hc A=A+n
   add  A,(HL)      86         8 z0hc A=A+(HL)
@@ -2175,80 +2130,80 @@ by 4, many people specify timings and clock frequency divided by 4.<BR>
   and  r           Ax         4 z010 A=A & r
   and  n           E6 nn      8 z010 A=A & n
   and  (HL)        A6         8 z010 A=A & (HL)
-  xor  r           Ax         4 z000
-  xor  n           EE nn      8 z000
-  xor  (HL)        AE         8 z000
+  xor  r           Ax         4 z000 A=A xor r
+  xor  n           EE nn      8 z000 A=A xor n
+  xor  (HL)        AE         8 z000 A=A xor (HL)
   or   r           Bx         4 z000 A=A | r
   or   n           F6 nn      8 z000 A=A | n
   or   (HL)        B6         8 z000 A=A | (HL)
-  cp   r           Bx         4 z1hc compare A-r
-  cp   n           FE nn      8 z1hc compare A-n
-  cp   (HL)        BE         8 z1hc compare A-(HL)
+  cp   r           Bx         4 z1hc 比较 A-r
+  cp   n           FE nn      8 z1hc 比较 A-n
+  cp   (HL)        BE         8 z1hc 比较 A-(HL)
   inc  r           xx         4 z0h- r=r+1
   inc  (HL)        34        12 z0h- (HL)=(HL)+1
   dec  r           xx         4 z1h- r=r-1
   dec  (HL)        35        12 z1h- (HL)=(HL)-1
-  daa              27         4 z-0x decimal adjust akku
-  cpl              2F         4 -11- A = A xor FF
+  daa              27         4 z-0x 十进制调整 A
+  cpl              2F         4 -11- A = A xor FF     ;A取反
 </TD></TR></TABLE><BR>
-<B>GMB 16bit-Arithmetic/logical Commands<BR>
-</B><TABLE><TR><TD><PRE>  add  HL,rr     x9           8 -0hc HL = HL+rr     ;rr may be BC,DE,HL,SP
-  inc  rr        x3           8 ---- rr = rr+1      ;rr may be BC,DE,HL,SP
-  dec  rr        xB           8 ---- rr = rr-1      ;rr may be BC,DE,HL,SP
-  add  SP,dd     E8          16 00hc SP = SP +/- dd ;dd is 8bit signed number
-  ld   HL,SP+dd  F8          12 00hc HL = SP +/- dd ;dd is 8bit signed number
+<B>GMB 16位算术运算/逻辑运算指令<BR>
+</B><TABLE><TR><TD><PRE>  add  HL,rr     x9           8 -0hc HL=HL+rr         ;rr 可以是 BC,DE,HL,SP
+  inc  rr        x3           8 ---- rr=rr+1          ;rr 可以是 BC,DE,HL,SP
+  dec  rr        xB           8 ---- rr=rr-1          ;rr 可以是 BC,DE,HL,SP
+  add  SP,dd     E8          16 00hc SP=SP +/- dd     ;dd 是8位符号数
+  ld   HL,SP+dd  F8          12 00hc HL=SP +/- dd     ;dd 是8位符号数
 </TD></TR></TABLE><BR>
-<B>GMB Rotate- und Shift-Commands<BR>
-</B><TABLE><TR><TD><PRE>  rlca           07           4 000c rotate akku left
-  rla            17           4 000c rotate akku left through carry
-  rrca           0F           4 000c rotate akku right
-  rra            1F           4 000c rotate akku right through carry
-  rlc  r         CB 0x        8 z00c rotate left
-  rlc  (HL)      CB 06       16 z00c rotate left
-  rl   r         CB 1x        8 z00c rotate left through carry
-  rl   (HL)      CB 16       16 z00c rotate left through carry
-  rrc  r         CB 0x        8 z00c rotate right
-  rrc  (HL)      CB 0E       16 z00c rotate right
-  rr   r         CB 1x        8 z00c rotate right through carry
-  rr   (HL)      CB 1E       16 z00c rotate right through carry
-  sla  r         CB 2x        8 z00c shift left arithmetic (b0=0)
-  sla  (HL)      CB 26       16 z00c shift left arithmetic (b0=0)
-  swap r         CB 3x        8 z000 exchange low/hi-nibble
-  swap (HL)      CB 36       16 z000 exchange low/hi-nibble
-  sra  r         CB 2x        8 z00c shift right arithmetic (b7=b7)
-  sra  (HL)      CB 2E       16 z00c shift right arithmetic (b7=b7)
-  srl  r         CB 3x        8 z00c shift right logical (b7=0)
-  srl  (HL)      CB 3E       16 z00c shift right logical (b7=0)
+<B>GMB 位移/循环位移指令<BR>
+</B><TABLE><TR><TD><PRE>  rlca           07           4 000c 循环左移 A
+  rla            17           4 000c 带进位循环左移 A
+  rrca           0F           4 000c 循环右移 A
+  rra            1F           4 000c 带进位循环右移 A
+  rlc  r         CB 0x        8 z00c 循环左移 r
+  rlc  (HL)      CB 06       16 z00c 循环左移 (HL)
+  rl   r         CB 1x        8 z00c 带进位循环左移 r
+  rl   (HL)      CB 16       16 z00c 带进位循环左移 (HL)
+  rrc  r         CB 0x        8 z00c 循环右移 r
+  rrc  (HL)      CB 0E       16 z00c 循环右移 (HL)
+  rr   r         CB 1x        8 z00c 带进位循环右移 r
+  rr   (HL)      CB 1E       16 z00c 带进位循环右移 (HL)
+  sla  r         CB 2x        8 z00c 算术左移 r        ;Bit 0=0
+  sla  (HL)      CB 26       16 z00c 算术左移 (HL)     ;Bit 0=0
+  swap r         CB 3x        8 z000 交换 r 高低半字节
+  swap (HL)      CB 36       16 z000 交换 (HL) 高低半字节
+  sra  r         CB 2x        8 z00c 算术右移 r        ;Bit 7=Bit 7
+  sra  (HL)      CB 2E       16 z00c 算术右移 (HL)     ;Bit 7=Bit 7
+  srl  r         CB 3x        8 z00c 逻辑右移 r        ;Bit 7=0
+  srl  (HL)      CB 3E       16 z00c 逻辑右移 (HL)     ;Bit 7=0
 </TD></TR></TABLE><BR>
-<B>GMB Singlebit Operation Commands<BR>
-</B><TABLE><TR><TD><PRE>  bit  n,r       CB xx        8 z01- test bit n
-  bit  n,(HL)    CB xx       12 z01- test bit n
-  set  n,r       CB xx        8 ---- set bit n
-  set  n,(HL)    CB xx       16 ---- set bit n
-  res  n,r       CB xx        8 ---- reset bit n
-  res  n,(HL)    CB xx       16 ---- reset bit n
+<B>GMB 位操作指令<BR>
+</B><TABLE><TR><TD><PRE>  bit  n,r       CB xx        8 z01- 测试 Bit n
+  bit  n,(HL)    CB xx       12 z01- 测试 Bit n
+  set  n,r       CB xx        8 ---- 设置 Bit n
+  set  n,(HL)    CB xx       16 ---- 设置 Bit n
+  res  n,r       CB xx        8 ---- 清除 Bit n
+  res  n,(HL)    CB xx       16 ---- 清除 Bit n
 </TD></TR></TABLE><BR>
-<B>GMB CPU-Controlcommands<BR>
-</B><TABLE><TR><TD><PRE>  ccf            3F           4 -00c cy=cy xor 1
+<B>GMB CPU 控制指令<BR>
+</B><TABLE><TR><TD><PRE>  ccf            3F           4 -00c cy=cy xor 1      ;cy取反
   scf            37           4 -001 cy=1
-  nop            00           4 ---- no operation
-  halt           76         N*4 ---- halt until interrupt occurs (low power)
-  stop           10 00        ? ---- low power standby mode (VERY low power)
-  di             F3           4 ---- disable interrupts, IME=0
-  ei             FB           4 ---- enable interrupts, IME=1
+  nop            00           4 ---- 无操作
+  halt           76         N*4 ---- 停机直到产生中断 (低功耗)
+  stop           10 00        ? ---- 低功耗待机模式 (极低功耗)
+  di             F3           4 ---- 关闭中断, IME=0
+  ei             FB           4 ---- 开启中断, IME=1
 </TD></TR></TABLE><BR>
-<B>GMB Jumpcommands<BR>
-</B><TABLE><TR><TD><PRE>  jp   nn        C3 nn nn    16 ---- jump to nn, PC=nn
-  jp   HL        E9           4 ---- jump to HL, PC=HL
-  jp   f,nn      xx nn nn 16;12 ---- conditional jump if nz,z,nc,c
-  jr   PC+dd     18 dd       12 ---- relative jump to nn (PC=PC+/-7bit)
-  jr   f,PC+dd   xx dd     12;8 ---- conditional relative jump if nz,z,nc,c
-  call nn        CD nn nn    24 ---- call to nn, SP=SP-2, (SP)=PC, PC=nn
-  call f,nn      xx nn nn 24;12 ---- conditional call if nz,z,nc,c
-  ret            C9          16 ---- return, PC=(SP), SP=SP+2
-  ret  f         xx        20;8 ---- conditional return if nz,z,nc,c
-  reti           D9          16 ---- return and enable interrupts (IME=1)
-  rst  n         xx          16 ---- call to 00,08,10,18,20,28,30,38
+<B>GMB 跳转指令<BR>
+</B><TABLE><TR><TD><PRE>  jp   nn        C3 nn nn    16 ---- 跳转到 nn, PC=nn
+  jp   HL        E9           4 ---- 跳转到 HL, PC=HL
+  jp   f,nn      xx nn nn 16;12 ---- 条件跳转, 如果 nz,z,nc,c
+  jr   PC+dd     18 dd       12 ---- 相对跳转到 nn (PC=PC+/-7 位)
+  jr   f,PC+dd   xx dd     12;8 ---- 相对条件跳转, 如果 nz,z,nc,c
+  call nn        CD nn nn    24 ---- 调用 nn, SP=SP-2, (SP)=PC, PC=nn
+  call f,nn      xx nn nn 24;12 ---- 条件调用, 如果 nz,z,nc,c
+  ret            C9          16 ---- 返回, PC=(SP), SP=SP+2
+  ret  f         xx        20;8 ---- 条件返回, 如果 nz,z,nc,c
+  reti           D9          16 ---- 返回并开启中断 (IME=1)
+  rst  n         xx          16 ---- 调用 00,08,10,18,20,28,30,38
 </TD></TR></TABLE><BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="cpucomparisionwithz80"></A><FONT SIZE=+2>&nbsp;CPU Comparision with Z80</FONT></TD></TR></TABLE><BR>
