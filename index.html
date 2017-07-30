@@ -12,7 +12,7 @@
 </B><A HREF="#videodisplay">视频显示</A><BR>
 <A HREF="#soundcontroller">声音控制</A><BR>
 <A HREF="#joypadinput">手柄输入</A><BR>
-<A HREF="#serialdatatransferlinkcable">串行数据传输器 (连接线)</A><BR>
+<A HREF="#serialdatatransferlinkcable">串行数据传输 (连接线)</A><BR>
 <A HREF="#timeranddividerregisters">定时与分频寄存器</A><BR>
 <A HREF="#interrupts">中断</A><BR>
 <A HREF="#cgbregisters">CGB 寄存器</A><BR>
@@ -77,7 +77,7 @@ publish any such or further no$gmb updates though.<BR>
   分辨率       - 160x144 (20x18 图块)
   最大活动块   - 屏幕最多40个, 每行最多10个
   活动块大小   - 8x8 或者 8x16
-  调色板       - BG 1x4 ,OBJ 2x3 (CGB 为BG 8x4 ,OBJ 8x3)
+  调色板       - BG 1x4, OBJ 2x3 (CGB 为 BG 8x4, OBJ 8x3)
   颜色         - 4级灰度 (CGB 为32768色)
   横向同步     - 9198 KHz (SGB 为 9420 KHz)
   纵向同步     - 59.73 Hz (SGB 为 61.17 Hz)
@@ -123,13 +123,13 @@ Gameboy 的地址总线宽度为16位, 用于 ROM 或 RAM 以及 I/O 寄存器�
 <A HREF="#lcdpositionandscrolling">LCD 位置与卷轴</A><BR>
 <A HREF="#lcdmonochromepalettes">LCD 单色调色板</A><BR>
 <A HREF="#lcdcolorpalettescgbonly">LCD 彩色调色板 (仅 CGB)</A><BR>
-<A HREF="#lcdvrambankcgbonly">LCD VRAM 页面 (仅 CGB)</A><BR>
-<A HREF="#lcdoamdmatransfers">LCD OAM DMA 传输器</A><BR>
-<A HREF="#lcdvramdmatransferscgbonly">LCD VRAM DMA 传输器 (仅 CGB)</A><BR>
+<A HREF="#lcdvrambankcgbonly">LCD VRAM Bank (仅 CGB)</A><BR>
+<A HREF="#lcdoamdmatransfers">LCD OAM DMA 传输</A><BR>
+<A HREF="#lcdvramdmatransferscgbonly">LCD VRAM DMA 传输 (仅 CGB)</A><BR>
 <BR>
 <B>Video Memory<BR>
 </B><A HREF="#vramtiledata">VRAM 图块数据</A><BR>
-<A HREF="#vrambackgroundmaps">VRAM 背景布局</A><BR>
+<A HREF="#vrambackgroundmaps">VRAM BG Map</A><BR>
 <A HREF="#vramspriteattributetableoam">VRAM 活动块属性表 (OAM)</A><BR>
 <A HREF="#accessingvramandoam">访问 VRAM 与 OAM</A><BR>
 <BR>
@@ -146,7 +146,7 @@ Gameboy 的地址总线宽度为16位, 用于 ROM 或 RAM 以及 I/O 寄存器�
   Bit 0 - BG 显示 (对于 CGB, 见下)      (0=关, 1=开)
 </TD></TR></TABLE><BR>
 <B>LCDC.7 - 开启 LCD 显示<BR>
-</B>警告: 关闭 LCD 的操作 (Bit 7 由 1 设为 0) 仅可在 V-Blank 内进行, 在 V-Blank 时期之外关闭显示可能损坏硬件. 这是一个非常严重的问题, 据报道任天堂已宣布拒绝所有不符合这个规则的游戏. <BR>
+</B>警告: 关闭 LCD 的操作 (Bit 7 由 1 设为 0) 仅可在 V-Blank 内进行, 在 V-Blank 时段之外关闭显示可能损坏硬件. 这是一个非常严重的问题, 据报道任天堂已宣布拒绝所有不符合这个规则的游戏. <BR>
 V-Blank 可以利用 LY 大于等于 144 来判断. 当显示关闭时屏幕呈现空白 (白色), 此时 VRAM 和 OAM 可以随意访问.<BR>
 <BR>
 --- LCDC.0 根据 Gameboy 类型有不同意义 ---<BR>
@@ -176,18 +176,18 @@ V-Blank 可以利用 LY 大于等于 144 来判断. 当显示关闭时屏幕呈�
             3: 处于传送数据至 LCD 驱动的状态
 </TD></TR></TABLE><BR>
 STAT 的低两位表示当前 LCD 控制器的状态.<BR>
-<TABLE><TR><TD><PRE>  模式 0: LCD 控制器处于 H-Blank 时期,
+<TABLE><TR><TD><PRE>  模式 0: LCD 控制器处于 H-Blank 时段,
           CPU 可以访问显示 RAM (8000h-9FFFh) 和 OAM (FE00h-FE9Fh).
 </TD></TR></TABLE><BR>
-<TABLE><TR><TD><PRE>  模式 1: LCD 控制器处于 V-Blank 时期
+<TABLE><TR><TD><PRE>  模式 1: LCD 控制器处于 V-Blank 时段
           (或者屏幕处于关闭状态),
           CPU 可以访问显示 RAM (8000h-9FFFh) 和 OAM (FE00h-FE9Fh).
 </TD></TR></TABLE><BR>
 <TABLE><TR><TD><PRE>  模式 2: LCD 控制器正在从 OAM 存储中读取数据.
-          CPU &lt;不可以&gt;在这个时期访问 OAM 存储 (FE00h-FE9Fh).
+          CPU &lt;不可以&gt;在这个时段访问 OAM 存储 (FE00h-FE9Fh).
 </TD></TR></TABLE><BR>
 <TABLE><TR><TD><PRE>  模式 3: LCD 控制器正在从 OAM 和 VRAM 中读取数据,
-          CPU &lt;不可以&gt;在这个时期访问 OAM 和 VRAM.
+          CPU &lt;不可以&gt;在这个时段访问 OAM 和 VRAM.
           CGB 模式: 也不可以放访问调色板数据 (FF69,FF6B).
 </TD></TR></TABLE><BR>
 下面是当显示开启时的典型时序:<BR>
@@ -196,49 +196,42 @@ STAT 的低两位表示当前 LCD 控制器的状态.<BR>
   模式 0  ___000___000___000___000___000___000________________000
   模式 1  ____________________________________11111111111111_____
 </TD></TR></TABLE><BR>
-模式标志位经过值 0, 2, 3 一个时段大约需要 109 微秒. 模式 0 出现大约 48.6 微秒, 模式 2 大约 19 微秒, 模式 3 大约 41微秒. 这个周期每 16.6 毫秒被 VBlank (模式 1) 打断一次. 模式标志位设为 1 大约持续 1.08 毫秒.<BR>
+模式标志位经过值 0, 2, 3 一个时段大约需要 109 微秒. 模式 0 出现大约 48.6 微秒, 模式 2 大约 19 微秒, 模式 3 大约 41微秒. 这个循环每 16.6 毫秒被 VBlank (模式 1) 打断一次. 模式标志位设为 1 大约持续 1.08 毫秒.<BR>
 <BR>
 模式 0 出现大约 201-207 个 CPU 时钟, 模式 2 大约 77-83 个 CPU 时钟, 模式 3 大约 169 - 175 个 CPU 时钟. 完整经过这几个状态的时段耗费 456 个 CPU 时钟. VBlank 持续 4560 个 CPU 时钟. 每 70224 个 CPU 时钟产生一次完整的屏幕刷新.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdinterrupts"></A><FONT SIZE=+2>&nbsp;LCD Interrupts</FONT></TD></TR></TABLE><BR>
-<B>INT 40 - V-Blank Interrupt<BR>
-</B>The V-Blank interrupt occurs ca. 59.7 times a second on a regular GB and 
-ca. 61.1 times a second on a Super GB (SGB). This interrupt occurs at 
-the beginning of the V-Blank period (LY=144).<BR>
-During this period video hardware is not using video ram so it may be 
-freely accessed. This period lasts approximately 1.1 milliseconds.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdinterrupts"></A><FONT SIZE=+2>&nbsp;LCD 中断</FONT></TD></TR></TABLE><BR>
+<B>INT 40 - V-Blank 中断<BR>
+</B>V-Blank 中断在普通 GB 上每秒产生 59.7 次, 在 SGB 上每秒产生 61.1 次. 这个中断产生于 V-Blank 时段的开始 (LY=144).<BR>
+这个时段内视频硬件不使用 VRAM, 所以此时 VRAM 可以随意访问. 这个时段大约持续 1.1 毫秒.<BR>
 <BR>
-<B>INT 48 - LCDC Status Interrupt<BR>
-</B>There are various reasons for this interrupt to occur as described by 
-the STAT register ($FF40). One very popular reason is to indicate to the 
-user when the video hardware is about to redraw a given LCD line. This 
-can be useful for dynamically controlling the SCX/SCY registers 
-($FF43/$FF42) to perform special video effects.<BR>
+<B>INT 48 - LCDC 状态中断<BR>
+</B>根据 STAT 寄存器 ($FF40) 的设置状态, 会有多种产生这个中断的原因. 一个最常见的原因是当视频硬件要重绘一条给定的 LCD 行时告知使用者. 这个在动态调整 SCX/SCY 寄存器 ($FF43/$FF42) 来实现特殊的画面效果时非常有用.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdpositionandscrolling"></A><FONT SIZE=+2>&nbsp;LCD Position and Scrolling</FONT></TD></TR></TABLE><BR>
-<B>FF42 - SCY - Scroll Y   (R/W)<BR>
-FF43 - SCX - Scroll X   (R/W)<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdpositionandscrolling"></A><FONT SIZE=+2>&nbsp;LCD 位置与卷轴</FONT></TD></TR></TABLE><BR>
+<B>FF42 - SCY - 卷轴 Y   (读写)<BR>
+FF43 - SCX - 卷轴 X   (读写)<BR>
 </B>Specifies the position in the 256x256 pixels BG map (32x32 tiles) which 
 is to be displayed at the upper/left LCD display position.<BR>
 Values in range from 0-255 may be used for X/Y each, the video 
 controller automatically wraps back to the upper (left) position in BG 
 map when drawing exceeds the lower (right) border of the BG map area.<BR>
 <BR>
-<B>FF44 - LY - LCDC Y-Coordinate (R)<BR>
+<B>FF44 - LY - LCDC Y 坐标 (只读)<BR>
 </B>The LY indicates the vertical line to which the present data is 
 transferred to the LCD Driver. The LY can take on any value between 0 
 through 153. The values between 144 and 153 indicate the V-Blank period. 
 Writing will reset the counter.<BR>
 <BR>
-<B>FF45 - LYC - LY Compare  (R/W)<BR>
+<B>FF45 - LYC - LY 比较  (读写)<BR>
 </B>The gameboy permanently compares the value of the LYC and LY registers. 
 When both values are identical, the coincident bit in the STAT register 
 becomes set, and (if enabled) a STAT interrupt is requested.<BR>
 <BR>
-<B>FF4A - WY - Window Y Position (R/W)<BR>
-FF4B - WX - Window X Position minus 7 (R/W)<BR>
+<B>FF4A - WY - 窗口 Y 位置 (读写)<BR>
+FF4B - WX - 窗口 X 位置 (值 = X 位置 + 7) (读写)<BR>
 </B>Specifies the upper/left positions of the Window area. (The window is an 
 alternate background area which can be displayed above of the normal 
 background. OBJs (sprites) may be still displayed above or behinf the 
@@ -248,8 +241,8 @@ WX=0..166, WY=0..143. A postion of WX=7, WY=0 locates the window at
 upper left, it is then completly covering normal background.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdmonochromepalettes"></A><FONT SIZE=+2>&nbsp;LCD Monochrome Palettes</FONT></TD></TR></TABLE><BR>
-<B>FF47 - BGP - BG Palette Data  (R/W) - Non CGB Mode Only<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdmonochromepalettes"></A><FONT SIZE=+2>&nbsp;LCD 单色调色板</FONT></TD></TR></TABLE><BR>
+<B>FF47 - BGP - 背景调色板数据  (读写) - 仅非 CGB 模式<BR>
 </B>This register assigns gray shades to the color numbers of the BG and 
 Window tiles.<BR>
 <TABLE><TR><TD><PRE>  Bit 7-6 - Shade for Color Number 3
@@ -264,19 +257,19 @@ Window tiles.<BR>
 </TD></TR></TABLE>In CGB Mode the Color Palettes are taken from CGB Palette Memory 
 instead.<BR>
 <BR>
-<B>FF48 - OBP0 - Object Palette 0 Data (R/W) - Non CGB Mode Only<BR>
+<B>FF48 - OBP0 - 活动块调色板 0 数据 (读写) - 仅非 CGB 模式<BR>
 </B>This register assigns gray shades for sprite palette 0. It works exactly 
 as BGP (FF47), except that the lower two bits aren't used because sprite 
 data 00 is transparent.<BR>
 <BR>
-<B>FF49 - OBP1 - Object Palette 1 Data (R/W) - Non CGB Mode Only<BR>
+<B>FF49 - OBP1 - 活动块调色板 1 数据 (读写) - 仅非 CGB 模式<BR>
 </B>This register assigns gray shades for sprite palette 1. It works exactly 
 as BGP (FF47), except that the lower two bits aren't used because sprite 
 data 00 is transparent.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdcolorpalettescgbonly"></A><FONT SIZE=+2>&nbsp;LCD Color Palettes (CGB only)</FONT></TD></TR></TABLE><BR>
-<B>FF68 - BCPS/BGPI - CGB Mode Only - Background Palette Index<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdcolorpalettescgbonly"></A><FONT SIZE=+2>&nbsp;LCD 彩色调色板 (仅 CGB)</FONT></TD></TR></TABLE><BR>
+<B>FF68 - BCPS/BGPI - 仅 CGB 模式 - 背景调色板索引<BR>
 </B>This register is used to address a byte in the CGBs Background Palette 
 Memory. Each two byte in that memory define a color value. The first 8 
 bytes define Color 0-3 of Palette 0 (BGP0), and so on for BGP1-7.<BR>
@@ -288,7 +281,7 @@ automatically incremented after each &lt;write&gt; to FF69. Auto Increment has
 no effect when &lt;reading&gt; from FF69, so the index must be manually 
 incremented in that case.<BR>
 <BR>
-<B>FF69 - BCPD/BGPD - CGB Mode Only - Background Palette Data<BR>
+<B>FF69 - BCPD/BGPD - 仅 CGB 模式 - 背景调色板数据<BR>
 </B>This register allows to read/write data to the CGBs Background Palette 
 Memory, addressed through Register FF68.<BR>
 Each color is defined by two bytes (Bit 0-7 in first byte).<BR>
@@ -300,8 +293,8 @@ time when the LCD Controller is reading from it. (That is when the STAT
 register indicates Mode 3).<BR>
 Note: Initially all background colors are initialized as white.<BR>
 <BR>
-<B>FF6A - OCPS/OBPI - CGB Mode Only - Sprite Palette Index<BR>
-FF6B - OCPD/OBPD - CGB Mode Only - Sprite Palette Data<BR>
+<B>FF6A - OCPS/OBPI - 仅 CGB 模式 - 活动块调色板索引<BR>
+FF6B - OCPD/OBPD - 仅 CGB 模式 - 活动块调色板数据<BR>
 </B>These registers are used to initialize the Sprite Palettes OBP0-7, 
 identically as described above for Background Palettes. Note that four 
 colors may be defined for each OBP Palettes - but only Color 1-3 of each 
@@ -343,17 +336,15 @@ so. How did they say, This seal is your assurance for excellence in
 workmanship and so on?<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdvrambankcgbonly"></A><FONT SIZE=+2>&nbsp;LCD VRAM Bank (CGB only)</FONT></TD></TR></TABLE><BR>
-<B>FF4F - VBK - CGB Mode Only - VRAM Bank<BR>
-</B>This 1bit register selects the current Video Memory (VRAM) Bank.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdvrambankcgbonly"></A><FONT SIZE=+2>&nbsp;LCD VRAM Bank (仅 CGB)</FONT></TD></TR></TABLE><BR>
+<B>FF4F - VBK - 仅 CGB 模式 - VRAM Bank<BR>
+</B>这个 1 位的寄存器用于选择当前的视频 RAM (VRAM) 的 Bank.<BR>
 <TABLE><TR><TD><PRE>  Bit 0 - VRAM Bank (0-1)
-</TD></TR></TABLE>Bank 0 contains 192 Tiles, and two background maps, just as for 
-monochrome games. Bank 1 contains another 192 Tiles, and color attribute 
-maps for the background maps in bank 0.<BR>
+</TD></TR></TABLE>Bank 0 含有 192 个图块, 和两张 BG Map, 仅用于单色游戏. Bank 1 还有另外的 192 个图块, 以及搭配 Bank 0 中的 BG Map 使用的颜色属性 Map.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdoamdmatransfers"></A><FONT SIZE=+2>&nbsp;LCD OAM DMA Transfers</FONT></TD></TR></TABLE><BR>
-<B>FF46 - DMA - DMA Transfer and Start Address (W)<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdoamdmatransfers"></A><FONT SIZE=+2>&nbsp;LCD OAM DMA 传输</FONT></TD></TR></TABLE><BR>
+<B>FF46 - DMA - DMA 传输与开始地址 (只写)<BR>
 </B>Writing to this register launches a DMA transfer from ROM or RAM to OAM 
 memory (sprite attribute table). The written value specifies the 
 transfer source address divided by 100h, ie. source & destination are:<BR>
@@ -376,100 +367,51 @@ allowing to display more than 40 sprites on the screen (ie. for example
 screen).<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdvramdmatransferscgbonly"></A><FONT SIZE=+2>&nbsp;LCD VRAM DMA Transfers (CGB only)</FONT></TD></TR></TABLE><BR>
-<B>FF51 - HDMA1 - CGB Mode Only - New DMA Source, High<BR>
-FF52 - HDMA2 - CGB Mode Only - New DMA Source, Low<BR>
-FF53 - HDMA3 - CGB Mode Only - New DMA Destination, High<BR>
-FF54 - HDMA4 - CGB Mode Only - New DMA Destination, Low<BR>
-FF55 - HDMA5 - CGB Mode Only - New DMA Length/Mode/Start<BR>
-</B>These registers are used to initiate a DMA transfer from ROM or RAM to 
-VRAM. The Source Start Address may be located at 0000-7FF0 or A000-DFF0, 
-the lower four bits of the address are ignored (treated as zero). The 
-Destination Start Address may be located at 8000-9FF0, the lower four 
-bits of the address are ignored (treated as zero), the upper 3 bits are 
-ignored either (destination is always in VRAM).<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdvramdmatransferscgbonly"></A><FONT SIZE=+2>&nbsp;LCD VRAM DMA 传输 (仅 CGB)</FONT></TD></TR></TABLE><BR>
+<B>FF51 - HDMA1 - 仅 CGB 模式  - 新 DMA 来源地址高位<BR>
+FF52 - HDMA2 - 仅 CGB 模式  - 新 DMA 来源地址低位<BR>
+FF53 - HDMA3 - 仅 CGB 模式  - 新 DMA 目标地址高位<BR>
+FF54 - HDMA4 - 仅 CGB 模式  - 新 DMA 目标地址低位<BR>
+FF55 - HDMA5 - 仅 CGB 模式  - 新 DMA 长度/模式/启动<BR>
+</B>这些寄存器用于发起一次从 ROM 或 RAM 到 VRAM 的 DMA 传送. 来源首地址定于 0000-7FF0 或者 A000-DFF0, 地址低四位将被忽略 (处理为0). 目标首地址定于 8000-9FF0, 地址低四位将被忽略 (处理为0), 地址高三位也将被忽略 (目标总是在VRAM内).<BR>
 <BR>
-Writing to FF55 starts the transfer, the lower 7 bits of FF55 specify 
-the Transfer Length (divided by 10h, minus 1). Ie. lengths of 10h-800h 
-bytes can be defined by the values 00h-7Fh. And the upper bit of FF55 
-indicates the Transfer Mode:<BR>
+写入 FF55 启动传输, FF55 的低七位指定了传输长度 (值 = 传输长度 / 10h - 1). 例如, 10h-800h的长度可以对应指定值为00h-7Fh. FF55 的最高位表示传输模式:<BR>
 <BR>
-<B>Bit7=0 - General Purpose DMA<BR>
-</B>When using this transfer method, all data is transferred at once. The 
-execution of the program is halted until the transfer has completed. 
-Note that the General Purpose DMA blindly attempts to copy the data, 
-even if the LCD controller is currently accessing VRAM. So General 
-Purpose DMA should be used only if the Display is disabled, or during 
-V-Blank, or (for rather short blocks) during H-Blank.<BR>
-The execution of the program continues when the transfer has been 
-completed, and FF55 then contains a value if FFh.<BR>
+<B>Bit7=0 - 通用 DMA<BR>
+</B>当使用这种传输方式时, 所有数据将一次性传输. 程序的执行将停机, 直到传输完成. 需要注意通用 DMA 只会直接尝试复制数据, 甚至在 LCD 控制器正在访问 VRAM 时也是如此. 所以通用 DMA 只能在屏幕关闭时, 或处于 V-Blank 时, 再或者 (在传输小块的情况) 处于 H-Blank 时.<BR>
+程序将在传输完成时继续执行, 此时 FF55 的值为 0FFh.<BR>
 <BR>
 <B>Bit7=1 - H-Blank DMA<BR>
-</B>The H-Blank DMA transfers 10h bytes of data during each H-Blank, ie. at 
-LY=0-143, no data is transferred during V-Blank (LY=144-153), but the 
-transfer will then continue at LY=00. The execution of the program is 
-halted during the separate transfers, but the program execution 
-continues during the 'spaces' between each data block.<BR>
-Note that the program may not change the Destination VRAM bank (FF4F), 
-or the Source ROM/RAM bank (in case data is transferred from bankable 
-memory) until the transfer has completed!<BR>
-Reading from Register FF55 returns the remaining length (divided by 10h, 
-minus 1), a value of 0FFh indicates that the transfer has completed. It 
-is also possible to terminate an active H-Blank transfer by writing zero 
-to Bit 7 of FF55. In that case reading from FF55 may return any value 
-for the lower 7 bits, but Bit 7 will be read as "1".<BR>
+</B>H-Blank DMA 在每个 H-Blank 中传输 10h 字节的数据. 例如, 在 LY=0-143 的时候进行传输, 在 V-Blank 时数据暂停传输 (LY=144-153), 但是当 LY=00 时传输将继续进行. 程序在每个传输分片进行时停机, 但是程序将在每个分片之间的 '空闲时刻' 继续执行.<BR>
+需要注意程序不能在传输结束之前改变目标 VRAM 的 Bank (FF4F), 或者来源 ROM/RAM 的 Bank (如果传输的数据来自于可切 Bank 的存储)!<BR>
+从寄存器 FF55 读取将返回传输剩余的长度 (值 = 传输长度 / 10h - 1), 值 0FFh 代表传输已经完成. 要终止一个活动的 H-Blank 传输可以往 FF55 的 Bit 7 写入 0. 在这种情况下从 FF55 中读取数据, 返回值的低七位将是任意值, 但最高位将读取到 "1" .<BR>
 <BR>
-<B>Confirming if the DMA Transfer is Active<BR>
-</B>Reading Bit 7 of FF55 can be used to confirm if the DMA transfer is 
-active (1=Not Active, 0=Active). This works under any circumstances - 
-after completion of General Purpose, or H-Blank Transfer, and after 
-manually terminating a H-Blank Transfer.<BR>
+<B>确认 DMA 传输是否活动<BR>
+</B>读取 FF55 的 Bit 7 可以用于确认 DMA 传输是否活动 (1= 不活动, 0= 活动). 这种方式可以在任何情况下工作 - 在通用传输完成后, 在 H-Blank 传输结束之后, 以及手动终止 H-Blank 传输之后均可.<BR>
 <BR>
-<B>Transfer Timings<BR>
-</B>In both Normal Speed and Double Speed Mode it takes about 8us to 
-transfer a block of 10h bytes. That are 8 cycles in Normal Speed Mode, 
-and 16 'fast' cycles in Double Speed Mode.<BR>
-Older MBC controllers (like MBC1-4) and slower ROMs are not guaranteed 
-to support General Purpose or H-Blank DMA, that's because there are 
-always 2 bytes transferred per microsecond (even if the itself program 
-runs it Normal Speed Mode).<BR>
+<B>传输时间<BR>
+</B>普速模式和倍速模式均需要 8 微秒来传输一个 10h 字节块. 相当于普速模式下的 8 个周期, 倍速模式下的 16 个 '快' 周期.<BR>
+较旧的 MBC (如 MBC1 到 3, 即 MBC5 之前) 与慢速 ROM 不保证支持通用或 H-Blank DMA, 因为即使程序运行于普速模式, 传输均是以 2 字节每毫秒的速度进行.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="vramtiledata"></A><FONT SIZE=+2>&nbsp;VRAM Tile Data</FONT></TD></TR></TABLE><BR>
-Tile Data is stored in VRAM at addresses 8000h-97FFh, this area defines 
-the Bitmaps for 192 Tiles. In CGB Mode 384 Tiles can be defined, because 
-memory at 0:8000h-97FFh and at 1:8000h-97FFh is used.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="vramtiledata"></A><FONT SIZE=+2>&nbsp;VRAM 图块数据</FONT></TD></TR></TABLE><BR>
+图块 (Tile) 数据存储于 VRAM 地址 8000h-97FFh, 这个区域定义了 192 个图块的位图. 在 CGB 模式下, 因为使用了 0:8000h-97FFh 和 1:8000h-97FFh 的内存, 所以可定义 384 个图块.<BR>
 <BR>
-Each tile is sized 8x8 pixels and has a color depth of 4 colors/gray 
-shades. Tiles can be displayed as part of the Background/Window map, 
-and/or as OAM tiles (foreground sprites). Note that foreground sprites 
-may have only 3 colors, because color 0 is transparent.<BR>
+每个图块为 8x8 像素大小, 色深为 4 色/灰度. 图块可作为背景/窗口 Map 的一个部分显示, 也/或可以作为 OAM 图块 (前景活动块) 显示. 注意前景活动块的颜色 0 为透明, 所以只有 3 种颜色可用.<BR>
 <BR>
-As it was said before, there are two Tile Pattern Tables at $8000-8FFF 
-and at $8800-97FF. The first one can be used for sprites and the 
-background. Its tiles are numbered from 0 to 255. The second table can 
-be used for the background and the window display and its tiles are 
-numbered from -128 to 127.<BR>
+如前所述, 两张图块样式表 (Pattern Table) 位于 $8000-8FFF 和 $8800-97FF. 第一张可以用于活动块和背景. 图块号从 0 编号到 255. 第二张可以用于背景和窗口显示, 图块号从 -128 编号到 127.<BR>
 <BR>
-Each Tile occupies 16 bytes, where each 2 bytes represent a line:<BR>
-<TABLE><TR><TD><PRE>  Byte 0-1  First Line (Upper 8 pixels)
-  Byte 2-3  Next Line
-  etc.
-</TD></TR></TABLE>For each line, the first byte defines the least significant bits of the 
-color numbers for each pixel, and the second byte defines the upper bits 
-of the color numbers. In either case, Bit 7 is the leftmost pixel, and 
-Bit 0 the rightmost.<BR>
+每个图块占有 16 个字节, 其中每 2 个字节代表一行:<BR>
+<TABLE><TR><TD><PRE>  Byte 0-1  第一行 (最上方的 8 个像素)
+  Byte 2-3  下一行
+  以此类推.
+</TD></TR></TABLE>对于每条线, 第一个字节定义了每个像素颜色号的低位, 第二个字节定义了每个像素颜色号的高位. 另外, Bit 7 是最左边的像素, Bit 0 是最右边的像素.<BR>
 <BR>
-So, each pixel is having a color number in range from 0-3. The color 
-numbers are translated into real colors (or gray shades) depending on 
-the current palettes. The palettes are defined through registers 
-FF47-FF49 (Non CGB Mode), and FF68-FF6B (CGB Mode).<BR>
+所以, 每个像素有范围 0-3 的颜色号, 颜色号将依据当前的调色板转换成实际颜色 (或者灰度). 调色板定义在寄存器 FF47-FF49 (非 CGB 模式), 和 FF68-FF6B (CGB 模式).<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="vrambackgroundmaps"></A><FONT SIZE=+2>&nbsp;VRAM Background Maps</FONT></TD></TR></TABLE><BR>
-The gameboy contains two 32x32 tile background maps in VRAM at addresses 
-9800h-9BFFh and 9C00h-9FFFh. Each can be used either to display "normal" 
-background, or "window" background.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="vrambackgroundmaps"></A><FONT SIZE=+2>&nbsp;VRAM BG Map</FONT></TD></TR></TABLE><BR>
+Gameboy 有两张 32x32 的图块BG Map (背景分布) 于 VRAM 地址 9800h-9BFFh 和 9C00h-9FFFh. 每张可以用于显示 "普通" 的背景, 也可以用于显示 "窗口" 背景.<BR>
 <BR>
 <B>BG Map Tile Numbers<BR>
 </B>An area of VRAM known as Background Tile Map contains the numbers of 
@@ -2098,10 +2040,10 @@ by 4, many people specify timings and clock frequency divided by 4.<BR>
   ld   (BC),A      02         8 ---- (BC)=A
   ld   (DE),A      12         8 ---- (DE)=A
   ld   (nn),A      EA        16 ---- (nn)=A
-  ld   A,(FF00+n)  F0 nn     12 ---- 从输入输出端口 n 读取 (内存 FF00+n)
-  ld   (FF00+n),A  E0 nn     12 ---- 向输入输入端口 n 写入 (内存 FF00+n)
-  ld   A,(FF00+C)  F2         8 ---- 从输入输出端口 C 读取 (内存 FF00+C)
-  ld   (FF00+C),A  E2         8 ---- 向输入输出端口 C 写入 (内存 FF00+C)
+  ld   A,(FF00+n)  F0 nn     12 ---- 从 I/O 端口 n 读取 (内存 FF00+n)
+  ld   (FF00+n),A  E0 nn     12 ---- 向 I/O 端口 n 写入 (内存 FF00+n)
+  ld   A,(FF00+C)  F2         8 ---- 从 I/O 端口 C 读取 (内存 FF00+C)
+  ld   (FF00+C),A  E2         8 ---- 向 I/O 端口 C 写入 (内存 FF00+C)
   ldi  (HL),A      22         8 ---- (HL)=A, HL=HL+1
   ldi  A,(HL)      2A         8 ---- A=(HL), HL=HL+1
   ldd  (HL),A      32         8 ---- (HL)=A, HL=HL-1
