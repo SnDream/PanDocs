@@ -223,21 +223,13 @@ LY寄存器可取0到153之间的任意数据。
 写操作将重置计数器。<BR>
 <BR>
 <B>FF45 - LYC - LY 比较  (读写)<BR>
-</B>The gameboy permanently compares the value of the LYC and LY registers. 
-When both values are identical, the coincident bit in the STAT register 
-becomes set, and (if enabled) a STAT interrupt is requested.
-    Gameboy会比较LYC寄存器和LY寄存器的值。当二者值相同时，STAT寄存器的冲突位会被置1，并发起STAT中断请求（若启用）。
+</B>Gameboy会比较LYC寄存器和LY寄存器的值。当二者值相同时，STAT寄存器的冲突位会被置1，并发起STAT中断请求（若启用）。
 <BR>
 <BR>
 <B>FF4A - WY - 窗口 Y 位置 (读写)<BR>
 FF4B - WX - 窗口 X 位置 (值 = X 位置 + 7) (读写)<BR>
-</B>Specifies the upper/left positions of the Window area. (The window is an 
-alternate background area which can be displayed above of the normal 
-background. OBJs (sprites) may be still displayed above or behinf the 
-window, just as for normal BG.)<BR>
-The window becomes visible (if enabled) when positions are set in range 
-WX=0..166, WY=0..143. A postion of WX=7, WY=0 locates the window at 
-upper left, it is then completly covering normal background.<BR>
+</B>指定窗口区域的左上角坐标。（该窗口是另一个背景区域，并且可以显示在普通背景之上）。OBJs（精灵）依然可以显示在窗口之上或之下，就像普通背景那样。<BR>
+当坐标设置为WX=0..166，WY=0..143范围内时可以看见窗口。若在窗口左上角取坐标WX=7，WY=0，则它将完全覆盖普通背景。<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdmonochromepalettes"></A><FONT SIZE=+2>&nbsp;LCD 单色调色板</FONT></TD></TR></TABLE><BR>
