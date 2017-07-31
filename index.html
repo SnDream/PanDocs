@@ -278,9 +278,9 @@ FF6B - OCPD/OBPD - 仅限 CGB 模式 - 活动块调色板数据<BR>
 </B>注意，在个人电脑上开发图像时，RGB数值在VGA显示器上和CGB的显示屏有不同的表现：<BR>
 浓度最高的配色会显示出浅灰色，而不是白色。色彩浓度不是线性的。10h-1Fh之间的数值会显得非常亮，而中等和暗色在 00h-0Fh 之间。<BR>
 CGB的显示屏会非常奇怪地混合颜色。仅仅增加一种R，G，B颜色的浓度也会影响其他两个R，G，B颜色。<BR>
-举例来说，颜色值03EFh（蓝色=0，绿色=1Fh，红色=0Fh）在VGA显示器上看起来是荧光绿，然而在CGB上确实一个无比正确的褪色黄。<BR>
+举例来说，颜色值03EFh（蓝色=0，绿色=1Fh，红色=0Fh）在VGA显示器上看起来是荧光绿，然而在CGB上却是一个无比正确的褪色黄。<BR>
 <BR>
-<B>RGB Translation by GBAs<BR>
+<B>GBA的RGB颜色转换<BR>
 </B>Even though GBA is described to be compatible to CGB games, most CGB 
 games are completely unplayable on GBAs because most colors are 
 invisible (black). Of course, colors such like Black and White will 
