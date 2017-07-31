@@ -255,28 +255,19 @@ FF4B - WX - 窗口 X 位置 (值 = X 位置 + 7) (读写)<BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdcolorpalettescgbonly"></A><FONT SIZE=+2>&nbsp;LCD 彩色调色板 (仅 CGB)</FONT></TD></TR></TABLE><BR>
 <B>FF68 - BCPS/BGPI - 仅 CGB 模式 - 背景调色板索引<BR>
-</B>This register is used to address a byte in the CGBs Background Palette 
-Memory. Each two byte in that memory define a color value. The first 8 
-bytes define Color 0-3 of Palette 0 (BGP0), and so on for BGP1-7.<BR>
-<TABLE><TR><TD><PRE>  Bit 0-5   Index (00-3F)
-  Bit 7     Auto Increment  (0=Disabled, 1=Increment after Writing)
-</TD></TR></TABLE>Data can be read/written to/from the specified index address through 
-Register FF69. When the Auto Increment Bit is set then the index is 
-automatically incremented after each &lt;write&gt; to FF69. Auto Increment has 
-no effect when &lt;reading&gt; from FF69, so the index must be manually 
-incremented in that case.<BR>
+</B>该寄存器用来寻址CGB的背景调色板存储的一个字节。该存储中每两个字节定义一个颜色的值。前8个字节定义了调色板0（BGP0）的颜色0-3，BGP1-7以此类推。<BR>
+<TABLE><TR><TD><PRE>  比特位 0-5   索引 (00-3F)
+  比特位 7     自动递增  (0=禁用， 1=写操作后递增)
+</TD></TR></TABLE>通过寄存器FF69，可以读取/写入指定的索引地址。当自动递增位被启用，那么每次&lt;写入&gt;FF69之后索引都会自动递增。而从FF69&lt;读取&gt;数据不会启用自动递增，因此在这种情况下需要手动递增索引。<BR>
 <BR>
-<B>FF69 - BCPD/BGPD - 仅 CGB 模式 - 背景调色板数据<BR>
-</B>This register allows to read/write data to the CGBs Background Palette 
-Memory, addressed through Register FF68.<BR>
-Each color is defined by two bytes (Bit 0-7 in first byte).<BR>
-<TABLE><TR><TD><PRE>  Bit 0-4   Red Intensity   (00-1F)
-  Bit 5-9   Green Intensity (00-1F)
-  Bit 10-14 Blue Intensity  (00-1F)
-</TD></TR></TABLE>Much like VRAM, Data in Palette Memory cannot be read/written during the 
-time when the LCD Controller is reading from it. (That is when the STAT 
-register indicates Mode 3).<BR>
-Note: Initially all background colors are initialized as white.<BR>
+<B>FF69 - BCPD/BGPD - 仅限 CGB 模式 - 背景调色板数据<BR>
+</B>通过寄存器FF68寻址，该寄存器可读/写CGB的背景调色板存储。<BR>
+每种颜色由两个字节定义 (比特位 0-7 在第一个字节).<BR>
+<TABLE><TR><TD><PRE>  比特位 0-4   红色的强度   (00-1F)
+  比特位 5-9   绿色的强度 (00-1F)
+  比特位 10-14 蓝色的强度  (00-1F)
+</TD></TR></TABLE>和显存（VRAM）一样，当LCD控制器从中读取数据时，调色板存储中的数据不可读/写。(此时即STAT寄存器指示的模式3).<BR>
+注：在最开始，所有背景颜色都被初始化为白色。<BR>
 <BR>
 <B>FF6A - OCPS/OBPI - 仅 CGB 模式 - 活动块调色板索引<BR>
 FF6B - OCPD/OBPD - 仅 CGB 模式 - 活动块调色板数据<BR>
