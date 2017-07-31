@@ -228,35 +228,29 @@ LY寄存器可取0到153之间的任意数据。
 <BR>
 <B>FF4A - WY - 窗口 Y 位置 (读写)<BR>
 FF4B - WX - 窗口 X 位置 (值 = X 位置 + 7) (读写)<BR>
-</B>指定窗口区域的左上角坐标。（该窗口是另一个背景区域，并且可以显示在普通背景之上）。OBJs（精灵）依然可以显示在窗口之上或之下，就像普通背景那样。<BR>
+</B>指定窗口区域的左上角坐标。（该窗口是另一个背景区域，并且可以显示在普通背景之上）。就像和普通背景交互那样，OBJs（精灵）依然可以显示在窗口之上或之下。<BR>
 当坐标设置为WX=0..166，WY=0..143范围内时可以看见窗口。若在窗口左上角取坐标WX=7，WY=0，则它将完全覆盖普通背景。<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdmonochromepalettes"></A><FONT SIZE=+2>&nbsp;LCD 单色调色板</FONT></TD></TR></TABLE><BR>
 <B>FF47 - BGP - 背景调色板数据  (读写) - 仅非 CGB 模式<BR>
-</B>This register assigns gray shades to the color numbers of the BG and 
-Window tiles.<BR>
-<TABLE><TR><TD><PRE>  Bit 7-6 - Shade for Color Number 3
-  Bit 5-4 - Shade for Color Number 2
-  Bit 3-2 - Shade for Color Number 1
-  Bit 1-0 - Shade for Color Number 0
-</TD></TR></TABLE>The four possible gray shades are:<BR>
-<TABLE><TR><TD><PRE>  0  White
-  1  Light gray
-  2  Dark gray
-  3  Black
-</TD></TR></TABLE>In CGB Mode the Color Palettes are taken from CGB Palette Memory 
-instead.<BR>
+</B>该寄存器指派背景和窗口画片的颜色编号的灰度等级。<BR>
+<TABLE><TR><TD><PRE>  比特位 7-6 - 颜色编号3的灰度等级
+  比特位 5-4 - 颜色编号2的灰度等级
+  比特位 3-2 - 颜色编号1的灰度等级
+  比特位 1-0 - 颜色编号0的灰度等级
+</TD></TR></TABLE>四种可选的灰度等级是：<BR>
+<TABLE><TR><TD><PRE>  0  白色
+  1  浅灰
+  2  深灰
+  3  黑色
+</TD></TR></TABLE>在CGB模式中，颜色调色板则从CGB调色板存储中调用。<BR>
 <BR>
-<B>FF48 - OBP0 - 活动块调色板 0 数据 (读写) - 仅非 CGB 模式<BR>
-</B>This register assigns gray shades for sprite palette 0. It works exactly 
-as BGP (FF47), except that the lower two bits aren't used because sprite 
-data 00 is transparent.<BR>
+<B>FF48 - OBP0 - 活动块调色板 0 数据 (读写) - 仅限非 CGB 模式<BR>
+</B>该寄存器指定精灵调色板0的灰度等级。它用起来和背景调色板寄存器BGP（FF47）完全一样，除过没有使用最低的两个数据位。这是因为精灵数据00是透明色。<BR>
 <BR>
-<B>FF49 - OBP1 - 活动块调色板 1 数据 (读写) - 仅非 CGB 模式<BR>
-</B>This register assigns gray shades for sprite palette 1. It works exactly 
-as BGP (FF47), except that the lower two bits aren't used because sprite 
-data 00 is transparent.<BR>
+<B>FF49 - OBP1 - 活动块调色板 1 数据 (读写) - 仅限非 CGB 模式<BR>
+</B>该寄存器指定精灵调色板1的灰度等级。它用起来和背景调色板寄存器BGP（FF47）完全一样，除过没有使用最低的两个数据位。这是因为精灵数据00是透明色。<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdcolorpalettescgbonly"></A><FONT SIZE=+2>&nbsp;LCD 彩色调色板 (仅 CGB)</FONT></TD></TR></TABLE><BR>
