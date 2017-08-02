@@ -377,18 +377,10 @@ FF55 - HDMA5 - 仅 CGB 模式  - 新 DMA 长度/模式/启动<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="vrambackgroundmaps"></A><FONT SIZE=+2>&nbsp;VRAM BG Map</FONT></TD></TR></TABLE><BR>
-Gameboy 有两张 32x32 的图块BG Map (背景分布) 于 VRAM 地址 9800h-9BFFh 和 9C00h-9FFFh. 每张可以用于显示 "普通" 的背景, 也可以用于显示 "窗口" 背景.<BR>
+Gameboy 有两张 32x32 的图块 BG Map (背景分布) 于 VRAM 地址 9800h-9BFFh 和 9C00h-9FFFh. 每张可以用于显示 "普通" 的背景, 也可以用于显示 "窗口" 背景.<BR>
 <BR>
-<B>BG Map Tile Numbers<BR>
-</B>An area of VRAM known as Background Tile Map contains the numbers of 
-tiles to be displayed. It is organized as 32 rows of 32 bytes each. Each 
-byte contains a number of a tile to be displayed. Tile patterns are 
-taken from the Tile Data Table located either at $8000-8FFF or 
-$8800-97FF. In the first case, patterns are numbered with unsigned 
-numbers from 0 to 255 (i.e. pattern #0 lies at address $8000). In the 
-second case, patterns have signed numbers from -128 to 127 (i.e. pattern 
-#0 lies at address $9000). The Tile Data Table address for the 
-background can be selected via LCDC register.<BR>
+<B>BG Map 图块号<BR>
+</B>VRAM 中作为 BG 图块 Map 的区域包含用于显示的图块所对应的编号. 这个区域组成为 32 行, 每行 32 个字节. 每个字节包含一个用于显示的图块编号. 图块样式表从位于 $8000-8FFF 或者 $8800-97FF 的图块数据表中得来. 第一种情况 ($8000-8FFF), 图块样式表以从 0 到 255 的无符号数作为编号 (如, 样式 #0 位于地址 $8000). 第二种情况 ($8800-97FF), 样式表以 -128 到 127 的有符号数作为编号 (如, 样式 #0 位于地址 $9000). 用于背景的图块数据表地址可通过 LCDC 寄存器选择.<BR>
 <BR>
 <B>BG Map Attributes (CGB Mode only)<BR>
 </B>In CGB Mode, an additional map of 32x32 bytes is stored in VRAM Bank 1 
