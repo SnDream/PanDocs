@@ -24,7 +24,7 @@
 <A HREF="#cpucomparisionwithz80">CPU 与 Z80 的比较</A><BR>
 <BR>
 <B>卡带<BR>
-</B><A HREF="#thecartridgeheader">卡带头</A><BR>
+</B><A HREF="#thecartridgeheader">卡带头部</A><BR>
 <A HREF="#memorybankcontrollers">MBC (存储页面控制器)</A><BR>
 <A HREF="#gamegeniesharkcheats">Gamegenie/Shark 作弊</A><BR>
 <BR>
@@ -108,8 +108,8 @@ Gameboy 的地址总线宽度为16位, 用于 ROM 或 RAM 以及 I/O 寄存器�
   0040,0048,0050,0058,0060                  通过中断
 </TD></TR></TABLE>然而,在你的程序不使用任何或部分 RST 指令或者中断时, 你可以将这些内存另作他用. RST 是一个1字节的操作码, 除了目标地址是固定的之外, 与 CALL 操作码的工作方式相似.<BR>
 <BR>
-<B>ROM 首个 Bank 的卡带头<BR>
-</B>内存 0100-014F 为卡带头. 这个区域含有程序的信息, 程序的入口, 校验和, 所用 MBC 芯片的信息, ROM 和 RAM 的大小等等. 这个区域的大部分字节需要正确设定. 更多详情请阅读卡带头相关章节.<BR>
+<B>ROM 首个 Bank 的卡带头部<BR>
+</B>内存 0100-014F 为卡带头部. 这个区域含有程序的信息, 程序的入口, 校验和, 所用 MBC 芯片的信息, ROM 和 RAM 的大小等等. 这个区域的大部分字节需要正确设定. 更多详情请阅读卡带头部相关章节.<BR>
 <BR>
 <B>外部存储与硬件<BR>
 </B>内存 0000-7FFF 和 A000-BFFF 一般用于连接外部硬件. 第一个区域一般用于 ROM 寻址 (当然是只读的), 有着 MBC 的卡带会额外使用这个区域来输出数据 (只写) 到 MBC 芯片. 第二个区域一般用于外部 RAM 的寻址, 或者其他外部硬件的寻址 (实时时钟等). 外部 RAM 常常配有电池, 用于在 Gameboy 关机时或者卡带被拔出时仍能维持已记录下的游戏进度以及高分表之类的东西. 具体详情请阅读 MBC 相关章节.<BR>
@@ -2118,134 +2118,108 @@ up to a multiple of 4 cycles though.<BR>
 </TD></TR></TABLE>Note: The unused (-) opcodes will lock-up the gameboy CPU when used.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="thecartridgeheader"></A><FONT SIZE=+2>&nbsp;The Cartridge Header</FONT></TD></TR></TABLE><BR>
-An internal information area is located at 0100-014F in<BR>
-each cartridge. It contains the following values:<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="thecartridgeheader"></A><FONT SIZE=+2>&nbsp;卡带头部</FONT></TD></TR></TABLE><BR>
+一个内置的信息区位于每个卡带的 0100-014F.<BR>
+它含有以下内容:<BR>
 <BR>
-<B>0100-0103 - Entry Point<BR>
-</B>After displaying the Nintendo Logo, the built-in boot procedure jumps to 
-this address (100h), which should then jump to the actual main program 
-in the cartridge. Usually this 4 byte area contains a NOP instruction, 
-followed by a JP 0150h instruction. But not always.<BR>
+<B>0100-0103 - 入口<BR>
+</B>在显示完任天堂标志后, 内建的启动程序跳转到这个地址 (100h), 这里应跳转到卡带实际的主程序. 一般这个 4 字节的区域含有一个 NOP 指令, 然后跟着一个 JP 0150h 指令. 但这不是绝对的.<BR>
 <BR>
-<B>0104-0133 - Nintendo Logo<BR>
-</B>These bytes define the bitmap of the Nintendo logo that is displayed 
-when the gameboy gets turned on. The hexdump of this bitmap is:<BR>
+<B>0104-0133 - 任天堂标志<BR>
+</B>这些字节定义了 Gameboy 开机时显示的任天堂标志的位图. 这个位图的十六位数据是:<BR>
 <TABLE><TR><TD><PRE>  CE ED 66 66 CC 0D 00 0B 03 73 00 83 00 0C 00 0D
   00 08 11 1F 88 89 00 0E DC CC 6E E6 DD DD D9 99
   BB BB 67 63 6E 0E EC CC DD DC 99 9F BB B9 33 3E
-</TD></TR></TABLE>The gameboys boot procedure verifies the content of this bitmap (after 
-it has displayed it), and LOCKS ITSELF UP if these bytes are incorrect. 
-A CGB verifies only the first 18h bytes of the bitmap, but others (for 
-example a pocket gameboy) verify all 30h bytes.<BR>
+</TD></TR></TABLE>Gameboy 启动程序在显示这张位图后将验证其中的内容, 如果这些字节不匹配, Gameboy 将自锁. CGB 只验证位图的前 18h 个字节, 但是其他设备 (比如 Pocket Gameboy) 验证全部 30h 字节.<BR>
 <BR>
-<B>0134-0143 - Title<BR>
-</B>Title of the game in UPPER CASE ASCII. If it is less than 16 characters 
-then the remaining bytes are filled with 00's. When inventing the CGB, 
-Nintendo has reduced the length of this area to 15 characters, and some 
-months later they had the fantastic idea to reduce it to 11 characters 
-only. The new meaning of the ex-title bytes is described below.<BR>
+<B>0134-0143 - 标题<BR>
+</B>大写 ASCII 的游戏标题. 如果标题少于 16 个字节, 剩余的字节填入 00. CGB 出现后, 任天堂减少了这个区域到 15 个字节. 再过了几个月后他们一个荒唐的主意让这个区域只剩 11 个字节. 这些原本是标题字节的新定义见下述.<BR>
 <BR>
-<B>013F-0142 - Manufacturer Code<BR>
-</B>In older cartridges this area has been part of the Title (see above), in 
-newer cartridges this area contains an 4 character uppercase 
-manufacturer code. Purpose and Deeper Meaning unknown.<BR>
+<B>013F-0142 - 生产商代码<BR>
+</B>早期卡带这个区域是标题的一部分 (见上), 在较新的卡带中这个区域包含以 4 个大写字母组成的生产商代码. 缘由未知.<BR>
 <BR>
-<B>0143 - CGB Flag<BR>
-</B>In older cartridges this byte has been part of the Title (see above). In 
-CGB cartridges the upper bit is used to enable CGB functions. This is 
-required, otherwise the CGB switches itself into Non-CGB-Mode. Typical 
-values are:<BR>
-<TABLE><TR><TD><PRE>  80h - Game supports CGB functions, but works on old gameboys also.
-  C0h - Game works on CGB only (physically the same as 80h).
-</TD></TR></TABLE>Values with Bit 7 set, and either Bit 2 or 3 set, will switch the 
-gameboy into a special non-CGB-mode with uninitialized palettes. Purpose 
-unknown, eventually this has been supposed to be used to colorize 
-monochrome games that include fixed palette data at a special location 
-in ROM.<BR>
+<B>0143 - CGB 标志<BR>
+</B>早期卡带这个字节是标题的一部分 (见上). 在 CGB 卡带中最高位被用于启用 CGB 功能. 这个位为 CGB 所需, 否则 CGB 将切换自己为非 CGB 模式. 典型值为:<BR>
+<TABLE><TR><TD><PRE>  80h - 游戏支持 CGB 功能, 但是也能在旧 Gameboy 上运行.
+  C0h - 游戏只在 CGB 上运行. (硬件上与 80h 相同).
+</TD></TR></TABLE>设置值的 Bit 7, 以及 Bit 2 或者 3 被设置, 将切换 Gameboy 到一个有着未初始化调色板的特殊非 CGB 模式. 原因未知, 大概是用于彩色化在 ROM 的特殊位置带有固定调色板数据的单色游戏.<BR>
 <BR>
-<B>0144-0145 - New Licensee Code<BR>
-</B>Specifies a two character ASCII licensee code, indicating the company or 
-publisher of the game. These two bytes are used in newer games only 
-(games that have been released after the SGB has been invented). Older 
-games are using the header entry at 014B instead.<BR>
+<B>0144-0145 - 新授权代码<BR>
+</B>指定以两个 ASCII 字符组成的授权代码, 包含公司或游戏的发行商. 这两个字节只用于较新的游戏 (在 SGB 出现后所发行的游戏). 较旧的游戏使用头部项 014B.<BR>
 <BR>
-<B>0146 - SGB Flag<BR>
-</B>Specifies whether the game supports SGB functions, common values are:<BR>
-<TABLE><TR><TD><PRE>  00h = No SGB functions (Normal Gameboy or CGB only game)
-  03h = Game supports SGB functions
-</TD></TR></TABLE>The SGB disables its SGB functions if this byte is set to another value 
-than 03h.<BR>
+<B>0146 - SGB 标志<BR>
+</B>指定游戏是否支持 SGB 功能, 常见的值为:<BR>
+<TABLE><TR><TD><PRE>  00h = 无 SGB 功能 (普通 Gameboy 或者 CGB 专用游戏)
+  03h = 游戏支持 SGB 功能
+</TD></TR></TABLE>如果这个字节不是 03h, SGB 将关闭 SGB 功能.<BR>
 <BR>
-<B>0147 - Cartridge Type<BR>
-</B>Specifies which Memory Bank Controller (if any) is used in the 
-cartridge, and if further external hardware exists in the cartridge.<BR>
-<TABLE><TR><TD><PRE>  00h  ROM ONLY                 13h  MBC3+RAM+BATTERY
-  01h  MBC1                     15h  MBC4
-  02h  MBC1+RAM                 16h  MBC4+RAM
-  03h  MBC1+RAM+BATTERY         17h  MBC4+RAM+BATTERY
-  05h  MBC2                     19h  MBC5
-  06h  MBC2+BATTERY             1Ah  MBC5+RAM
-  08h  ROM+RAM                  1Bh  MBC5+RAM+BATTERY
-  09h  ROM+RAM+BATTERY          1Ch  MBC5+RUMBLE
-  0Bh  MMM01                    1Dh  MBC5+RUMBLE+RAM
-  0Ch  MMM01+RAM                1Eh  MBC5+RUMBLE+RAM+BATTERY
-  0Dh  MMM01+RAM+BATTERY        FCh  POCKET CAMERA
-  0Fh  MBC3+TIMER+BATTERY       FDh  BANDAI TAMA5
-  10h  MBC3+TIMER+RAM+BATTERY   FEh  HuC3
-  11h  MBC3                     FFh  HuC1+RAM+BATTERY
+<B>0147 - 卡带类型<BR>
+</B>指定卡带使用哪种 MBC (内存页面控制器) (如果有的话), 以及是否有外部硬件存在于卡带之内.<BR>
+<TABLE><TR><TD><PRE>  00h  只有 ROM                 19h  MBC5
+  01h  MBC1                     1Ah  MBC5+RAM
+  02h  MBC1+RAM                 1Bh  MBC5+RAM+电池
+  03h  MBC1+RAM+电池            1Ch  MBC5+震动
+                                1Dh  MBC5+震动+RAM
+  05h  MBC2                     1Eh  MBC5+震动+RAM+电池
+  06h  MBC2+电池
+                                20h  MBC6+FLASH+RAM+电池
+  08h  ROM+RAM
+  09h  ROM+RAM+电池             22h  MBC7+加速度传感器+震动+RAM+电池
+       
+  0Bh  MMM01                    FCh  口袋照相机
+  0Ch  MMM01+RAM                FDh  万代拓麻歌子5
+  0Dh  MMM01+RAM+电池           FEh  HuC3
+                                FFh  HuC1+RAM+电池
+  0Fh  MBC3+实时时钟+电池
+  10h  MBC3+实时时钟+RAM+电池   
+  11h  MBC3
   12h  MBC3+RAM
+  13h  MBC3+RAM+电池
 </TD></TR></TABLE><BR>
-<B>0148 - ROM Size<BR>
-</B>Specifies the ROM Size of the cartridge. Typically calculated as "32KB 
-shl N".<BR>
-<TABLE><TR><TD><PRE>  00h -  32KByte (no ROM banking)
-  01h -  64KByte (4 banks)
-  02h - 128KByte (8 banks)
-  03h - 256KByte (16 banks)
-  04h - 512KByte (32 banks)
-  05h -   1MByte (64 banks)  - only 63 banks used by MBC1
-  06h -   2MByte (128 banks) - only 125 banks used by MBC1
-  07h -   4MByte (256 banks)
-  52h - 1.1MByte (72 banks)
-  53h - 1.2MByte (80 banks)
-  54h - 1.5MByte (96 banks)
+<B>0148 - ROM 大小<BR>
+</B>指定卡带上 ROM 的大小. 通常计算方法是 "32KB shl N (32KB 乘 2 的 N 次方)".<BR>
+<TABLE><TR><TD><PRE>  00h -  32K 字节 (ROM 没有分 Bank)
+  01h -  64K 字节 (  4 个 Bank)
+  02h - 128K 字节 (  8 个 Bank)
+  03h - 256K 字节 ( 16 个 Bank)
+  04h - 512K 字节 ( 32 个 Bank)
+  05h -   1M 字节 ( 64 个 Bank) - MBC1 仅使用其中  63 个 Bank
+  06h -   2M 字节 (128 个 Bank) - MBC1 仅使用其中 125 个 Bank
+  07h -   4M 字节 (256 个 Bank)
+  52h - 1.1M 字节 ( 72 个 Bank)
+  53h - 1.2M 字节 ( 80 个 Bank)
+  54h - 1.5M 字节 ( 96 个 Bank)
 </TD></TR></TABLE><BR>
-<B>0149 - RAM Size<BR>
-</B>Specifies the size of the external RAM in the cartridge (if any).<BR>
-<TABLE><TR><TD><PRE>  00h - None
-  01h - 2 KBytes
-  02h - 8 Kbytes
-  03h - 32 KBytes (4 banks of 8KBytes each)
-</TD></TR></TABLE>When using a MBC2 chip 00h must be specified in this entry, even though 
-the MBC2 includes a built-in RAM of 512 x 4 bits.<BR>
+<B>0149 - RAM 大小<BR>
+</B>指定卡带上外部 RAM 的大小 (如果有的话).<BR>
+<TABLE><TR><TD><PRE>  00h -   0K 无
+  01h -   2K 字节
+  02h -   8K 字节
+  03h -  32K 字节 ( 4 个 Bank, 每个 Bank 8K 字节)
+  04h - 128K 字节 (16 个 Bank, 每个 Bank 8K 字节)
+  05h -  64K 字节 ( 8 个 Bank, 每个 Bank 8K 字节)
+</TD></TR></TABLE>使用 MBC2 芯片时, 此项指定为 00h, 虽然 MBC2 含有内建的 512 x 4 位 RAM.<BR>
 <BR>
-<B>014A - Destination Code<BR>
-</B>Specifies if this version of the game is supposed to be sold in japan, 
-or anywhere else. Only two values are defined.<BR>
-<TABLE><TR><TD><PRE>  00h - Japanese
-  01h - Non-Japanese
+<B>014A - 区域代码<BR>
+</B>指定此版本游戏将要在日本或其他区域发售. 只有定义了两个值.<BR>
+<TABLE><TR><TD><PRE>  00h - 日版
+  01h - 非日版
 </TD></TR></TABLE><BR>
-<B>014B - Old Licensee Code<BR>
-</B>Specifies the games company/publisher code in range 00-FFh. A value of 
-33h signalizes that the New License Code in header bytes 0144-0145 is 
-used instead.<BR>
-(Super GameBoy functions won't work if &lt;&gt; $33.)<BR>
+<B>014B - 旧授权代码<BR>
+</B>指定游戏公司/开发商代码, 范围 00-FFh. 值 33h 表示使用在头部字节 0144-0145 的新授权代码代替.<BR>
+(Super GameBoy 功能在这个值不等于 $33 时不启用.)<BR>
 <BR>
-<B>014C - Mask ROM Version number<BR>
-</B>Specifies the version number of the game. That is usually 00h.<BR>
+<B>014C - 掩模 ROM 版本号<BR>
+</B>指定游戏的版本号. 一般是 00h.<BR>
 <BR>
-<B>014D - Header Checksum<BR>
-</B>Contains an 8 bit checksum across the cartridge header bytes 0134-014C. 
-The checksum is calculated as follows:<BR>
+<B>014D - 头部校验和<BR>
+</B>含有对卡带头部字节 0134-014C 的 8 位校验和.
+校验和按如下方式计算:<BR>
 <TABLE><TR><TD><PRE>  x=0:FOR i=0134h TO 014Ch:x=x-MEM[i]-1:NEXT
-</TD></TR></TABLE>The lower 8 bits of the result must be the same than the value in this 
-entry. The GAME WON'T WORK if this checksum is incorrect.<BR>
+</TD></TR></TABLE>结果的低八位需要和这个值一样. 如果这个校验和不正确, 游戏将无法运行.<BR>
 <BR>
-<B>014E-014F - Global Checksum<BR>
-</B>Contains a 16 bit checksum (upper byte first) across the whole cartridge 
-ROM. Produced by adding all bytes of the cartridge (except for the two 
-checksum bytes). The Gameboy doesn't verify this checksum.<BR>
+<B>014E-014F - 全局校验和<BR>
+</B>含有一个对整个卡带 ROM 的 16 位校验和 (高位字节在前, 即大端序). 通过计算卡带所有字节的和 (除了这两个校验字节) 得到. Gameboy 不会验证这个校验和.<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="memorybankcontrollers"></A><FONT SIZE=+2>&nbsp;Memory Bank Controllers</FONT></TD></TR></TABLE><BR>
