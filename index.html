@@ -382,42 +382,25 @@ Gameboy 有两张 32x32 的图块 BG Map (背景分布) 于 VRAM 地址 9800h-9B
 <B>BG Map 图块号<BR>
 </B>VRAM 中作为 BG 图块 Map 的区域包含用于显示的图块所对应的编号. 这个区域组成为 32 行, 每行 32 个字节. 每个字节包含一个用于显示的图块编号. 图块样式表从位于 $8000-8FFF 或者 $8800-97FF 的图块数据表中得来. 第一种情况 ($8000-8FFF), 图块样式表以从 0 到 255 的无符号数作为编号 (如, 样式 #0 位于地址 $8000). 第二种情况 ($8800-97FF), 样式表以 -128 到 127 的有符号数作为编号 (如, 样式 #0 位于地址 $9000). 用于背景的图块数据表地址可通过 LCDC 寄存器选择.<BR>
 <BR>
-<B>BG Map Attributes (CGB Mode only)<BR>
-</B>In CGB Mode, an additional map of 32x32 bytes is stored in VRAM Bank 1 
-(each byte defines attributes for the corresponding tile-number map 
-entry in VRAM Bank 0):<BR>
-<TABLE><TR><TD><PRE>  Bit 0-2  Background Palette number  (BGP0-7)
-  Bit 3    Tile VRAM Bank number      (0=Bank 0, 1=Bank 1)
-  Bit 4    Not used
-  Bit 5    Horizontal Flip            (0=Normal, 1=Mirror horizontally)
-  Bit 6    Vertical Flip              (0=Normal, 1=Mirror vertically)
-  Bit 7    BG-to-OAM Priority         (0=Use OAM priority bit, 1=BG Priority)
-</TD></TR></TABLE>When Bit 7 is set, the corresponding BG tile will have priority above 
-all OBJs (regardless of the priority bits in OAM memory). There's also 
-an Master Priority flag in LCDC register Bit 0 which overrides all other 
-priority bits when cleared.<BR>
+<B>BG Map 属性 (仅 CGB 模式)<BR>
+</B>在 CGB 模式中, 有一张附加的存于 VRAM Bank 1 的 32x32 字节 Map (每个字节一一对应 VRAM Bank 0 中的 BG 图块 Map, 用于定义图块属性):<BR>
+<TABLE><TR><TD><PRE>  Bit 0-2  背景调色板编号           (BGP0-7)
+  Bit 3    图块 VRAM Bank 号        (0=Bank 0, 1=Bank 1)
+  Bit 4    不使用
+  Bit 5    水平翻转                 (0=普通, 1=水平翻转)
+  Bit 6    垂直翻转                 (0=普通, 1=垂直翻转)
+  Bit 7    BG 与 OAM 优先级         (0=根据 OAM 优先位, 1=BG 优先)
+</TD></TR></TABLE>当 Bit 7 处于设置时, 对应的 BG 图块将有高于所有活动块的优先度 (忽略 OAM 存储中所设的优先位). 另外, 在 LCDC 寄存器的 Bit 0 是主优先标志, 这个标志处于清除时, 标志的优先级位于其他所有优先度设置之上.<BR>
 <BR>
-As one background tile has a size of 8x8 pixels, the BG maps may hold a 
-picture of 256x256 pixels, an area of 160x144 pixels of this picture can 
-be displayed on the LCD screen.<BR>
+因为一个背景图块的大小是 8x8 像素, 所以一张 BG Map 能表示一张 256x256 像素的图像, 这张图像中的 160x144 可以被显示在 LCD 屏幕上.<BR>
 <BR>
-<B>Normal Background (BG)<BR>
-</B>The SCY and SCX registers can be used to scroll the background, allowing 
-to select the origin of the visible 160x144 pixel area within the total 
-256x256 pixel background map. Background wraps around the screen (i.e. 
-when part of it goes off the screen, it appears on the opposite side.)<BR>
+<B>普通背景 (BG)<BR>
+</B>SCY 和 SCX 寄存器可用于滚动背景, 允许在整张 256x256 像素的 BG Map 中选择可见的 160x144 像素区域的来源. 背景在屏幕上环绕 (如, 当背景的一部分穿出了屏幕, 这一部分将显示背景另一侧的内容.)<BR>
 <BR>
-<B>The Window<BR>
-</B>Besides background, there is also a "window" overlaying the background. 
-The window is not scrollable i.e. it is always displayed starting from 
-its left upper corner. The location of a window on the screen can be 
-adjusted via WX and WY registers. Screen coordinates of the top left 
-corner of a window are WX-7,WY. The tiles for the window are stored in 
-the Tile Data Table. Both the Background and the window share the same 
-Tile Data Table.<BR>
+<B>窗口<BR>
+</B>除了背景, 还有一个 "窗口" 叠放与背景层之上. 这个窗口是不可滚动的, 总是从 (Map 的) 左上角开始显示. 窗口在屏幕上的位置可以通过 WX 和 WY 寄存器调节. 窗口左上角在屏幕的坐标是 WX-7,WY. 用于窗口的图块存于图块数据表. 背景和窗口始终使用统一张图块数据表.<BR>
 <BR>
-Both background and window can be disabled or enabled separately via 
-bits in the LCDC register.<BR>
+背景和窗口两者都可以各自独立通过 LCDC 寄存器中对应的位来开启或关闭.<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="vramspriteattributetableoam"></A><FONT SIZE=+2>&nbsp;VRAM Sprite Attribute Table (OAM)</FONT></TD></TR></TABLE><BR>
@@ -483,62 +466,40 @@ V-Blank periods. The current state of the LCD controller can be read out
 from the STAT register (FF41).<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="accessingvramandoam"></A><FONT SIZE=+2>&nbsp;Accessing VRAM and OAM</FONT></TD></TR></TABLE><BR>
-<B>CAUTION<BR>
-</B>When the LCD Controller is drawing the screen it is directly reading 
-from Video Memory (VRAM) and from the Sprite Attribute Table (OAM). 
-During these periods the Gameboy CPU may not access the VRAM and OAM. 
-That means, any attempts to write to VRAM/OAM are ignored (the data 
-remains unchanged). And any attempts to read from VRAM/OAM will return 
-undefined data (typically a value of FFh).<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="accessingvramandoam"></A><FONT SIZE=+2>&nbsp;访问 VRAM 和 OAM</FONT></TD></TR></TABLE><BR>
+<B>警告<BR>
+</B>当 LCD 控制器绘制屏幕时, 它将直接读取视频存储 (VRAM) 和 OAM. 在这个时期内 Gameboy CPU 不可访问 VRAM 和 OAM. 在这时, 任何对 VRAM/OAM 的写入尝试将被忽略 (数据保持不变). 任何对 VRAM/OAM 的读取尝试将返回未定义数据 (一般来说是值 0FFh).<BR>
 <BR>
-For this reason the program should verify if VRAM/OAM is accessable 
-before actually reading or writing to it. This is usually done by 
-reading the Mode Bits from the STAT Register (FF41). When doing this (as 
-described in the examples below) you should take care that no interrupts 
-occur between the wait loops and the following memory access - the 
-memory is guaranted to be accessable only for a few cycles directly 
-after the wait loops have completed.<BR>
+因为如此, 程序需要在写入或读取 VRAM/OAM 之前确认它们能否访问. 一般是通过读取 STAT 寄存器的模式位来确认的. 在做这个确认步骤时 (在下面的例子中说明) 你需要确认在等待循环和接下来的内存访问之间没有中断产生 - 对应的存储只在等待循环完成后的几个周期内能确保被访问.<BR>
 <BR>
-<B>VRAM (memory at 8000h-9FFFh) is accessable during Mode 0-2<BR>
-</B><TABLE><TR><TD><PRE>  Mode 0 - H-Blank Period,
-  Mode 1 - V-Blank Period, and
-  Mode 2 - Searching OAM Period
-</TD></TR></TABLE>A typical procedure that waits for accessibility of VRAM would be:<BR>
-<TABLE><TR><TD><PRE>  ld   hl,0FF41h    ;-STAT Register
+<B>VRAM (内存位于 8000h-9FFFh) 可以在模式 0-2 之间访问<BR>
+</B><TABLE><TR><TD><PRE>  Mode 0 - H-Blank 时期
+  Mode 1 - V-Blank 时期
+  Mode 2 - 检索 OAM 时期
+</TD></TR></TABLE>一个等待 VRAM 可访问的典型程序可以是:<BR>
+<TABLE><TR><TD><PRE>  ld   hl,0FF41h    ;-STAT 寄存器
  @@wait:            ;\
-  bit  1,(hl)       ; Wait until Mode is 0 or 1
+  bit  1,(hl)       ; 等待直到模式为 0 或 1
   jr   nz,@@wait    ;/
-</TD></TR></TABLE>Even if the procedure gets executed at the &lt;end&gt; of Mode 0 or 1, it is 
-still proof to assume that VRAM can be accessed for a few more cycles 
-because in either case the following period is Mode 2 which allows 
-access to VRAM either.<BR>
-In CGB Mode an alternate method to write data to VRAM is to use the HDMA 
-Function (FF51-FF55).<BR>
+</TD></TR></TABLE>就算程序在模式 0 或 1 的 &lt;结尾&gt; 执行, 因为这两种模式后面跟随着同样允许访问 VRAM 的模式 2 ,依旧能够推定此时 VRAM 仍有一些周期可以访问.<BR>
+在 CGB 模式下, 一种写入 VRAM 的替代方式是使用 HDMA 功能 (FF51-FF55).<BR>
 <BR>
-<B>OAM (memory at FE00h-FE9Fh) is accessable during Mode 0-1<BR>
-</B><TABLE><TR><TD><PRE>  Mode 0 - H-Blank Period, and
-  Mode 1 - V-Blank Period
-</TD></TR></TABLE>Beside for that, OAM can be accessed at any time by using the DMA 
-Function (FF46). When directly reading or writing to OAM, a typical 
-procedure that waits for accessibilty or OAM Memory would be:<BR>
-<TABLE><TR><TD><PRE>  ld   hl,0FF41h    ;-STAT Register
+<B>OAM (内存位于 FE00h-FE9Fh) 可以在模式 0-1 之间访问<BR>
+</B><TABLE><TR><TD><PRE>  Mode 0 - H-Blank 时期
+  Mode 1 - V-Blank 时期
+</TD></TR></TABLE>
+除了这个方式之外, OAM 可以通过 DMA 功能 (FF46) 在任意时刻访问. 直接读写 OAM 时, 一个等待 OAM 存储可访问的典型程序可以是:<BR>
+<TABLE><TR><TD><PRE>  ld   hl,0FF41h    ;-STAT 寄存器
  @@wait1:           ;\
-  bit  1,(hl)       ; Wait until Mode is -NOT- 0 or 1
+  bit  1,(hl)       ; 等待直到模式 -不为- 0 或 1
   jr   z,@@wait1    ;/
  @@wait2:           ;\
-  bit  1,(hl)       ; Wait until Mode 0 or 1 -BEGINS-
+  bit  1,(hl)       ; 等待直到模式 0 或 1 -开始-
   jr   nz,@@wait2   ;/
-</TD></TR></TABLE>The two wait loops ensure that Mode 0 or 1 will last for a few clock 
-cycles after completion of the procedure. In V-Blank period it might be 
-recommended to skip the whole procedure - and in most cases using the 
-above mentioned DMA function would be more recommended anyways.<BR>
+</TD></TR></TABLE>两个等待循环确保在程序完成后能维持在模式 0 或 1 中几个周期. 在 V-Blank 时期推荐跳过整个程序 - 同时更推荐在大部分情况下使用前面提到的 DMA 功能.<BR>
 <BR>
-<B>Note<BR>
-</B>When the display is disabled, both VRAM and OAM are accessable at any 
-time. The downside is that the screen is blank (white) during this 
-period, so that disabling the display would be recommended only during 
-initialization.<BR>
+<B>备注<BR>
+</B>当显示关闭时, VRAM 和 OAM 都可以在任意时刻访问. 这样的缺点是屏幕在这个时期显示空白, 所以只推荐在初始化时关闭显示.<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundcontroller"></A><FONT SIZE=+2>&nbsp;Sound Controller</FONT></TD></TR></TABLE><BR>
