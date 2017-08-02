@@ -213,108 +213,74 @@ STAT 的低两位表示当前 LCD 控制器的状态.<BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdpositionandscrolling"></A><FONT SIZE=+2>&nbsp;LCD 位置与卷轴</FONT></TD></TR></TABLE><BR>
 <B>FF42 - SCY - 卷轴 Y   (读写)<BR>
 FF43 - SCX - 卷轴 X   (读写)<BR>
-</B>Specifies the position in the 256x256 pixels BG map (32x32 tiles) which 
-is to be displayed at the upper/left LCD display position.<BR>
-Values in range from 0-255 may be used for X/Y each, the video 
-controller automatically wraps back to the upper (left) position in BG 
-map when drawing exceeds the lower (right) border of the BG map area.<BR>
+</B>指定LCD屏幕左上角在在背景映射表（大小256x256像素，即32x32画片）中的位置<BR>
+X/Y的可选数值范围是0-255。当绘图操作超出背景映射表的下边界（右边界）时，视频控制器会自动回程到背景映射表的上部（左部）。<BR>
 <BR>
-<B>FF44 - LY - LCDC Y 坐标 (只读)<BR>
-</B>The LY indicates the vertical line to which the present data is 
-transferred to the LCD Driver. The LY can take on any value between 0 
-through 153. The values between 144 and 153 indicate the V-Blank period. 
-Writing will reset the counter.<BR>
+<B>FF44 - LY - LCDC Y 坐标 (只读)（译注：视频控制器纵坐标寄存器）<BR>
+</B>LY寄存器指明当前被传输到LCD驱动器的数据是哪一行。
+LY寄存器可取0到153之间的任意数据。
+当数据为144到153之间时，表明在纵向回程周期（V-Blank，译注：电子束扫描线在扫描完毕并准备生成新一帧时，必须回到起点，这段时间即纵向回程周期。液晶显示的Gameboy从NES继承了该显示机制，尽管液晶屏并不需要）
+写操作将重置计数器。<BR>
 <BR>
 <B>FF45 - LYC - LY 比较  (读写)<BR>
-</B>The gameboy permanently compares the value of the LYC and LY registers. 
-When both values are identical, the coincident bit in the STAT register 
-becomes set, and (if enabled) a STAT interrupt is requested.<BR>
+</B>Gameboy会一直比较LYC寄存器和LY寄存器的值。当二者值相同时，STAT寄存器的冲突位会被置1，并发起STAT中断请求（若启用）。
+<BR>
 <BR>
 <B>FF4A - WY - 窗口 Y 位置 (读写)<BR>
 FF4B - WX - 窗口 X 位置 (值 = X 位置 + 7) (读写)<BR>
-</B>Specifies the upper/left positions of the Window area. (The window is an 
-alternate background area which can be displayed above of the normal 
-background. OBJs (sprites) may be still displayed above or behinf the 
-window, just as for normal BG.)<BR>
-The window becomes visible (if enabled) when positions are set in range 
-WX=0..166, WY=0..143. A postion of WX=7, WY=0 locates the window at 
-upper left, it is then completly covering normal background.<BR>
+</B>指定窗口区域的左上角坐标。（该窗口是另一个背景区域，并且可以显示在普通背景之上）。就像和普通背景交互那样，OBJs（精灵）依然可以显示在窗口之上或之下。<BR>
+当坐标设置为WX=0..166，WY=0..143范围内时可以看见窗口。若在窗口左上角取坐标WX=7，WY=0，则它将完全覆盖普通背景。<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdmonochromepalettes"></A><FONT SIZE=+2>&nbsp;LCD 单色调色板</FONT></TD></TR></TABLE><BR>
 <B>FF47 - BGP - 背景调色板数据  (读写) - 仅非 CGB 模式<BR>
-</B>This register assigns gray shades to the color numbers of the BG and 
-Window tiles.<BR>
-<TABLE><TR><TD><PRE>  Bit 7-6 - Shade for Color Number 3
-  Bit 5-4 - Shade for Color Number 2
-  Bit 3-2 - Shade for Color Number 1
-  Bit 1-0 - Shade for Color Number 0
-</TD></TR></TABLE>The four possible gray shades are:<BR>
-<TABLE><TR><TD><PRE>  0  White
-  1  Light gray
-  2  Dark gray
-  3  Black
-</TD></TR></TABLE>In CGB Mode the Color Palettes are taken from CGB Palette Memory 
-instead.<BR>
+</B>该寄存器指派背景和窗口画片的颜色编号的灰度等级。<BR>
+<TABLE><TR><TD><PRE>  比特位 7-6 - 颜色编号3的灰度等级
+  比特位 5-4 - 颜色编号2的灰度等级
+  比特位 3-2 - 颜色编号1的灰度等级
+  比特位 1-0 - 颜色编号0的灰度等级
+</TD></TR></TABLE>四种可选的灰度等级是：<BR>
+<TABLE><TR><TD><PRE>  0  白色
+  1  浅灰
+  2  深灰
+  3  黑色
+</TD></TR></TABLE>在CGB模式中，颜色调色板则从CGB调色板存储中调用。<BR>
 <BR>
-<B>FF48 - OBP0 - 活动块调色板 0 数据 (读写) - 仅非 CGB 模式<BR>
-</B>This register assigns gray shades for sprite palette 0. It works exactly 
-as BGP (FF47), except that the lower two bits aren't used because sprite 
-data 00 is transparent.<BR>
+<B>FF48 - OBP0 - 活动块调色板 0 数据 (读写) - 仅限非 CGB 模式<BR>
+</B>该寄存器指定精灵调色板0的灰度等级。它用起来和背景调色板寄存器BGP（FF47）完全一样，除过没有使用最低的两个数据位。这是因为精灵数据00是透明色。<BR>
 <BR>
-<B>FF49 - OBP1 - 活动块调色板 1 数据 (读写) - 仅非 CGB 模式<BR>
-</B>This register assigns gray shades for sprite palette 1. It works exactly 
-as BGP (FF47), except that the lower two bits aren't used because sprite 
-data 00 is transparent.<BR>
+<B>FF49 - OBP1 - 活动块调色板 1 数据 (读写) - 仅限非 CGB 模式<BR>
+</B>该寄存器指定精灵调色板1的灰度等级。它用起来和背景调色板寄存器BGP（FF47）完全一样，除过没有使用最低的两个数据位。这是因为精灵数据00是透明色。<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdcolorpalettescgbonly"></A><FONT SIZE=+2>&nbsp;LCD 彩色调色板 (仅 CGB)</FONT></TD></TR></TABLE><BR>
 <B>FF68 - BCPS/BGPI - 仅 CGB 模式 - 背景调色板索引<BR>
-</B>This register is used to address a byte in the CGBs Background Palette 
-Memory. Each two byte in that memory define a color value. The first 8 
-bytes define Color 0-3 of Palette 0 (BGP0), and so on for BGP1-7.<BR>
-<TABLE><TR><TD><PRE>  Bit 0-5   Index (00-3F)
-  Bit 7     Auto Increment  (0=Disabled, 1=Increment after Writing)
-</TD></TR></TABLE>Data can be read/written to/from the specified index address through 
-Register FF69. When the Auto Increment Bit is set then the index is 
-automatically incremented after each &lt;write&gt; to FF69. Auto Increment has 
-no effect when &lt;reading&gt; from FF69, so the index must be manually 
-incremented in that case.<BR>
+</B>该寄存器用来寻址CGB的背景调色板存储的一个字节。该存储中每两个字节定义一个颜色的值。前8个字节定义了调色板0（BGP0）的颜色0-3，BGP1-7以此类推。<BR>
+<TABLE><TR><TD><PRE>  比特位 0-5   索引 (00-3F)
+  比特位 7     自动递增  (0=禁用， 1=写操作后递增)
+</TD></TR></TABLE>通过寄存器FF69，可以读取/写入指定的索引地址。当自动递增位被启用，那么每次&lt;写入&gt;FF69之后索引都会自动递增。而从FF69&lt;读取&gt;数据不会启用自动递增，因此在这种情况下需要手动递增索引。<BR>
 <BR>
-<B>FF69 - BCPD/BGPD - 仅 CGB 模式 - 背景调色板数据<BR>
-</B>This register allows to read/write data to the CGBs Background Palette 
-Memory, addressed through Register FF68.<BR>
-Each color is defined by two bytes (Bit 0-7 in first byte).<BR>
-<TABLE><TR><TD><PRE>  Bit 0-4   Red Intensity   (00-1F)
-  Bit 5-9   Green Intensity (00-1F)
-  Bit 10-14 Blue Intensity  (00-1F)
-</TD></TR></TABLE>Much like VRAM, Data in Palette Memory cannot be read/written during the 
-time when the LCD Controller is reading from it. (That is when the STAT 
-register indicates Mode 3).<BR>
-Note: Initially all background colors are initialized as white.<BR>
+<B>FF69 - BCPD/BGPD - 仅限 CGB 模式 - 背景调色板数据<BR>
+</B>通过寄存器FF68寻址，该寄存器可读/写CGB的背景调色板存储。<BR>
+每种颜色由两个字节定义 (比特位 0-7 在第一个字节).<BR>
+<TABLE><TR><TD><PRE>  比特位 0-4   红色的强度   (00-1F)
+  比特位 5-9   绿色的强度 (00-1F)
+  比特位 10-14 蓝色的强度  (00-1F)
+</TD></TR></TABLE>和显存（VRAM）一样，当LCD控制器从中读取数据时，调色板存储中的数据不可读/写。(此时即STAT寄存器指示的模式3).<BR>
+注：在最开始，所有背景颜色都被初始化为白色。<BR>
 <BR>
-<B>FF6A - OCPS/OBPI - 仅 CGB 模式 - 活动块调色板索引<BR>
-FF6B - OCPD/OBPD - 仅 CGB 模式 - 活动块调色板数据<BR>
-</B>These registers are used to initialize the Sprite Palettes OBP0-7, 
-identically as described above for Background Palettes. Note that four 
-colors may be defined for each OBP Palettes - but only Color 1-3 of each 
-Sprite Palette can be displayed, Color 0 is always transparent, and can 
-be initialized to a don't care value.<BR>
-Note: Initially all sprite colors are uninitialized.<BR>
+<B>FF6A - OCPS/OBPI - 仅限 CGB 模式 - 活动块调色板索引<BR>
+FF6B - OCPD/OBPD - 仅限 CGB 模式 - 活动块调色板数据<BR>
+</B>和上文描述的背景调色板一样，这两个寄存器用来初始化精灵调色板OBP0-7。注意，每一个OBP调色板都可以定义四个颜色，但是每个调色板只会显示出颜色1-3。颜色0一直是透明色，并且可以被初始化为一个任意一个无所谓的值。<BR>
+注：在最开始，所有精灵的颜色都是未初始化的。<BR>
 <BR>
-<B>RGB Translation by CGBs<BR>
-</B>When developing graphics on PCs, note that the RGB values will have 
-different appearance on CGB displays as on VGA monitors:<BR>
-The highest intensity will produce Light Gray color rather than White. 
-The intensities are not linear; the values 10h-1Fh will all appear very 
-bright, while medium and darker colors are ranged at 00h-0Fh.<BR>
-The CGB display will mix colors quite oddly, increasing intensity of 
-only one R,G,B color will also influence the other two R,G,B colors.<BR>
-For example, a color setting of 03EFh (Blue=0, Green=1Fh, Red=0Fh) will 
-appear as Neon Green on VGA displays, but on the CGB it'll produce a 
-decently washed out Yellow.<BR>
+<B>CGB的RGB颜色转换<BR>
+</B>注意，在个人电脑上开发图像时，RGB数值在VGA显示器上和CGB的显示屏有不同的表现：<BR>
+浓度最高的配色会显示出浅灰色，而不是白色。色彩浓度不是线性的。10h-1Fh之间的数值会显得非常亮，而中等和暗色在 00h-0Fh 之间。<BR>
+CGB的显示屏会非常奇怪地混合颜色。仅仅增加一种R，G，B颜色的浓度也会影响其他两个R，G，B颜色。<BR>
+举例来说，颜色值03EFh（蓝色=0，绿色=1Fh，红色=0Fh）在VGA显示器上看起来是荧光绿，然而在CGB上却是一个无比正确的褪色黄。<BR>
 <BR>
-<B>RGB Translation by GBAs<BR>
+<B>GBA的RGB颜色转换<BR>
 </B>Even though GBA is described to be compatible to CGB games, most CGB 
 games are completely unplayable on GBAs because most colors are 
 invisible (black). Of course, colors such like Black and White will 
@@ -952,7 +918,7 @@ byte to be shifted into $FF01:<BR>
     ld  ($FF02),a
 </TD></TR></TABLE><BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="timeranddividerregisters"></A><FONT SIZE=+2>&nbsp;Timer and Divider Registers</FONT></TD></TR></TABLE><BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="timeranddividerregisters"></A><FONT SIZE=+2>&nbsp;定时与分频寄存器</FONT></TD></TR></TABLE><BR>
 <B>FF04 - DIV - Divider Register (R/W)<BR>
 </B>This register is incremented at rate of 16384Hz (~16779Hz on SGB). In 
 CGB Double Speed Mode it is incremented twice as fast, ie. at 32768Hz. 
