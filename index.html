@@ -281,25 +281,11 @@ CGB的显示屏会非常奇怪地混合颜色。仅仅增加一种R，G，B颜�
 举例来说，颜色值03EFh（蓝色=0，绿色=1Fh，红色=0Fh）在VGA显示器上看起来是荧光绿，然而在CGB上却是一个无比正确的褪色黄。<BR>
 <BR>
 <B>GBA的RGB颜色转换<BR>
-</B>Even though GBA is described to be compatible to CGB games, most CGB 
-games are completely unplayable on GBAs because most colors are 
-invisible (black). Of course, colors such like Black and White will 
-appear the same on both CGB and GBA, but medium intensities are arranged 
-completely different.<BR>
-Intensities in range 00h..0Fh are invisible/black (unless eventually 
-under best sunlight circumstances, and when gazing at the screen under 
-obscure viewing angles), unfortunately, these intensities are regulary 
-used by most existing CGB games for medium and darker colors.<BR>
-Newer CGB games may avoid this effect by changing palette data when 
-detecting GBA hardware. A relative simple method would be using the 
-formula GBA=CGB/2+10h for each R,G,B intensity, probably the result 
-won't be perfect, and (once colors became visible) it may turn out that 
-the color mixing is different also, anyways, it'd be still ways better 
-than no conversion.<BR>
-Asides, this translation method should have been VERY easy to implement 
-in GBA hardware directly, even though Nintendo obviously failed to do 
-so. How did they say, This seal is your assurance for excellence in 
-workmanship and so on?<BR>
+</B>尽管GBA被描述为可以兼容CGB游戏，但实际上大部分CGB游戏在GBA上完全不能玩，因为大部分颜色都看不见（黑色）。当然，像黑色和白色这样的颜色在CGB和GBA上是一样的，但是中间浓度的颜色却被处理得完全不一样。<BR>
+在范围00h..0Fh区间的颜色浓度是看不见的/显示为黑色（除非偶尔在非常好的光照条件之下，同时以特定角度盯着屏幕），不幸的是，这部分区间的浓度通常被大部分已存在的CGB游戏用作中间及较暗的颜色。<BR>
+新一些的CGB游戏可以在检测到GBA硬件时更换调色板数据，以避免这种效应。一个相对简单的方法是使用公式GBA=CGB
+    /2+10h来转换每一个RGB颜色浓度。或许结果并不完美，并且（当能看见颜色时）颜色混合看起来也很奇怪，但聊胜于无，至少比没有转换好一些。<BR>
+另外，这些颜色转换方法用GBA硬件实施的话是及其简单的，但显而易见，任天堂并没有这么做。所以他们如何声称，本印章（译注，指任天堂在每个游戏卡带外的圆形印章图样）是为您提供杰出工艺及其它林林总总的担保？<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="lcdvrambankcgbonly"></A><FONT SIZE=+2>&nbsp;LCD VRAM Bank (仅 CGB)</FONT></TD></TR></TABLE><BR>
