@@ -858,39 +858,35 @@ byte to be shifted into $FF01:<BR>
 </TD></TR></TABLE><BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="timeranddividerregisters"></A><FONT SIZE=+2>&nbsp;定时与分频寄存器</FONT></TD></TR></TABLE><BR>
-<B>FF04 - DIV - Divider Register (R/W)<BR>
-</B>This register is incremented at rate of 16384Hz (~16779Hz on SGB). In 
-CGB Double Speed Mode it is incremented twice as fast, ie. at 32768Hz. 
-Writing any value to this register resets it to 00h.<BR>
+<B>FF04 - DIV - 分频寄存器 (读/写)<BR>
+</B>该寄存器以16384Hz为单位而递增（SGB上约为16779Hz）。
+    在CGB双倍速模式下，它以两倍速递增，即32768Hz。
+    向该寄存器写入任意值都会将其重置为00h。<BR>
 <BR>
-<B>FF05 - TIMA - Timer counter (R/W)<BR>
-</B>This timer is incremented by a clock frequency specified by the TAC 
-register ($FF07). When the value overflows (gets bigger than FFh) then 
-it will be reset to the value specified in TMA (FF06), and an interrupt 
-will be requested, as described below.<BR>
+<B>FF05 - TIMA - 定时计数器 (读/写)<BR>
+</B>该寄存器以TAC寄存器（$FF07）指定的时钟频率递增。
+    当发生溢出时（递增到比FFh还要大），它将重置为TMA（FF06）指定的值，并请求一个如后文描述的中断。<BR>
 <BR>
-<B>FF06 - TMA - Timer Modulo (R/W)<BR>
-</B>When the TIMA overflows, this data will be loaded.<BR>
+<B>FF06 - TMA - 定时器模除(读/写)<BR>
+</B>当TIMA溢出时，该数据将被载入。（载入到TIMA中，译注）<BR>
 <BR>
-<B>FF07 - TAC - Timer Control (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 2    - Timer Stop  (0=Stop, 1=Start)
-  Bits 1-0 - Input Clock Select
+<B>FF07 - TAC - 定时器控制 (R/W)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 2    - 定时器停止  (0=停止, 1=开始)
+  比特位 1-0 - 输入时钟选择
              00:   4096 Hz    (~4194 Hz SGB)
              01: 262144 Hz  (~268400 Hz SGB)
              10:  65536 Hz   (~67110 Hz SGB)
              11:  16384 Hz   (~16780 Hz SGB)
 </TD></TR></TABLE><BR>
-<B>INT 50 - Timer Interrupt<BR>
-</B>Each time when the timer overflows (ie. when TIMA gets bigger than FFh), 
-then an interrupt is requested by setting Bit 2 in the IF Register 
-(FF0F). When that interrupt is enabled, then the CPU will execute it by 
-calling the timer interrupt vector at 0050h.<BR>
+<B>INT 50 - 定时器中断<BR>
+</B>当定时器溢出时， （如，TIMA递增到比FFh还要大），就会通过将IF寄存器（FF0F）的比特位2置为1请求一个中断。若该中断已启用，那么CPU将调用位于0050h的定时器中断向量来执行中断程序。<BR>
 <BR>
-<B>Note<BR>
+<B>注意<BR>
 </B>The above described Timer is the built-in timer in the gameboy. It has 
 nothing to do with the MBC3s battery buffered Real Time Clock - that's a 
 completely different thing, described in the chapter about Memory 
 Banking Controllers.<BR>
+上述定时器指的是Gameboy内建的定时器。它和MBC3型卡带的电池驱动真实时钟（RTC）无关。实际上，RTC是一个完全不同的东西，将会在存储容组控制器（MBC）一章中讲到。（bank暂译为容组，译注）<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="interrupts"></A><FONT SIZE=+2>&nbsp;Interrupts</FONT></TD></TR></TABLE><BR>
