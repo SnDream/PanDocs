@@ -389,67 +389,43 @@ Gameboy 有两张 32x32 的图块 BG Map (背景分布) 于 VRAM 地址 9800h-9B
 背景和窗口两者都可以各自独立通过 LCDC 寄存器中对应的位来开启或关闭.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="vramspriteattributetableoam"></A><FONT SIZE=+2>&nbsp;VRAM Sprite Attribute Table (OAM)</FONT></TD></TR></TABLE><BR>
-GameBoy video controller can display up to 40 sprites either in 8x8 or 
-in 8x16 pixels. Because of a limitation of hardware, only ten sprites 
-can be displayed per scan line. Sprite patterns have the same format as 
-BG tiles, but they are taken from the Sprite Pattern Table located at 
-$8000-8FFF and have unsigned numbering.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="vramspriteattributetableoam"></A><FONT SIZE=+2>&nbsp;显存精灵属性表 (OAM)</FONT></TD></TR></TABLE><BR>
+Gameboy 的视频控制器可以显示至多40个精灵，以8x8像素或8x16像素格式。
+由于硬件限制，一条扫描线仅可以同时显示10个精灵（由于硬件的图形合成时间限制，译注）。
+精灵图案和背景图砖的格式一样，不同的是，它们取自位于$8000-8FFF的精灵图案表，并以无符号数编号。<BR>
+<BR>精灵属性表(或记为，OAM - Object Attribute Memory)的精灵属性位于$FE00-FE9F。其共计40个条目，每一个条目包含四个字节，其定义如下：<BR>
 <BR>
-Sprite attributes reside in the Sprite Attribute Table (OAM - Object 
-Attribute Memory) at $FE00-FE9F. Each of the 40 entries consists of four 
-bytes with the following meanings:<BR>
+<B>字节0 - Y 位置<BR>
+</B>指定精灵在屏幕上的纵向位置 (减去 16)。<BR>
+给定一个屏幕之外的值 (如，Y=0 或 Y&gt;=160) 将隐藏该精灵。<BR>
 <BR>
-<B>Byte0 - Y Position<BR>
-</B>Specifies the sprites vertical position on the screen (minus 16).<BR>
-An offscreen value (for example, Y=0 or Y&gt;=160) hides the sprite.<BR>
+<B>字节1 - X 位置<BR>
+</B>指定精灵在屏幕上的横向位置 (减去 8)。<BR>
+给定一个屏幕之外的值 (X=0 或 X&gt;=168) 将隐藏改精灵，但是精灵仍将影响优先级排序。因此隐藏精灵的更合适的方法是，将它的Y坐标设置到屏幕之外。<BR>
 <BR>
-<B>Byte1 - X Position<BR>
-</B>Specifies the sprites horizontal position on the screen (minus 8).<BR>
-An offscreen value (X=0 or X&gt;=168) hides the sprite, but the sprite<BR>
-still affects the priority ordering - a better way to hide a sprite is 
-to set its Y-coordinate offscreen.<BR>
+<B>字节2 - 图砖/图案编号<BR>
+</B>指定精灵的图砖编号 (00-FF)。该（无符号）值将从存储区间8000h-8FFFFh选定一个图砖。在CGB模式下，则可从显存容组(VRAM Bank)0或显存容组1中选取，其取决于下一个字节的第3位。<BR>
+8x16模式下, 图砖编号的最低位将被忽略。举例来说，上半个8x8图砖是“NN AND EFh”，下半个8x8图砖是“NN OR 01h”<BR>
 <BR>
-<B>Byte2 - Tile/Pattern Number<BR>
-</B>Specifies the sprites Tile Number (00-FF). This (unsigned) value selects 
-a tile from memory at 8000h-8FFFh. In CGB Mode this could be either in 
-VRAM Bank 0 or 1, depending on Bit 3 of the following byte.<BR>
-In 8x16 mode, the lower bit of the tile number is ignored. Ie. the upper 
-8x8 tile is "NN AND FEh", and the lower 8x8 tile is "NN OR 01h".<BR>
-<BR>
-<B>Byte3 - Attributes/Flags:<BR>
-</B><TABLE><TR><TD><PRE>  Bit7   OBJ-to-BG Priority (0=OBJ Above BG, 1=OBJ Behind BG color 1-3)
-         (Used for both BG and Window. BG color 0 is always behind OBJ)
-  Bit6   Y flip          (0=Normal, 1=Vertically mirrored)
-  Bit5   X flip          (0=Normal, 1=Horizontally mirrored)
-  Bit4   Palette number  **Non CGB Mode Only** (0=OBP0, 1=OBP1)
-  Bit3   Tile VRAM-Bank  **CGB Mode Only**     (0=Bank 0, 1=Bank 1)
-  Bit2-0 Palette number  **CGB Mode Only**     (OBP0-7)
+<B>字节3 - 属性/标志位:<BR>
+</B><TABLE><TR><TD><PRE>  比特位7   物体到背景(OBJ to BG)优先级 (0=物体在背景之上, 1=物体在背景颜色1-3下面)
+         (适用于背景和窗口。背景颜色0一直在物体之下)
+  比特位6   Y 翻转          (0=正常, 1=纵向镜像)
+  比特位5   X 翻转          (0=Normal, 1=横向镜像)
+  比特位4   调色板编号  **仅限非CGB模式** (0=OBP0, 1=OBP1)
+  比特位3   图砖的显存容组  **仅限CGB模式**     (0=容组 0, 1=容组 1)
+  比特位2-0 调色板编号  **仅限CGB模式**     (OBP0-7)
 </TD></TR></TABLE><BR>
-<B>Sprite Priorities and Conflicts<BR>
-</B>When sprites with different x coordinate values overlap, the one with 
-the smaller x coordinate (closer to the left) will have priority and 
-appear above any others. This applies in Non CGB Mode only.<BR>
-When sprites with the same x coordinate values overlap, they have 
-priority according to table ordering. (i.e. $FE00 - highest, $FE04 - 
-next highest, etc.) In CGB Mode priorities are always assigned like 
-this.<BR>
+<B>精灵的优先级和冲突<BR>
+</B>
+当具有不同横坐标的精灵重叠时，具有最小横坐标的那一个（更靠近左侧）是优先的，并且显示在其它精灵之上。这个规则仅限非CGB模式。<BR>
+当具有相同横坐标的精灵重叠时，它们的优先级将以属性表的顺序为准（即 $FE00 - 最高级， $FE04 - 次高级，以此类推）。在CGB模式下，优先级一直以此安排。<BR>
 <BR>
-Only 10 sprites can be displayed on any one line. When this limit is 
-exceeded, the lower priority sprites (priorities listed above) won't be 
-displayed. To keep unused sprites from affecting onscreen sprites set 
-their Y coordinate to Y=0 or Y=&gt;144+16. Just setting the X coordinate to 
-X=0 or X=&gt;160+8 on a sprite will hide it but it will still affect other 
-sprites sharing the same lines.<BR>
+任意一条线只可以显示10个精灵。当该限制被超出时，最低优先级的精灵（优先级参上）将不会被显示出来。若想未使用的精灵不影响屏幕上的精灵，将其纵坐标设置为Y=0 或 Y=&gt;144+16即可。仅仅把精灵的横坐标设为X=0 或 X=&gt;160+8是可以隐藏精灵，但它仍将影响同一条线上的其它精灵。<BR>
 <BR>
-<B>Writing Data to OAM Memory<BR>
-</B>The recommened method is to write the data to normal RAM first, and to 
-copy that RAM to OAM by using the DMA transfer function, initiated 
-through DMA register (FF46).<BR>
-Beside for that, it is also possible to write data directly to the OAM 
-area by using normal LD commands, this works only during the H-Blank and 
-V-Blank periods. The current state of the LCD controller can be read out 
-from the STAT register (FF41).<BR>
+<B>向OAM存储写数据<BR>
+</B>推荐的方法是，先将数据写入到普通的RAM里，然后再通过DMA寄存器（FF46）启用DMA传输功能，将数据从RAM复制到OAM中。<BR>
+除此之外，也可通过LD指令将数据直接写入到OAM区域。但它仅可在横向回程（H-Blank）和纵向回程（V-Blank）期间使用。LCD控制器的当前状态可从STAT寄存器(FF41)中读出。<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="accessingvramandoam"></A><FONT SIZE=+2>&nbsp;访问 VRAM 和 OAM</FONT></TD></TR></TABLE><BR>
