@@ -882,11 +882,7 @@ byte to be shifted into $FF01:<BR>
 </B>当定时器溢出时， （如，TIMA递增到比FFh还要大），就会通过将IF寄存器（FF0F）的比特位2置为1请求一个中断。若该中断已启用，那么CPU将调用位于0050h的定时器中断向量来执行中断程序。<BR>
 <BR>
 <B>注意<BR>
-</B>The above described Timer is the built-in timer in the gameboy. It has 
-nothing to do with the MBC3s battery buffered Real Time Clock - that's a 
-completely different thing, described in the chapter about Memory 
-Banking Controllers.<BR>
-上述定时器指的是Gameboy内建的定时器。它和MBC3型卡带的电池驱动真实时钟（RTC）无关。实际上，RTC是一个完全不同的东西，将会在存储容组控制器（MBC）一章中讲到。（bank暂译为容组，译注）<BR>
+</B>上述定时器指的是Gameboy内建的定时器。它和MBC3型卡带的电池驱动真实时钟（RTC）无关。实际上，RTC是一个完全不同的东西，将会在存储容组控制器（MBC）一章中讲到。（bank暂译为容组，译注）<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="interrupts"></A><FONT SIZE=+2>&nbsp;Interrupts</FONT></TD></TR></TABLE><BR>
