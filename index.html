@@ -464,43 +464,43 @@ Gameboy 的视频控制器可以显示至多40个精灵，以8x8像素或8x16像
 </B>当显示关闭时, VRAM 和 OAM 都可以在任意时刻访问. 这样的缺点是屏幕在这个时期显示空白, 所以只推荐在初始化时关闭显示.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundcontroller"></A><FONT SIZE=+2>&nbsp;Sound Controller</FONT></TD></TR></TABLE><BR>
-<A HREF="#soundoverview">Sound Overview</A><BR>
-<A HREF="#soundchannel1tonesweep">Sound Channel 1 - Tone & Sweep</A><BR>
-<A HREF="#soundchannel2tone">Sound Channel 2 - Tone</A><BR>
-<A HREF="#soundchannel3waveoutput">Sound Channel 3 - Wave Output</A><BR>
-<A HREF="#soundchannel4noise">Sound Channel 4 - Noise</A><BR>
-<A HREF="#soundcontrolregisters">Sound Control Registers</A><BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundcontroller"></A><FONT SIZE=+2>&nbsp;声音控制器</FONT></TD></TR></TABLE><BR>
+<A HREF="#soundoverview">声音总览</A><BR>
+<A HREF="#soundchannel1tonesweep">声音通道 1 - 乐音和扫频</A><BR>
+<A HREF="#soundchannel2tone">声音通道 2 - 乐音</A><BR>
+<A HREF="#soundchannel3waveoutput">声音通道 3 - 波形输出</A><BR>
+<A HREF="#soundchannel4noise">声音通道 4 - 噪音</A><BR>
+<A HREF="#soundcontrolregisters">声音控制寄存器</A><BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundoverview"></A><FONT SIZE=+2>&nbsp;Sound Overview</FONT></TD></TR></TABLE><BR>
-There are two sound channels connected to the output terminals SO1 and 
-SO2. There is also a input terminal Vin connected to the cartridge. It 
-can be routed to either of both output terminals. GameBoy circuitry 
-allows producing sound in four different ways:<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundoverview"></A><FONT SIZE=+2>&nbsp;声音总览</FONT></TD></TR></TABLE><BR>
+有两个声音通道连接了输出端口SO1和SO2（Sound Output 1&2， 译注）。
+另有一个输入端口Vin连接到卡带，
+它可被连到两个输出端口其中的任意一个。
+Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 <BR>
-<TABLE><TR><TD><PRE>   Quadrangular wave patterns with sweep and envelope functions.
-   Quadrangular wave patterns with envelope functions.
-   Voluntary wave patterns from wave RAM.
-   White noise with an envelope function.
+<TABLE><TR><TD><PRE>
+   具有扫频和包络线功能的方波图形。
+   具有包络线功能的方波图形。
+   从波形存储器产生的自主波形图案。
+   具有包络线功能的白噪音。
 </TD></TR></TABLE><BR>
-These four sounds can be controlled independantly and then mixed 
-separately for each of the output terminals.<BR>
+这四个声音可以被独立控制，并且针对某一个输出端口都可以独立地混音。<BR>
 <BR>
-Sound registers may be set at all times while producing sound.<BR>
+在产生声音时，声音寄存器可以一直被设置。<BR>
 <BR>
-(Sounds will have a 2.4% higher frequency on Super GB.)<BR>
+（SGB上的声音频率约高2.4%。）<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel1tonesweep"></A><FONT SIZE=+2>&nbsp;Sound Channel 1 - Tone & Sweep</FONT></TD></TR></TABLE><BR>
-<B>FF10 - NR10 - Channel 1 Sweep register (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 6-4 - Sweep Time
-  Bit 3   - Sweep Increase/Decrease
-             0: Addition    (frequency increases)
-             1: Subtraction (frequency decreases)
-  Bit 2-0 - Number of sweep shift (n: 0-7)
-</TD></TR></TABLE>Sweep Time:<BR>
-<TABLE><TR><TD><PRE>  000: sweep off - no freq change
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel1tonesweep"></A><FONT SIZE=+2>&nbsp;声音控制器 1 - 乐音和扫频</FONT></TD></TR></TABLE><BR>
+<B>FF10 - NR10 - 通道 1 扫频寄存器 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 6-4 - 扫频时间
+  比特位 3   - 递增/递减扫频
+             0: 相加    (频率增加)
+             1: 相减 (频率减少)
+  比特位 2-0 - 扫频偏移数 (n: 0-7)
+</TD></TR></TABLE>扫频时间：<BR>
+<TABLE><TR><TD><PRE>  000: 扫频关闭 - 无频率变化
   001: 7.8 ms  (1/128Hz)
   010: 15.6 ms (2/128Hz)
   011: 23.4 ms (3/128Hz)
@@ -509,39 +509,38 @@ Sound registers may be set at all times while producing sound.<BR>
   110: 46.9 ms (6/128Hz)
   111: 54.7 ms (7/128Hz)
 </TD></TR></TABLE><BR>
-The change of frequency (NR13,NR14) at each shift is calculated by the 
-following formula where X(0) is initial freq & X(t-1) is last freq:<BR>
+每次偏移时，频率（NR13，NR14）的变化按照下述公式计算，其中 X(0) 是起始频率，X(t-1) 是最末频率：<BR>
 <TABLE><TR><TD><PRE>  X(t) = X(t-1) +/- X(t-1)/2^n
 </TD></TR></TABLE><BR>
-<B>FF11 - NR11 - Channel 1 Sound length/Wave pattern duty (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-6 - Wave Pattern Duty (Read/Write)
-  Bit 5-0 - Sound length data (Write Only) (t1: 0-63)
-</TD></TR></TABLE>Wave Duty:<BR>
+<B>FF11 - NR11 - 通道 1 声音长度/波形图案工作周期 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7-6 - 波形图案工作周期  (读/写)
+  Bit 5-0 - 声音长度数值 (只可写) (t1: 0-63)
+</TD></TR></TABLE>波形工作周期:<BR>
 <TABLE><TR><TD><PRE>  00: 12.5% ( _-------_-------_------- )
   01: 25%   ( __------__------__------ )
-  10: 50%   ( ____----____----____---- ) (normal)
+  10: 50%   ( ____----____----____---- ) (普通)
   11: 75%   ( ______--______--______-- )
-</TD></TR></TABLE>Sound Length = (64-t1)*(1/256) seconds<BR>
-The Length value is used only if Bit 6 in NR14 is set.<BR>
+</TD></TR></TABLE>声音长度 = (64-t1)*(1/256) 秒<BR>
+仅当NR14的比特位6被置为1的时候，长度数值才有用。<BR>
 <BR>
-<B>FF12 - NR12 - Channel 1 Volume Envelope (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-4 - Initial Volume of envelope (0-0Fh) (0=No Sound)
-  Bit 3   - Envelope Direction (0=Decrease, 1=Increase)
-  Bit 2-0 - Number of envelope sweep (n: 0-7)
-            (If zero, stop envelope operation.)
-</TD></TR></TABLE>Length of 1 step = n*(1/64) seconds<BR>
+<B>FF12 - NR12 - 通道 1 音量包络线 (R/W)<BR>
+</B><TABLE><TR><TD><PRE>  Bit 7-4 - 起始音量包络 (0-0Fh) (0=无声音)
+  Bit 3   - 包络线方向 (0=减少, 1=增加)
+  Bit 2-0 - 包络线扫频数 (n: 0-7)
+            （若为零，则停止包络线操作。）
+</TD></TR></TABLE>1步的长度 = n*(1/64) 秒<BR>
 <BR>
-<B>FF13 - NR13 - Channel 1 Frequency lo (Write Only)<BR>
+<B>FF13 - NR13 - 通道 1 频率低位 (只写)<BR>
 </B><BR>
-Lower 8 bits of 11 bit frequency (x).<BR>
-Next 3 bit are in NR14 ($FF14)<BR>
+11位频率 (x) 的低8位。<BR>
+接下来的3位储存在 NR14 ($FF14)<BR>
 <BR>
-<B>FF14 - NR14 - Channel 1 Frequency hi (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7   - Initial (1=Restart Sound)     (Write Only)
-  Bit 6   - Counter/consecutive selection (Read/Write)
-            (1=Stop output when length in NR11 expires)
-  Bit 2-0 - Frequency's higher 3 bits (x) (Write Only)
-</TD></TR></TABLE>Frequency = 131072/(2048-x) Hz<BR>
+<B>FF14 - NR14 - 通道 1 频率高位 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7   - 启动 (1=重启声音)     (只写)
+  Bit 6   - 计数器/连续性选择 (读/写)
+            (1=达到NR11中指定的长度时，停止输出）
+  Bit 2-0 - 频率的高3位 (x) (只写)
+</TD></TR></TABLE>频率 = 131072/(2048-x) Hz<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel2tone"></A><FONT SIZE=+2>&nbsp;Sound Channel 2 - Tone</FONT></TD></TR></TABLE><BR>
