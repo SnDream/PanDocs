@@ -492,7 +492,7 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 （SGB上的声音频率约高2.4%。）<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel1tonesweep"></A><FONT SIZE=+2>&nbsp;声音控制器 1 - 乐音和扫频</FONT></TD></TR></TABLE><BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel1tonesweep"></A><FONT SIZE=+2>&nbsp;声音通道 1 - 乐音和扫频</FONT></TD></TR></TABLE><BR>
 <B>FF10 - NR10 - 通道 1 扫频寄存器 (读/写)<BR>
 </B><TABLE><TR><TD><PRE>  比特位 6-4 - 扫频时间
   比特位 3   - 递增/递减扫频
@@ -524,16 +524,16 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 仅当NR14的比特位6被置为1的时候，长度数值才有用。<BR>
 <BR>
 <B>FF12 - NR12 - 通道 1 音量包络线 (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-4 - 起始音量包络 (0-0Fh) (0=无声音)
-  Bit 3   - 包络线方向 (0=减少, 1=增加)
-  Bit 2-0 - 包络线扫频数 (n: 0-7)
-            （若为零，则停止包络线操作。）
+</B><TABLE><TR><TD><PRE>  比特位 7-4 - 包络线起始音量 (0-0Fh) (0=无声音)
+  比特位 3   - 包络线方向 (0=减少, 1=增加)
+  比特位 2-0 - 包络线扫频数 (n: 0-7)
+            （若为零，停止包络线操作。）
 </TD></TR></TABLE>1步的长度 = n*(1/64) 秒<BR>
 <BR>
 <B>FF13 - NR13 - 通道 1 频率低位 (只写)<BR>
 </B><BR>
 11位频率 (x) 的低8位。<BR>
-接下来的3位储存在 NR14 ($FF14)<BR>
+接下来的3位在 NR14 ($FF14)中<BR>
 <BR>
 <B>FF14 - NR14 - 通道 1 频率高位 (读/写)<BR>
 </B><TABLE><TR><TD><PRE>  比特位 7   - 启动 (1=重启声音)     (只写)
@@ -543,38 +543,37 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 </TD></TR></TABLE>频率 = 131072/(2048-x) Hz<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel2tone"></A><FONT SIZE=+2>&nbsp;Sound Channel 2 - Tone</FONT></TD></TR></TABLE><BR>
-This sound channel works exactly as channel 1, except that it doesn't 
-have a Tone Envelope/Sweep Register.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel2tone"></A><FONT SIZE=+2>&nbsp;声音通道 2 - 乐音</FONT></TD></TR></TABLE><BR>
+此声音通道和通道1完全一致，除了它没有乐音包络/扫频寄存器。<BR>
 <BR>
-<B>FF16 - NR21 - Channel 2 Sound Length/Wave Pattern Duty (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-6 - Wave Pattern Duty (Read/Write)
-  Bit 5-0 - Sound length data (Write Only) (t1: 0-63)
-</TD></TR></TABLE>Wave Duty:<BR>
+<B>FF16 - NR21 - 通道 2 声音长度/波形图案工作周期 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7-6 - 波形图案工作周期 (读/写)
+  比特位 5-0 - 声音长度数据 (只写) (t1: 0-63)
+</TD></TR></TABLE>波形工作周期:<BR>
 <TABLE><TR><TD><PRE>  00: 12.5% ( _-------_-------_------- )
   01: 25%   ( __------__------__------ )
-  10: 50%   ( ____----____----____---- ) (normal)
+  10: 50%   ( ____----____----____---- ) (普通)
   11: 75%   ( ______--______--______-- )
-</TD></TR></TABLE>Sound Length = (64-t1)*(1/256) seconds<BR>
-The Length value is used only if Bit 6 in NR24 is set.<BR>
+</TD></TR></TABLE>声音长度 = (64-t1)*(1/256) 秒<BR>
+仅当NR24的比特位6被置位时使用长度数值。<BR>
 <BR>
-<B>FF17 - NR22 - Channel 2 Volume Envelope (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-4 - Initial Volume of envelope (0-0Fh) (0=No Sound)
-  Bit 3   - Envelope Direction (0=Decrease, 1=Increase)
-  Bit 2-0 - Number of envelope sweep (n: 0-7)
-            (If zero, stop envelope operation.)
-</TD></TR></TABLE>Length of 1 step = n*(1/64) seconds<BR>
+<B>FF17 - NR22 - 通道 2 声音包络线 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  Bit 7-4 - 包络线起始音量 (0-0Fh) (0=无声音)
+  Bit 3   - 包络线方向 (0=减少, 1=增加)
+  Bit 2-0 - 包络线扫频数 (n: 0-7)
+            (若为零，停止包络线操作。)
+</TD></TR></TABLE>1步的长度 = n*(1/64) 秒<BR>
 <BR>
-<B>FF18 - NR23 - Channel 2 Frequency lo data (W)<BR>
-</B>Frequency's lower 8 bits of 11 bit data (x).<BR>
-Next 3 bits are in NR24 ($FF19).<BR>
+<B>FF18 - NR23 - 通道 2 频率低位数据 (W)<BR>
+</B>11位频率数据(x)的低8位。<BR>
+接下来的3位在 NR24 ($FF19) 中。<BR>
 <BR>
-<B>FF19 - NR24 - Channel 2 Frequency hi data (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7   - Initial (1=Restart Sound)     (Write Only)
-  Bit 6   - Counter/consecutive selection (Read/Write)
-            (1=Stop output when length in NR21 expires)
-  Bit 2-0 - Frequency's higher 3 bits (x) (Write Only)
-</TD></TR></TABLE>Frequency = 131072/(2048-x) Hz<BR>
+<B>FF19 - NR24 - 通道 2 频率高位数据 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7   - 启动 (1=重启声音)     (只写)
+  比特位 6   - 计数器/连续性选择 (读/写)
+            (1=达到NR21中指定的长度时，停止输出)
+  比特位 2-0 - 频率的高3位 (x) (只写)
+</TD></TR></TABLE>频率 = 131072/(2048-x) Hz<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel3waveoutput"></A><FONT SIZE=+2>&nbsp;Sound Channel 3 - Wave Output</FONT></TD></TR></TABLE><BR>
