@@ -618,15 +618,15 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 当然也可以影响随机数产生器功能，使得输出变得更规整一些。这样可以得一个有限的乐音，而不是噪音。<BR>
 <BR>
 <B>FF20 - NR41 - 通道 4 声音长度 (读/写)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 5-0 - 声音长度数据 (t1: 0-63)
+</B><TABLE><TR><TD><PRE>  比特位 5-0 - 声音长度数据 (t1: 0-63)
 </TD></TR></TABLE>声音长度 = (64-t1)*(1/256) 秒<BR>
 仅当NR44的比特位6被置位时使用该数值。
 <BR>
 <BR>
 <B>FF21 - NR42 - 通道 4 声音包络线 (读/写)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-4 - 包络线起始音量 (0-0Fh) (0=无声音)
-  Bit 3   - 包络线方向 (0=减少, 1=增加)
-  Bit 2-0 - 包络线扫频数 (n: 0-7)
+</B><TABLE><TR><TD><PRE>  比特位 7-4 - 包络线起始音量 (0-0Fh) (0=无声音)
+  比特位 3   - 包络线方向 (0=减少, 1=增加)
+  比特位 2-0 - 包络线扫频数 (n: 0-7)
             （若为零，停止包络线操作。）
 </TD></TR></TABLE>一步的长度 = n*(1/64) 秒<BR>
 <BR>
@@ -634,59 +634,52 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 </B>噪音的幅值在给定频率的高和低之间随机切换。高一些的频率使得噪音听起来“软一些”。<BR>
 当比特位3被置位时，输出会变得更规整，使得一些频率听起来更像是乐音而不是噪音。<BR>
 <TABLE><TR><TD><PRE>  比特位 7-4 - 移位时钟频率(s)
-  Bit 3   - 计数器 步长/宽度 (0=15 位, 1=7 位)
-  Bit 2-0 - 频率相除系数 (r)
+  比特位 3   - 计数器 步长/宽度 (0=15 位, 1=7 位)
+  比特位 2-0 - 频率相除系数 (r)
 </TD></TR></TABLE>频率 = 524288 Hz / r / 2^(s+1)     ;当 r=0 时用 r=0.5 替换<BR>
 <BR>
 <B>FF23 - NR44 - 通道 4 计数器/连续性; 启动 (R/W)<BR>
 </B><TABLE><TR><TD><PRE>  比特位 7   - 启动 (1=重启声音)     (只写)
-  Bit 6   - 计数器/连续性选择 (读/写)
+  比特位 6   - 计数器/连续性选择 (读/写)
             (1=达到NR41中指定的长度时，停止输出)
 </TD></TR></TABLE><BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundcontrolregisters"></A><FONT SIZE=+2>&nbsp;Sound Control Registers</FONT></TD></TR></TABLE><BR>
-<B>FF24 - NR50 - Channel control / ON-OFF / Volume (R/W)<BR>
-</B>The volume bits specify the "Master Volume" for Left/Right sound output.<BR>
-<TABLE><TR><TD><PRE>  Bit 7   - Output Vin to SO2 terminal (1=Enable)
-  Bit 6-4 - SO2 output level (volume)  (0-7)
-  Bit 3   - Output Vin to SO1 terminal (1=Enable)
-  Bit 2-0 - SO1 output level (volume)  (0-7)
-</TD></TR></TABLE>The Vin signal is received from the game cartridge bus, allowing 
-external hardware in the cartridge to supply a fifth sound channel, 
-additionally to the gameboys internal four channels. As far as I know 
-this feature isn't used by any existing games.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundcontrolregisters"></A><FONT SIZE=+2>&nbsp;声音控制寄存器</FONT></TD></TR></TABLE><BR>
+<B>FF24 - NR50 - 通道控制 / 开启-关闭 / 音量 (读/写)<BR>
+</B>音量位指定了左/右声道输出的“主音量”。<BR>
+<TABLE><TR><TD><PRE>  比特位 7   - 输出 Vin 到 SO2 端口 (1=启用)
+  比特位 6-4 - SO2 输出水平 (音量)  (0-7)
+  比特位 3   - 输出 Vin 到 SO1 端口 (1=启用)
+  比特位 2-0 - SO1 输出水平 (音量)  (0-7)
+</TD></TR></TABLE>Vin 信号接收自游戏卡匣总线，使得卡匣里的额外硬件可以在Gameboy内部的四个通道之外，提供第五个声音通道。然而据我所知，尚未有游戏使用了该功能。<BR>
 <BR>
-<B>FF25 - NR51 - Selection of Sound output terminal (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7 - Output sound 4 to SO2 terminal
-  Bit 6 - Output sound 3 to SO2 terminal
-  Bit 5 - Output sound 2 to SO2 terminal
-  Bit 4 - Output sound 1 to SO2 terminal
-  Bit 3 - Output sound 4 to SO1 terminal
-  Bit 2 - Output sound 3 to SO1 terminal
-  Bit 1 - Output sound 2 to SO1 terminal
-  Bit 0 - Output sound 1 to SO1 terminal
+<B>FF25 - NR51 - 选择声音输出端口 (R/W)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7 - 输出声音 4 到 SO2 端口
+  比特位 6 - 输出声音 3 到 SO2 端口
+  比特位 5 - 输出声音 2 到 SO2 端口
+  比特位 4 - 输出声音 1 到 SO2 端口
+  比特位 3 - 输出声音 4 到 SO1 端口
+  比特位 2 - 输出声音 3 到 SO1 端口
+  比特位 1 - 输出声音 2 到 SO1 端口
+  比特位 0 - 输出声音 1 到 SO1 端口
 </TD></TR></TABLE><BR>
-<B>FF26 - NR52 - Sound on/off<BR>
-</B>If your GB programs don't use sound then write 00h to this register to 
-save 16% or more on GB power consumption. Disabeling the sound 
-controller by clearing Bit 7 destroys the contents of all sound 
-registers. Also, it is not possible to access any sound registers 
-(execpt FF26) while the sound controller is disabled.<BR>
-<TABLE><TR><TD><PRE>  Bit 7 - All sound on/off  (0: stop all sound circuits) (Read/Write)
-  Bit 3 - Sound 4 ON flag (Read Only)
-  Bit 2 - Sound 3 ON flag (Read Only)
-  Bit 1 - Sound 2 ON flag (Read Only)
-  Bit 0 - Sound 1 ON flag (Read Only)
-</TD></TR></TABLE>Bits 0-3 of this register are read only status bits, writing to these 
-bits does NOT enable/disable sound. The flags get set when sound output 
-is restarted by setting the Initial flag (Bit 7 in NR14-NR44), the flag 
-remains set until the sound length has expired (if enabled). A volume 
-envelopes which has decreased to zero volume will NOT cause the sound 
-flag to go off.<BR>
+<B>FF26 - NR52 - 声音 开启/关闭<BR>
+</B>如果你的GB程序不使用声音，那么向该寄存器写入数值00h将减少至少16%的整机功耗。
+    清零比特位7销毁所有声音寄存器中的内容，从而禁用声音寄存器。
+    另外，当声音寄存器被禁用时，将无法访问任何声音寄存器（除了FF26）。<BR>
+<TABLE><TR><TD><PRE>  比特位 7 - 全部声音 开启/关闭  (0: 停止所有声音电路) (读/写)
+  比特位 3 - 声音 4 开启标志位 (只读)
+  比特位 2 - 声音 3 开启标志位 (只读)
+  比特位 1 - 声音 2 开启标志位 (只读)
+  比特位 0 - 声音 1 开启标志位 (只读)
+</TD></TR></TABLE>本寄存器的比特位0-3是只读的，向这些位写操作不可启用/禁用声音。
+    设定启动标志位（NR14-NR44的比特位7），声音输出被重启，使得这些标志位被置位。
+    这些标志位将一直保持被置位状态直到声音长度已达到。
+    减少到无声的声音包络线不会使得声音标志位关闭。<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="joypadinput"></A><FONT SIZE=+2>&nbsp;Joypad Input</FONT></TD></TR></TABLE><BR>
-<B>FF00 - P1/JOYP - Joypad (R/W)<BR>
+<B>FF00 - P1/JOYP - 手柄 (读/写)<BR>
 </B>The eight gameboy buttons/direction keys are arranged in form of a 2x4 
 matrix. Select either button or direction keys by writing to this 
 register, then read-out bit 0-3.<BR>
