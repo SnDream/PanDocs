@@ -576,43 +576,40 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 </TD></TR></TABLE>频率 = 131072/(2048-x) Hz<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel3waveoutput"></A><FONT SIZE=+2>&nbsp;Sound Channel 3 - Wave Output</FONT></TD></TR></TABLE><BR>
-This channel can be used to output digital sound, the length of the 
-sample buffer (Wave RAM) is limited to 32 digits. This sound channel can 
-be also used to output normal tones when initializing the Wave RAM by a 
-square wave. This channel doesn't have a volume envelope register.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel3waveoutput"></A><FONT SIZE=+2>&nbsp;声音 3 - 波形输出</FONT></TD></TR></TABLE><BR>
+该通道可以用来输出数字声音，其采样缓冲（波形内存）的长度限制到32位。
+    若用方波初始化波形内存，本通道也可用来输出普通乐音。该通道没有音量包络线寄存器。<BR>
 <BR>
-<B>FF1A - NR30 - Channel 3 Sound on/off (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7 - Sound Channel 3 Off  (0=Stop, 1=Playback)  (Read/Write)
+<B>FF1A - NR30 - 通道 3 声音 打开/关闭 (R/W)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7 - 声音通道 3 关闭  (0=停止, 1=回放)  (写/读)
 </TD></TR></TABLE><BR>
-<B>FF1B - NR31 - Channel 3 Sound Length<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-0 - Sound length (t1: 0 - 255)
-</TD></TR></TABLE>Sound Length = (256-t1)*(1/256) seconds<BR>
-This value is used only if Bit 6 in NR34 is set.<BR>
+<B>FF1B - NR31 - 通道 3 声音长度<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7-0 - 声音长度 (t1: 0 - 255)
+</TD></TR></TABLE>声音长度 = (256-t1)*(1/256) 秒<BR>
+仅当NR34的比特位6被置位时使用该数值。<BR>
 <BR>
-<B>FF1C - NR32 - Channel 3 Select output level (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 6-5 - Select output level (Read/Write)
-</TD></TR></TABLE>Possible Output levels are:<BR>
-<TABLE><TR><TD><PRE>  0: Mute (No sound)
-  1: 100% Volume (Produce Wave Pattern RAM Data as it is)
-  2:  50% Volume (Produce Wave Pattern RAM data shifted once to the right)
-  3:  25% Volume (Produce Wave Pattern RAM data shifted twice to the right)
+<B>FF1C - NR32 - 通道 3 选择输出水平 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 6-5 - 选择输出水平 (读/写)
+</TD></TR></TABLE>可选输出水平：<BR>
+<TABLE><TR><TD><PRE>  0: 静音 (无声音)
+  1: 100% 音量 (原样产生波形图案内存数据)
+  2:  50% 音量 (产生右移一位的波形图案内存数据)
+  3:  25% 音量 (产生右移两位的波形图案内存数据)
 </TD></TR></TABLE><BR>
-<B>FF1D - NR33 - Channel 3 Frequency's lower data (W)<BR>
-</B>Lower 8 bits of an 11 bit frequency (x).<BR>
+<B>FF1D - NR33 - 通道 3 频率低位数据 (写)<BR>
+</B>11位频率 (x) 的低8位。<BR>
 <BR>
-<B>FF1E - NR34 - Channel 3 Frequency's higher data (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7   - Initial (1=Restart Sound)     (Write Only)
-  Bit 6   - Counter/consecutive selection (Read/Write)
-            (1=Stop output when length in NR31 expires)
-  Bit 2-0 - Frequency's higher 3 bits (x) (Write Only)
-</TD></TR></TABLE>Frequency  =  4194304/(64*(2048-x)) Hz  =  65536/(2048-x) Hz<BR>
+<B>FF1E - NR34 - 通道 3 频率高位数据 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7   - 启动 (1=重启声音)     (只写)
+  比特位 6   - 计数器/连续性选择 (读/写)
+            (1=达到NR31中指定的长度时，停止输出)
+  比特位 2-0 - 频率的高3位 (x) (只写)
+</TD></TR></TABLE>频率  =  4194304/(64*(2048-x)) Hz  =  65536/(2048-x) Hz<BR>
 <BR>
-<B>FF30-FF3F - Wave Pattern RAM<BR>
-</B>Contents - Waveform storage for arbitrary sound data<BR>
+<B>FF30-FF3F - 波形图案内存<BR>
+</B>Contents - 任意声音数据的波形储存<BR>
 <BR>
-This storage area holds 32 4-bit samples  that are played back upper 4 
-bits first.<BR>
+该存储区域包含32个4比特采样。高4比特先回放。（即16个字节按序播放，每一个字节的高4位先回放，译注）<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel4noise"></A><FONT SIZE=+2>&nbsp;Sound Channel 4 - Noise</FONT></TD></TR></TABLE><BR>
