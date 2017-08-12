@@ -612,41 +612,36 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 该存储区域包含32个4比特采样。高4比特先回放。（即16个字节按序播放，每一个字节的高4位先回放，译注）<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel4noise"></A><FONT SIZE=+2>&nbsp;Sound Channel 4 - Noise</FONT></TD></TR></TABLE><BR>
-This channel is used to output white noise. This is done by randomly 
-switching the amplitude between high and low at a given frequency. 
-Depending on the frequency the noise will appear 'harder' or 'softer'.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel4noise"></A><FONT SIZE=+2>&nbsp;声音通道 4 - 噪音</FONT></TD></TR></TABLE><BR>
+    本通道用来产生白噪音。通过随机切换给定频率的高低幅值而实现。取决于具体的频率，噪音听起来会“硬一些”或“软一些”。<BR>
 <BR>
-It is also possible to influence the function of the random generator, 
-so the that the output becomes more regular, resulting in a limited 
-ability to output Tone instead of Noise.<BR>
+当然也可以影响随机数产生器功能，使得输出变得更规整一些。这样可以得一个有限的乐音，而不是噪音。<BR>
 <BR>
-<B>FF20 - NR41 - Channel 4 Sound Length (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 5-0 - Sound length data (t1: 0-63)
-</TD></TR></TABLE>Sound Length = (64-t1)*(1/256) seconds<BR>
-The Length value is used only if Bit 6 in NR44 is set.<BR>
+<B>FF20 - NR41 - 通道 4 声音长度 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  Bit 5-0 - 声音长度数据 (t1: 0-63)
+</TD></TR></TABLE>声音长度 = (64-t1)*(1/256) 秒<BR>
+仅当NR44的比特位6被置位时使用该数值。
 <BR>
-<B>FF21 - NR42 - Channel 4 Volume Envelope (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-4 - Initial Volume of envelope (0-0Fh) (0=No Sound)
-  Bit 3   - Envelope Direction (0=Decrease, 1=Increase)
-  Bit 2-0 - Number of envelope sweep (n: 0-7)
-            (If zero, stop envelope operation.)
-</TD></TR></TABLE>Length of 1 step = n*(1/64) seconds<BR>
 <BR>
-<B>FF22 - NR43 - Channel 4 Polynomial Counter (R/W)<BR>
-</B>The amplitude is randomly switched between high and low at the given 
-frequency. A higher frequency will make the noise to appear 'softer'.<BR>
-When Bit 3 is set, the output will become more regular, and some 
-frequencies will sound more like Tone than Noise.<BR>
-<TABLE><TR><TD><PRE>  Bit 7-4 - Shift Clock Frequency (s)
-  Bit 3   - Counter Step/Width (0=15 bits, 1=7 bits)
-  Bit 2-0 - Dividing Ratio of Frequencies (r)
-</TD></TR></TABLE>Frequency = 524288 Hz / r / 2^(s+1)     ;For r=0 assume r=0.5 instead<BR>
+<B>FF21 - NR42 - 通道 4 声音包络线 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  Bit 7-4 - 包络线起始音量 (0-0Fh) (0=无声音)
+  Bit 3   - 包络线方向 (0=减少, 1=增加)
+  Bit 2-0 - 包络线扫频数 (n: 0-7)
+            （若为零，停止包络线操作。）
+</TD></TR></TABLE>一步的长度 = n*(1/64) 秒<BR>
 <BR>
-<B>FF23 - NR44 - Channel 4 Counter/consecutive; Inital (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7   - Initial (1=Restart Sound)     (Write Only)
-  Bit 6   - Counter/consecutive selection (Read/Write)
-            (1=Stop output when length in NR41 expires)
+<B>FF22 - NR43 - 通道 4 多项式计数器 (读/写)<BR>
+</B>噪音的幅值在给定频率的高和低之间随机切换。高一些的频率使得噪音听起来“软一些”。<BR>
+当比特位3被置位时，输出会变得更规整，使得一些频率听起来更像是乐音而不是噪音。<BR>
+<TABLE><TR><TD><PRE>  比特位 7-4 - 移位时钟频率(s)
+  Bit 3   - 计数器 步长/宽度 (0=15 位, 1=7 位)
+  Bit 2-0 - 频率相除系数 (r)
+</TD></TR></TABLE>频率 = 524288 Hz / r / 2^(s+1)     ;当 r=0 时用 r=0.5 替换<BR>
+<BR>
+<B>FF23 - NR44 - 通道 4 计数器/连续性; 启动 (R/W)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7   - 启动 (1=重启声音)     (只写)
+  Bit 6   - 计数器/连续性选择 (读/写)
+            (1=达到NR41中指定的长度时，停止输出)
 </TD></TR></TABLE><BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundcontrolregisters"></A><FONT SIZE=+2>&nbsp;Sound Control Registers</FONT></TD></TR></TABLE><BR>
