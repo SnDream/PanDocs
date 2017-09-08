@@ -492,7 +492,7 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 （SGB上的声音频率约高2.4%。）<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel1tonesweep"></A><FONT SIZE=+2>&nbsp;声音控制器 1 - 乐音和扫频</FONT></TD></TR></TABLE><BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel1tonesweep"></A><FONT SIZE=+2>&nbsp;声音通道 1 - 乐音和扫频</FONT></TD></TR></TABLE><BR>
 <B>FF10 - NR10 - 通道 1 扫频寄存器 (读/写)<BR>
 </B><TABLE><TR><TD><PRE>  比特位 6-4 - 扫频时间
   比特位 3   - 递增/递减扫频
@@ -524,16 +524,16 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 仅当NR14的比特位6被置为1的时候，长度数值才有用。<BR>
 <BR>
 <B>FF12 - NR12 - 通道 1 音量包络线 (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-4 - 起始音量包络 (0-0Fh) (0=无声音)
-  Bit 3   - 包络线方向 (0=减少, 1=增加)
-  Bit 2-0 - 包络线扫频数 (n: 0-7)
-            （若为零，则停止包络线操作。）
+</B><TABLE><TR><TD><PRE>  比特位 7-4 - 包络线起始音量 (0-0Fh) (0=无声音)
+  比特位 3   - 包络线方向 (0=减少, 1=增加)
+  比特位 2-0 - 包络线扫频数 (n: 0-7)
+            （若为零，停止包络线操作。）
 </TD></TR></TABLE>1步的长度 = n*(1/64) 秒<BR>
 <BR>
 <B>FF13 - NR13 - 通道 1 频率低位 (只写)<BR>
 </B><BR>
 11位频率 (x) 的低8位。<BR>
-接下来的3位储存在 NR14 ($FF14)<BR>
+接下来的3位在 NR14 ($FF14)中<BR>
 <BR>
 <B>FF14 - NR14 - 通道 1 频率高位 (读/写)<BR>
 </B><TABLE><TR><TD><PRE>  比特位 7   - 启动 (1=重启声音)     (只写)
@@ -543,159 +543,143 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 </TD></TR></TABLE>频率 = 131072/(2048-x) Hz<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel2tone"></A><FONT SIZE=+2>&nbsp;Sound Channel 2 - Tone</FONT></TD></TR></TABLE><BR>
-This sound channel works exactly as channel 1, except that it doesn't 
-have a Tone Envelope/Sweep Register.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel2tone"></A><FONT SIZE=+2>&nbsp;声音通道 2 - 乐音</FONT></TD></TR></TABLE><BR>
+此声音通道和通道1完全一致，除了它没有乐音包络/扫频寄存器。<BR>
 <BR>
-<B>FF16 - NR21 - Channel 2 Sound Length/Wave Pattern Duty (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-6 - Wave Pattern Duty (Read/Write)
-  Bit 5-0 - Sound length data (Write Only) (t1: 0-63)
-</TD></TR></TABLE>Wave Duty:<BR>
+<B>FF16 - NR21 - 通道 2 声音长度/波形图案工作周期 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7-6 - 波形图案工作周期 (读/写)
+  比特位 5-0 - 声音长度数据 (只写) (t1: 0-63)
+</TD></TR></TABLE>波形工作周期:<BR>
 <TABLE><TR><TD><PRE>  00: 12.5% ( _-------_-------_------- )
   01: 25%   ( __------__------__------ )
-  10: 50%   ( ____----____----____---- ) (normal)
+  10: 50%   ( ____----____----____---- ) (普通)
   11: 75%   ( ______--______--______-- )
-</TD></TR></TABLE>Sound Length = (64-t1)*(1/256) seconds<BR>
-The Length value is used only if Bit 6 in NR24 is set.<BR>
+</TD></TR></TABLE>声音长度 = (64-t1)*(1/256) 秒<BR>
+仅当NR24的比特位6被置位时使用长度数值。<BR>
 <BR>
-<B>FF17 - NR22 - Channel 2 Volume Envelope (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-4 - Initial Volume of envelope (0-0Fh) (0=No Sound)
-  Bit 3   - Envelope Direction (0=Decrease, 1=Increase)
-  Bit 2-0 - Number of envelope sweep (n: 0-7)
-            (If zero, stop envelope operation.)
-</TD></TR></TABLE>Length of 1 step = n*(1/64) seconds<BR>
+<B>FF17 - NR22 - 通道 2 声音包络线 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7-4 - 包络线起始音量 (0-0Fh) (0=无声音)
+  比特位 3   - 包络线方向 (0=减少, 1=增加)
+  比特位 2-0 - 包络线扫频数 (n: 0-7)
+            (若为零，停止包络线操作。)
+</TD></TR></TABLE>1步的长度 = n*(1/64) 秒<BR>
 <BR>
-<B>FF18 - NR23 - Channel 2 Frequency lo data (W)<BR>
-</B>Frequency's lower 8 bits of 11 bit data (x).<BR>
-Next 3 bits are in NR24 ($FF19).<BR>
+<B>FF18 - NR23 - 通道 2 频率低位数据 (W)<BR>
+</B>11位频率数据(x)的低8位。<BR>
+接下来的3位在 NR24 ($FF19) 中。<BR>
 <BR>
-<B>FF19 - NR24 - Channel 2 Frequency hi data (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7   - Initial (1=Restart Sound)     (Write Only)
-  Bit 6   - Counter/consecutive selection (Read/Write)
-            (1=Stop output when length in NR21 expires)
-  Bit 2-0 - Frequency's higher 3 bits (x) (Write Only)
-</TD></TR></TABLE>Frequency = 131072/(2048-x) Hz<BR>
+<B>FF19 - NR24 - 通道 2 频率高位数据 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7   - 启动 (1=重启声音)     (只写)
+  比特位 6   - 计数器/连续性选择 (读/写)
+            (1=达到NR21中指定的长度时，停止输出)
+  比特位 2-0 - 频率的高3位 (x) (只写)
+</TD></TR></TABLE>频率 = 131072/(2048-x) Hz<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel3waveoutput"></A><FONT SIZE=+2>&nbsp;Sound Channel 3 - Wave Output</FONT></TD></TR></TABLE><BR>
-This channel can be used to output digital sound, the length of the 
-sample buffer (Wave RAM) is limited to 32 digits. This sound channel can 
-be also used to output normal tones when initializing the Wave RAM by a 
-square wave. This channel doesn't have a volume envelope register.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel3waveoutput"></A><FONT SIZE=+2>&nbsp;声音 3 - 波形输出</FONT></TD></TR></TABLE><BR>
+该通道可以用来输出数字声音，其采样缓冲（波形内存）的长度限制到32位。
+    若用方波初始化波形内存，本通道也可用来输出普通乐音。该通道没有音量包络线寄存器。<BR>
 <BR>
-<B>FF1A - NR30 - Channel 3 Sound on/off (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7 - Sound Channel 3 Off  (0=Stop, 1=Playback)  (Read/Write)
+<B>FF1A - NR30 - 通道 3 声音 打开/关闭 (R/W)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7 - 声音通道 3 关闭  (0=停止, 1=回放)  (读/写)
 </TD></TR></TABLE><BR>
-<B>FF1B - NR31 - Channel 3 Sound Length<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-0 - Sound length (t1: 0 - 255)
-</TD></TR></TABLE>Sound Length = (256-t1)*(1/256) seconds<BR>
-This value is used only if Bit 6 in NR34 is set.<BR>
+<B>FF1B - NR31 - 通道 3 声音长度<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7-0 - 声音长度 (t1: 0 - 255)
+</TD></TR></TABLE>声音长度 = (256-t1)*(1/256) 秒<BR>
+仅当NR34的比特位6被置位时使用该数值。<BR>
 <BR>
-<B>FF1C - NR32 - Channel 3 Select output level (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 6-5 - Select output level (Read/Write)
-</TD></TR></TABLE>Possible Output levels are:<BR>
-<TABLE><TR><TD><PRE>  0: Mute (No sound)
-  1: 100% Volume (Produce Wave Pattern RAM Data as it is)
-  2:  50% Volume (Produce Wave Pattern RAM data shifted once to the right)
-  3:  25% Volume (Produce Wave Pattern RAM data shifted twice to the right)
+<B>FF1C - NR32 - 通道 3 选择输出水平 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 6-5 - 选择输出水平 (读/写)
+</TD></TR></TABLE>可选输出水平：<BR>
+<TABLE><TR><TD><PRE>  0: 静音 (无声音)
+  1: 100% 音量 (原样产生波形图案内存数据)
+  2:  50% 音量 (产生右移一位的波形图案内存数据)
+  3:  25% 音量 (产生右移两位的波形图案内存数据)
 </TD></TR></TABLE><BR>
-<B>FF1D - NR33 - Channel 3 Frequency's lower data (W)<BR>
-</B>Lower 8 bits of an 11 bit frequency (x).<BR>
+<B>FF1D - NR33 - 通道 3 频率低位数据 (写)<BR>
+</B>11位频率 (x) 的低8位。<BR>
 <BR>
-<B>FF1E - NR34 - Channel 3 Frequency's higher data (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7   - Initial (1=Restart Sound)     (Write Only)
-  Bit 6   - Counter/consecutive selection (Read/Write)
-            (1=Stop output when length in NR31 expires)
-  Bit 2-0 - Frequency's higher 3 bits (x) (Write Only)
-</TD></TR></TABLE>Frequency  =  4194304/(64*(2048-x)) Hz  =  65536/(2048-x) Hz<BR>
+<B>FF1E - NR34 - 通道 3 频率高位数据 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7   - 启动 (1=重启声音)     (只写)
+  比特位 6   - 计数器/连续性选择 (读/写)
+            (1=达到NR31中指定的长度时，停止输出)
+  比特位 2-0 - 频率的高3位 (x) (只写)
+</TD></TR></TABLE>频率  =  4194304/(64*(2048-x)) Hz  =  65536/(2048-x) Hz<BR>
 <BR>
-<B>FF30-FF3F - Wave Pattern RAM<BR>
-</B>Contents - Waveform storage for arbitrary sound data<BR>
+<B>FF30-FF3F - 波形图案内存<BR>
+</B>Contents - 任意声音数据的波形储存<BR>
 <BR>
-This storage area holds 32 4-bit samples  that are played back upper 4 
-bits first.<BR>
+该存储区域包含32个4比特采样。高4比特先回放。（即16个字节按序播放，每一个字节的高4位先回放，译注）<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel4noise"></A><FONT SIZE=+2>&nbsp;Sound Channel 4 - Noise</FONT></TD></TR></TABLE><BR>
-This channel is used to output white noise. This is done by randomly 
-switching the amplitude between high and low at a given frequency. 
-Depending on the frequency the noise will appear 'harder' or 'softer'.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundchannel4noise"></A><FONT SIZE=+2>&nbsp;声音通道 4 - 噪音</FONT></TD></TR></TABLE><BR>
+    本通道用来产生白噪音。通过随机切换给定频率的高低幅值而实现。取决于具体的频率，噪音听起来会“硬一些”或“软一些”。<BR>
 <BR>
-It is also possible to influence the function of the random generator, 
-so the that the output becomes more regular, resulting in a limited 
-ability to output Tone instead of Noise.<BR>
+当然也可以影响随机数产生器功能，使得输出变得更规整一些。这样可以得一个有限的乐音，而不是噪音。<BR>
 <BR>
-<B>FF20 - NR41 - Channel 4 Sound Length (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 5-0 - Sound length data (t1: 0-63)
-</TD></TR></TABLE>Sound Length = (64-t1)*(1/256) seconds<BR>
-The Length value is used only if Bit 6 in NR44 is set.<BR>
+<B>FF20 - NR41 - 通道 4 声音长度 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 5-0 - 声音长度数据 (t1: 0-63)
+</TD></TR></TABLE>声音长度 = (64-t1)*(1/256) 秒<BR>
+仅当NR44的比特位6被置位时使用该数值。
 <BR>
-<B>FF21 - NR42 - Channel 4 Volume Envelope (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7-4 - Initial Volume of envelope (0-0Fh) (0=No Sound)
-  Bit 3   - Envelope Direction (0=Decrease, 1=Increase)
-  Bit 2-0 - Number of envelope sweep (n: 0-7)
-            (If zero, stop envelope operation.)
-</TD></TR></TABLE>Length of 1 step = n*(1/64) seconds<BR>
 <BR>
-<B>FF22 - NR43 - Channel 4 Polynomial Counter (R/W)<BR>
-</B>The amplitude is randomly switched between high and low at the given 
-frequency. A higher frequency will make the noise to appear 'softer'.<BR>
-When Bit 3 is set, the output will become more regular, and some 
-frequencies will sound more like Tone than Noise.<BR>
-<TABLE><TR><TD><PRE>  Bit 7-4 - Shift Clock Frequency (s)
-  Bit 3   - Counter Step/Width (0=15 bits, 1=7 bits)
-  Bit 2-0 - Dividing Ratio of Frequencies (r)
-</TD></TR></TABLE>Frequency = 524288 Hz / r / 2^(s+1)     ;For r=0 assume r=0.5 instead<BR>
+<B>FF21 - NR42 - 通道 4 声音包络线 (读/写)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7-4 - 包络线起始音量 (0-0Fh) (0=无声音)
+  比特位 3   - 包络线方向 (0=减少, 1=增加)
+  比特位 2-0 - 包络线扫频数 (n: 0-7)
+            （若为零，停止包络线操作。）
+</TD></TR></TABLE>一步的长度 = n*(1/64) 秒<BR>
 <BR>
-<B>FF23 - NR44 - Channel 4 Counter/consecutive; Inital (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7   - Initial (1=Restart Sound)     (Write Only)
-  Bit 6   - Counter/consecutive selection (Read/Write)
-            (1=Stop output when length in NR41 expires)
+<B>FF22 - NR43 - 通道 4 多项式计数器 (读/写)<BR>
+</B>噪音的幅值在给定频率的高和低之间随机切换。高一些的频率使得噪音听起来“软一些”。<BR>
+当比特位3被置位时，输出会变得更规整，使得一些频率听起来更像是乐音而不是噪音。<BR>
+<TABLE><TR><TD><PRE>  比特位 7-4 - 移位时钟频率(s)
+  比特位 3   - 计数器 步长/宽度 (0=15 位, 1=7 位)
+  比特位 2-0 - 频率相除系数 (r)
+</TD></TR></TABLE>频率 = 524288 Hz / r / 2^(s+1)     ;当 r=0 时用 r=0.5 替换<BR>
+<BR>
+<B>FF23 - NR44 - 通道 4 计数器/连续性; 启动 (R/W)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7   - 启动 (1=重启声音)     (只写)
+  比特位 6   - 计数器/连续性选择 (读/写)
+            (1=达到NR41中指定的长度时，停止输出)
 </TD></TR></TABLE><BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundcontrolregisters"></A><FONT SIZE=+2>&nbsp;Sound Control Registers</FONT></TD></TR></TABLE><BR>
-<B>FF24 - NR50 - Channel control / ON-OFF / Volume (R/W)<BR>
-</B>The volume bits specify the "Master Volume" for Left/Right sound output.<BR>
-<TABLE><TR><TD><PRE>  Bit 7   - Output Vin to SO2 terminal (1=Enable)
-  Bit 6-4 - SO2 output level (volume)  (0-7)
-  Bit 3   - Output Vin to SO1 terminal (1=Enable)
-  Bit 2-0 - SO1 output level (volume)  (0-7)
-</TD></TR></TABLE>The Vin signal is received from the game cartridge bus, allowing 
-external hardware in the cartridge to supply a fifth sound channel, 
-additionally to the gameboys internal four channels. As far as I know 
-this feature isn't used by any existing games.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="soundcontrolregisters"></A><FONT SIZE=+2>&nbsp;声音控制寄存器</FONT></TD></TR></TABLE><BR>
+<B>FF24 - NR50 - 通道控制 / 开启-关闭 / 音量 (读/写)<BR>
+</B>音量位指定了左/右声道输出的“主音量”。<BR>
+<TABLE><TR><TD><PRE>  比特位 7   - 输出 Vin 到 SO2 端口 (1=启用)
+  比特位 6-4 - SO2 输出水平 (音量)  (0-7)
+  比特位 3   - 输出 Vin 到 SO1 端口 (1=启用)
+  比特位 2-0 - SO1 输出水平 (音量)  (0-7)
+</TD></TR></TABLE>Vin 信号接收自游戏卡匣总线，使得卡匣里的额外硬件可以在Gameboy内部的四个通道之外，提供第五个声音通道。然而据我所知，尚未有游戏使用了该功能。<BR>
 <BR>
-<B>FF25 - NR51 - Selection of Sound output terminal (R/W)<BR>
-</B><TABLE><TR><TD><PRE>  Bit 7 - Output sound 4 to SO2 terminal
-  Bit 6 - Output sound 3 to SO2 terminal
-  Bit 5 - Output sound 2 to SO2 terminal
-  Bit 4 - Output sound 1 to SO2 terminal
-  Bit 3 - Output sound 4 to SO1 terminal
-  Bit 2 - Output sound 3 to SO1 terminal
-  Bit 1 - Output sound 2 to SO1 terminal
-  Bit 0 - Output sound 1 to SO1 terminal
+<B>FF25 - NR51 - 选择声音输出端口 (R/W)<BR>
+</B><TABLE><TR><TD><PRE>  比特位 7 - 输出声音 4 到 SO2 端口
+  比特位 6 - 输出声音 3 到 SO2 端口
+  比特位 5 - 输出声音 2 到 SO2 端口
+  比特位 4 - 输出声音 1 到 SO2 端口
+  比特位 3 - 输出声音 4 到 SO1 端口
+  比特位 2 - 输出声音 3 到 SO1 端口
+  比特位 1 - 输出声音 2 到 SO1 端口
+  比特位 0 - 输出声音 1 到 SO1 端口
 </TD></TR></TABLE><BR>
-<B>FF26 - NR52 - Sound on/off<BR>
-</B>If your GB programs don't use sound then write 00h to this register to 
-save 16% or more on GB power consumption. Disabeling the sound 
-controller by clearing Bit 7 destroys the contents of all sound 
-registers. Also, it is not possible to access any sound registers 
-(execpt FF26) while the sound controller is disabled.<BR>
-<TABLE><TR><TD><PRE>  Bit 7 - All sound on/off  (0: stop all sound circuits) (Read/Write)
-  Bit 3 - Sound 4 ON flag (Read Only)
-  Bit 2 - Sound 3 ON flag (Read Only)
-  Bit 1 - Sound 2 ON flag (Read Only)
-  Bit 0 - Sound 1 ON flag (Read Only)
-</TD></TR></TABLE>Bits 0-3 of this register are read only status bits, writing to these 
-bits does NOT enable/disable sound. The flags get set when sound output 
-is restarted by setting the Initial flag (Bit 7 in NR14-NR44), the flag 
-remains set until the sound length has expired (if enabled). A volume 
-envelopes which has decreased to zero volume will NOT cause the sound 
-flag to go off.<BR>
+<B>FF26 - NR52 - 声音 开启/关闭<BR>
+</B>如果你的GB程序不使用声音，那么向该寄存器写入数值00h将减少至少16%的整机功耗。
+    清零比特位7销毁所有声音寄存器中的内容，从而禁用声音寄存器。
+    另外，当声音寄存器被禁用时，将无法访问任何声音寄存器（除了FF26）。<BR>
+<TABLE><TR><TD><PRE>  比特位 7 - 全部声音 开启/关闭  (0: 停止所有声音电路) (读/写)
+  比特位 3 - 声音 4 开启标志位 (只读)
+  比特位 2 - 声音 3 开启标志位 (只读)
+  比特位 1 - 声音 2 开启标志位 (只读)
+  比特位 0 - 声音 1 开启标志位 (只读)
+</TD></TR></TABLE>本寄存器的比特位0-3是只读的，向这些位写操作不可启用/禁用声音。
+    设定启动标志位（NR14-NR44的比特位7），声音输出被重启，使得这些标志位被置位。
+    这些标志位将一直保持被置位状态直到声音长度已达到。
+    减少到无声的声音包络线不会使得声音标志位关闭。<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="joypadinput"></A><FONT SIZE=+2>&nbsp;Joypad Input</FONT></TD></TR></TABLE><BR>
-<B>FF00 - P1/JOYP - Joypad (R/W)<BR>
+<B>FF00 - P1/JOYP - 手柄 (读/写)<BR>
 </B>The eight gameboy buttons/direction keys are arranged in form of a 2x4 
 matrix. Select either button or direction keys by writing to this 
 register, then read-out bit 0-3.<BR>
