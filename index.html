@@ -2175,221 +2175,165 @@ up to a multiple of 4 cycles though.<BR>
 </B>含有一个对整个卡带 ROM 的 16 位校验和 (高位字节在前, 即大端序). 通过计算卡带所有字节的和 (除了这两个校验字节) 得到. Gameboy 不会验证这个校验和.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="memorybankcontrollers"></A><FONT SIZE=+2>&nbsp;Memory Bank Controllers</FONT></TD></TR></TABLE><BR>
-As the gameboys 16 bit address bus offers only limited space for ROM and 
-RAM addressing, many games are using Memory Bank Controllers (MBCs) to 
-expand the available address space by bank switching. These MBC chips 
-are located in the game cartridge (ie. not in the gameboy itself), 
-several different MBC types are available:<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="memorybankcontrollers"></A><FONT SIZE=+2>&nbsp;MBC (存储页面控制器)</FONT></TD></TR></TABLE><BR>
+在 GameBoy 的 16 位地址总线只为 ROM 和 RAM 提供有限的空间的情况之下, 许多游戏使用 MBC (存储页面控制器) 来通过切换 Bank (切页) 扩展可用的地址空间. 这些 MBC 芯片位于游戏卡带上 (不在 GameBoy 机内), 可用以下几种不同的 MBC 类型:<BR>
 <BR>
-<A HREF="#none32kbyteromonly">None (32KByte ROM only)</A><BR>
-<A HREF="#mbc1max2mbyteromandor32kbyteram">MBC1 (max 2MByte ROM and/or 32KByte RAM)</A><BR>
-<A HREF="#mbc2max256kbyteromand512x4bitsram">MBC2 (max 256KByte ROM and 512x4 bits RAM)</A><BR>
-<A HREF="#mbc3max2mbyteromandor32kbyteramandtimer">MBC3 (max 2MByte ROM and/or 32KByte RAM and Timer)</A><BR>
-<A HREF="#huc1mbcwithinfraredcontroller">HuC1 (MBC with Infrared Controller)</A><BR>
+<A HREF="#none32kbyteromonly">无 (仅 32K 字节 ROM)</A><BR>
+<A HREF="#mbc1max2mbyteromandor32kbyteram">MBC1 (最大 2M 字节 ROM, 可选最大 32K 字节 RAM)</A><BR>
+<A HREF="#mbc2max256kbyteromand512x4bitsram">MBC2 (最大 256K 字节 ROM, 与 512x4 位 RAM)</A><BR>
+<A HREF="#mbc3max2mbyteromandor32kbyteramandtimer">MBC3 (最大 2M 字节 ROM, 可选最大 64K 字节 RAM, 实时时钟)</A><BR>
+<A HREF="#mbc5max8mbyteromandor128kbyteramandrumble">MBC5 (最大 8M 字节 ROM, 可选最大 128K 字节 RAM, 可选震动)</A><BR>
+<A HREF="#huc1mbcwithinfraredcontroller">HuC1 (带有红外控制器的 MBC)</A><BR>
 <BR>
-<A HREF="#mbctimingissues">MBC Timing Issues</A><BR>
+<A HREF="#mbctimingissues">MBC 时间问题</A><BR>
 <BR>
-In each cartridge, the required (or preferred) MBC type should be 
-specified in byte at 0147h of the ROM. (As described in the chapter 
-about The Cartridge Header.)<BR>
+对于每个卡带, 所用的 (或者所倾向的) MBC 类型应该在 ROM 的 0147h 指定. (在卡带头部章节已经介绍.)<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="none32kbyteromonly"></A><FONT SIZE=+2>&nbsp;None (32KByte ROM only)</FONT></TD></TR></TABLE><BR>
-Small games of not more than 32KBytes ROM do not require a MBC chip for 
-ROM banking. The ROM is directly mapped to memory at 0000-7FFFh. 
-Optionally up to 8KByte of RAM could be connected at A000-BFFF, even 
-though that could require a tiny MBC-like circuit, but no real MBC chip.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="none32kbyteromonly"></A><FONT SIZE=+2>&nbsp;无 (仅 32K 字节 ROM)</FONT></TD></TR></TABLE><BR>
+不大于 32K 字节 ROM 的小游戏不需要 MBC 芯片来做 ROM 分页. ROM 可以直接映射到内存 0000-7FFFh. 可选的 8K 字节 RAM 可以连接到 A000-BFFFh, 虽然 RAM 可能需要一个微型的类 MBC 电路支持, 但不会有真的 MBC 芯片.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="mbc1max2mbyteromandor32kbyteram"></A><FONT SIZE=+2>&nbsp;MBC1 (max 2MByte ROM and/or 32KByte RAM)</FONT></TD></TR></TABLE><BR>
-This is the first MBC chip for the gameboy. Any newer MBC chips are 
-working similiar, so that is relative easy to upgrade a program from one 
-MBC chip to another - or even to make it compatible to several different 
-types of MBCs.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="mbc1max2mbyteromandor32kbyteram"></A><FONT SIZE=+2>&nbsp;MBC1 (最大 2M 字节 ROM, 可选最大 32K 字节 RAM)</FONT></TD></TR></TABLE><BR>
+这是 GameBoy 的第一款 MBC 芯片. 任何其他后期 MBC 芯片的工作方式均与此款相似, 所以从某款 MBC 芯片上程序更新到另一款 MBC 芯片上相对容易 - 甚至可以做到同时兼容多款不同类型的 MBC.<BR>
 <BR>
-Note that the memory in range 0000-7FFF is used for both reading from 
-ROM, and for writing to the MBCs Control Registers.<BR>
+注意内存范围 0000-7FFF 同时用于从 ROM 中读取数据, 以及向 MBC 控制寄存器写入.<BR>
 <BR>
-<B>0000-3FFF - ROM Bank 00 (Read Only)<BR>
-</B>This area always contains the first 16KBytes of the cartridge ROM.<BR>
+<B>0000-3FFF - ROM Bank 00 (只读)<BR>
+</B>这个区域总是装入卡带 ROM 的前 16K 字节.<BR>
 <BR>
-<B>4000-7FFF - ROM Bank 01-7F (Read Only)<BR>
-</B>This area may contain any of the further 16KByte banks of the ROM, 
-allowing to address up to 125 ROM Banks (almost 2MByte). As described 
-below, bank numbers 20h, 40h, and 60h cannot be used, resulting in the 
-odd amount of 125 banks.<BR>
+<B>4000-7FFF - ROM Bank 01-7F (只读)<BR>
+</B>这个区域可装入 ROM 中更多的 16K 字节 Bank, 使得寻址多到 125 个 ROM Bank (接近 2M 字节). 下文会说明, 因为20h, 40h, 60h 号 Bank 不可用, 所以可用 Bank 的数量是奇怪的 125.<BR>
 <BR>
-<B>A000-BFFF - RAM Bank 00-03, if any (Read/Write)<BR>
-</B>This area is used to address external RAM in the cartridge (if any). 
-External RAM is often battery buffered, allowing to store game positions 
-or high score tables, even if the gameboy is turned off, or if the 
-cartridge is removed from the gameboy. Available RAM sizes are: 2KByte 
-(at A000-A7FF), 8KByte (at A000-BFFF), and 32KByte (in form of four 8K 
-banks at A000-BFFF).<BR>
+<B>A000-BFFF - RAM Bank 00-03, 可选 (读写)<BR>
+</B>这个区域用于卡带中外部 RAM (即 ERAM, 可选) 的寻址. 外部 RAM 常有电池缓冲 (此时也叫 SRAM), 使得在 GameBoy 关机, 或将卡带从 GameBoy 上移除时, 仍旧维持游戏的位置和高分表等. 可选的 RAM 大小有: 2K 字节 (于 A000-A7FF), 8K 字节 (于 A000-BFFF), 和 32K 字节 (由四个于 A000-BFFF 的 8K Bank 组成).<BR>
 <BR>
-<B>0000-1FFF - RAM Enable (Write Only)<BR>
-</B>Before external RAM can be read or written, it must be enabled by 
-writing to this address space. It is recommended to disable external RAM 
-after accessing it, in order to protect its contents from damage during 
-power down of the gameboy. Usually the following values are used:<BR>
-<TABLE><TR><TD><PRE>  00h  Disable RAM (default)
-  0Ah  Enable RAM
-</TD></TR></TABLE>Practically any value with 0Ah in the lower 4 bits enables RAM, and any 
-other value disables RAM.<BR>
+<B>0000-1FFF - 启用 RAM (只写)<BR>
+</B>在外部 RAM 可以读写之前, 必须通过写入这个地址区域来启用读写. 为了保护外部 RAM 的内容在 GameBoy 关闭电源时不受损坏, 推荐在访问结束之后关闭. 一般使用下面的值进行操作:<BR>
+<TABLE><TR><TD><PRE>  00h  关闭 RAM (默认)
+  0Ah  开启 RAM
+</TD></TR></TABLE>实际上任何低四位是 0Ah 的值都能开启 RAM, 其他数值均能关闭 RAM.<BR>
 <BR>
-<B>2000-3FFF - ROM Bank Number (Write Only)<BR>
-</B>Writing to this address space selects the lower 5 bits of the ROM Bank 
-Number (in range 01-1Fh). When 00h is written, the MBC translates that 
-to bank 01h also. That doesn't harm so far, because ROM Bank 00h can be 
-always directly accessed by reading from 0000-3FFF.<BR>
-But (when using the register below to specify the upper ROM Bank bits), 
-the same happens for Bank 20h, 40h, and 60h. Any attempt to address 
-these ROM Banks will select Bank 21h, 41h, and 61h instead.<BR>
+<B>2000-3FFF - ROM Bank 号 (只写)<BR>
+</B>写入这个地址区域来选择 ROM Bank 号的低五位 (在范围 01-1Fh). 当写入 00h 时, MBC 芯片会将其转换为 01h. 这个特性并没什么大问题, 因为 00h 号 ROM Bank 总是可以通过读取 0000-3FFF 来访问.<BR>
+但是 (当使用下文的寄存器指定高位 ROM Bank 位时), 这个特性同样发生在20h, 40h, 60h 号 Bank. 任何对这些 ROM Bank 的寻址尝试将以选择21h, 41h, 61h 号 Bank 所代替.<BR>
 <BR>
-<B>4000-5FFF - RAM Bank Number - or - Upper Bits of ROM Bank Number (Write Only)<BRBR>
-</B>This 2bit register can be used to select a RAM Bank in range from 
-00-03h, or to specify the upper two bits (Bit 5-6) of the ROM Bank 
-number, depending on the current ROM/RAM Mode. (See below.)<BR>
+<B>4000-5FFF - RAM Bank 号 - 或 - ROM Bank 号 的高位 (只写)<BR>
+</B>这个两位的寄存器可以用于选择范围在 00-03h 的 RAM Bank 号, 或者指定 ROM Bank 号的高两位 (Bit 5-6), 具体取决于当前的 ROM/RAM 模式. (见下.)<BR>
 <BR>
-<B>6000-7FFF - ROM/RAM Mode Select (Write Only)<BR>
-</B>This 1bit Register selects whether the two bits of the above register 
-should be used as upper two bits of the ROM Bank, or as RAM Bank Number.<BR>
-<TABLE><TR><TD><PRE>  00h = ROM Banking Mode (up to 8KByte RAM, 2MByte ROM) (default)
-  01h = RAM Banking Mode (up to 32KByte RAM, 512KByte ROM)
-</TD></TR></TABLE>The program may freely switch between both modes, the only limitiation 
-is that only RAM Bank 00h can be used during Mode 0, and only ROM Banks 
-00-1Fh can be used during Mode 1.<BR>
+<B>6000-7FFF - ROM/RAM 模式选择 (只写)<BR>
+</B>这个一位的寄存器用于选择前面寄存器是作为 ROM Bank 号的高两位, 还是作为 RAM Bank 号.<BR>
+<TABLE><TR><TD><PRE>  00h = ROM 切页模式 (最多 8K 字节 RAM, 2M 字节 ROM) (默认)
+  01h = RAM 切页模式 (最多 32K 字节 RAM, 512K 字节 ROM)
+</TD></TR></TABLE>程序可以在两个模式中自由切换, 唯一的限制是模式 0 下只有 00h 号 RAM Bank 可用, 模式 1 下只有 00-1Fh 号 ROM Bank 可用.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="mbc2max256kbyteromand512x4bitsram"></A><FONT SIZE=+2>&nbsp;MBC2 (max 256KByte ROM and 512x4 bits RAM)</FONT></TD></TR></TABLE><BR>
-<B>0000-3FFF - ROM Bank 00 (Read Only)<BR>
-</B>Same as for MBC1.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="mbc2max256kbyteromand512x4bitsram"></A><FONT SIZE=+2>&nbsp;MBC2 (最大 256K 字节 ROM, 512x4 位 RAM)</FONT></TD></TR></TABLE><BR>
+<B>0000-3FFF - ROM Bank 00 (只读)<BR>
+</B>与 MBC1 相同.<BR>
 <BR>
-<B>4000-7FFF - ROM Bank 01-0F (Read Only)<BR>
-</B>Same as for MBC1, but only a total of 16 ROM banks is supported.<BR>
+<B>4000-7FFF - ROM Bank 01-0F (只读)<BR>
+</B>与 MBC1 相同, 但是一共只支持 16 个 ROM Bank.<BR>
 <BR>
-<B>A000-A1FF - 512x4bits RAM, built-in into the MBC2 chip (Read/Write)<BR>
-</B>The MBC2 doesn't support external RAM, instead it includes 512x4 bits of 
-built-in RAM (in the MBC2 chip itself). It still requires an external 
-battery to save data during power-off though.<BR>
-As the data consists of 4bit values, only the lower 4 bits of the 
-"bytes" in this memory area are used.<BR>
+<B>A000-A1FF - 512x4 位 RAM, 内建于 MBC2 芯片 (读写)<BR>
+</B>MBC2 不支持外部 RAM, 取而代之的是一个 512x4 位的内建 RAM (位于 MBC2 芯片内部). 它在关机时同样需要外接电池维持存档.<BR>
+因为数据以 4 位的值构成, 这个存储区域只有每个 "字节" 的低 4 位可用.<BR>
 <BR>
-<B>0000-1FFF - RAM Enable (Write Only)<BR>
-</B>The least significant bit of the upper address byte must be zero to 
-enable/disable cart RAM. For example the following addresses can be used 
-to enable/disable cart RAM: 0000-00FF, 0200-02FF, 0400-04FF, ..., 
-1E00-1EFF.<BR>
-The suggested address range to use for MBC2 ram enable/disable is 
-0000-00FF.<BR>
+<B>0000-1FFF - 启用 RAM (只写)<BR>
+</B>地址高位字节的最低标志位需要为 0 来启用/禁用卡带 RAM. 比如下面的地址可以用于启用/禁用卡带 RAM: 0000-00FF, 0200-02FF, 0400-04FF, ..., 1E00-1EFF.<BR>
+建议使用 0000-00FF 的地址范围来启用/禁用 MBC2 的 RAM.<BR>
 <BR>
-<B>2000-3FFF - ROM Bank Number (Write Only)<BR>
-</B>Writing a value (XXXXBBBB - X = Don't cares, B = bank select bits) into 
-2000-3FFF area will select an appropriate ROM bank at 4000-7FFF.<BR>
+<B>2000-3FFF - ROM Bank 号 (只写)<BR>
+</B>写入值 (XXXXBBBB - X = 可忽略, B = Bank 选择位) 到 
+2000-3FFF 区域将选定对应的一个 ROM Bank 到 4000-7FFF.<BR>
 <BR>
-The least significant bit of the upper address byte must be one to 
-select a ROM bank. For example the following addresses can be used to 
-select a ROM bank: 2100-21FF, 2300-23FF, 2500-25FF, ..., 3F00-3FFF.<BR>
-The suggested address range to use for MBC2 rom bank selection is 
-2100-21FF.<BR>
+地址高位字节的最低标志位需要为 1 来选择 ROM Bank. 比如下面的地址可以用于选择 ROM Bank: 2100-21FF, 2300-23FF, 2500-25FF, ..., 3F00-3FFF.<BR>
+建议使用 2100-21FF 的地址范围来选择 MBC2 的 ROM Bank.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="mbc3max2mbyteromandor32kbyteramandtimer"></A><FONT SIZE=+2>&nbsp;MBC3 (max 2MByte ROM and/or 32KByte RAM and Timer)</FONT></TD></TR></TABLE><BR>
-Beside for the ability to access up to 2MB ROM (128 banks), and 32KB RAM 
-(4 banks), the MBC3 also includes a built-in Real Time Clock (RTC). The 
-RTC requires an external 32.768 kHz Quartz Oscillator, and an external 
-battery (if it should continue to tick when the gameboy is turned off).<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="mbc3max2mbyteromandor32kbyteramandtimer"></A><FONT SIZE=+2>&nbsp;MBC3 (最大 2M 字节 ROM, 可选最大 64K 字节 RAM, 实时时钟)</FONT></TD></TR></TABLE><BR>
+除了可以访问最大 2MB ROM (128 个 Bank) 以及 32KB (4 个 Bank, 典型 MBC3) / 64KB (8 个 Bank, 仅 MBC30 芯片支持) RAM 之外, MBC3 还包含一个内建的实时时钟 (RTC). 实时时钟需要外接一个 32.768 KHz 石英振荡器和外接一个电池 (如果需要在 GameBoy 关机时时钟能继续走动的话).<BR>
 <BR>
-<B>0000-3FFF - ROM Bank 00 (Read Only)<BR>
-</B>Same as for MBC1.<BR>
+<B>0000-3FFF - ROM Bank 00 (只读)<BR>
+</B>与 MBC1 相同.<BR>
 <BR>
-<B>4000-7FFF - ROM Bank 01-7F (Read Only)<BR>
-</B>Same as for MBC1, except that accessing banks 20h, 40h, and 60h is 
-supported now.<BR>
+<B>4000-7FFF - ROM Bank 01-7F (只读)<BR>
+</B>与 MBC1 相同, 但支持访问 Bank 20h, 40h, 60h.<BR>
 <BR>
-<B>A000-BFFF - RAM Bank 00-03, if any (Read/Write)<BR>
-A000-BFFF - RTC Register 08-0C (Read/Write)<BR>
-</B>Depending on the current Bank Number/RTC Register selection (see below), 
-this memory space is used to access an 8KByte external RAM Bank, or a 
-single RTC Register.<BR>
+<B>A000-BFFF - RAM Bank 00-07, 如果有的话 (读写)<BR>
+A000-BFFF - RTC 寄存器 08-0C (读写)<BR>
+</B>取决于当前所选的 Bank 号/实时时钟寄存器(见下), 这个内存空间用于访问一个 8K 字节的外部 RAM Bank, 或者一个实时时钟寄存器.<BR>
 <BR>
-<B>0000-1FFF - RAM and Timer Enable (Write Only)<BR>
-</B>Mostly the same as for MBC1, a value of 0Ah will enable reading and 
-writing to external RAM - and to the RTC Registers! A value of 00h will 
-disable either.<BR>
+<B>0000-1FFF - 启用 RAM 和实时时钟 (只写)<BR>
+</B>基本与 MBC1 相同, 写入值 0Ah 将启用读写外部 RAM 和实时时钟寄存器! 写入 00h 也将禁用读写.<BR>
 <BR>
-<B>2000-3FFF - ROM Bank Number (Write Only)<BR>
-</B>Same as for MBC1, except that the whole 7 bits of the RAM Bank Number 
-are written directly to this address. As for the MBC1, writing a value 
-of 00h, will select Bank 01h instead. All other values 01-7Fh select the 
-corresponding ROM Banks.<BR>
+<B>2000-3FFF - ROM Bank 号 (只写)<BR>
+</B>与 MBC1 相同, 但是整个 7 位的 ROM Bank 号是直接写入这个地址的. 和 MBC1 相同, 写入 00h 将会以选择 Bank 01h 替代. 其他的值 01-7Fh 选择对应的 ROM Bank.<BR>
 <BR>
-<B>4000-5FFF - RAM Bank Number - or - RTC Register Select (Write Only)<BR>
-</B>As for the MBC1s RAM Banking Mode, writing a value in range for 00h-03h 
-maps the corresponding external RAM Bank (if any) into memory at 
-A000-BFFF.<BR>
-When writing a value of 08h-0Ch, this will map the corresponding RTC 
-register into memory at A000-BFFF. That register could then be 
-read/written by accessing any address in that area, typically that is 
-done by using address A000.<BR>
+<B>4000-5FFF - RAM Bank 号 - 或 - 实时时钟寄存器选择 (只写)<BR>
+</B>如同 MBC1 的 RAM 切页模式, 写入范围在 00-07h 的值将映射对应的 RAM Bank (如果有的话) 到内存 A000-BFFF.<BR>
+写入值 08-0Ch 将映射对应的实时时钟寄存器到内存 A000-BFFF. 寄存器可以通过访问这个地址区域的任意一个地址来读写, 一般使用地址 A000 进行.<BR>
 <BR>
-<B>6000-7FFF - Latch Clock Data (Write Only)<BR>
-</B>When writing 00h, and then 01h to this register, the current time 
-becomes latched into the RTC registers. The latched data will not change 
-until it becomes latched again, by repeating the write 00h-&gt;01h 
-procedure.<BR>
-This is supposed for &lt;reading&gt; from the RTC registers. It is proof to 
-read the latched (frozen) time from the RTC registers, while the clock 
-itself continues to tick in background.<BR>
+<B>6000-7FFF - 固定时钟数据 (只写)<BR>
+</B>当写入 00h, 再写入 01h 到这个寄存器, 当前时间将被固定在实时时钟寄存器中. 固定的数据将保持不变直到再次重复写入 00h-&gt;01h 的操作来解固为止.<BR>
+这个功能用于从实时时钟寄存器中 &lt;读取&gt;. 可以确定从实时时钟寄存器中读取固定 (冻结) 的时间时, 时钟仍在后台自行走动. <BR>
 <BR>
-<B>The Clock Counter Registers<BR>
-</B><TABLE><TR><TD><PRE>  08h  RTC S   Seconds   0-59 (0-3Bh)
-  09h  RTC M   Minutes   0-59 (0-3Bh)
-  0Ah  RTC H   Hours     0-23 (0-17h)
-  0Bh  RTC DL  Lower 8 bits of Day Counter (0-FFh)
-  0Ch  RTC DH  Upper 1 bit of Day Counter, Carry Bit, Halt Flag
-        Bit 0  Most significant bit of Day Counter (Bit 8)
-        Bit 6  Halt (0=Active, 1=Stop Timer)
-        Bit 7  Day Counter Carry Bit (1=Counter Overflow)
-</TD></TR></TABLE>The Halt Flag is supposed to be set before &lt;writing&gt; to the RTC 
-Registers.<BR>
+<B>时钟计数寄存器<BR>
+</B><TABLE><TR><TD><PRE>  08h  RTC S   秒             0-59 (0-3Bh)
+  09h  RTC M   分             0-59 (0-3Bh)
+  0Ah  RTC H   时             0-23 (0-17h)
+  0Bh  RTC DL  天数计数器的低 8 位 (0-FFh)
+  0Ch  RTC DH  天数计数器的高 1 位, 溢出位, 停机位
+        Bit 0  天数计数器的最高位 (Bit 8)
+        Bit 6  停机               (0 = 时钟活动, 1 = 时钟停止)
+        Bit 7  天数计数器溢出位   (1 = 计数器溢出)
+</TD></TR></TABLE>停机位应该在 &lt;写入&gt; 实时时钟寄存器前被设置.<BR>
 <BR>
-<B>The Day Counter<BR>
-</B>The total 9 bits of the Day Counter allow to count days in range from 
-0-511 (0-1FFh). The Day Counter Carry Bit becomes set when this value 
-overflows. In that case the Carry Bit remains set until the program does 
-reset it.<BR>
-Note that you can store an offset to the Day Counter in battery RAM. For 
-example, every time you read a non-zero Day Counter, add this Counter to 
-the offset in RAM, and reset the Counter to zero. This method allows to 
-count any number of days, making your program Year-10000-Proof, provided 
-that the cartridge gets used at least every 511 days.<BR>
+<B>天数计数器<BR>
+</B>总共 9 位的天数计数器允许记录范围在 0-511 (0-1FFh) 的天数. 天数寄存器溢出位在天数值溢出时将设置.  这种情况下, 直到程序复位这个值之前,它将保持设置状态.<BR>
+注意你可以存储一个天数计数器的偏移量在电池 RAM. 例如, 每次你从读取一个非零的天数计数器时, 将天数加到 RAM 中存储的偏移量上, 然后将计数器复位至 0. 这种方法允许你计数任意的天数, 只要你的卡带至少每 511 天使用一次, 你的程序就能有万年的保证.<BR>
 <BR>
-<B>Delays<BR>
-</B>When accessing the RTC Registers it is recommended to execute a 4ms 
-delay (4 Cycles in Normal Speed Mode) between the separate accesses.<BR>
+<B>延迟<BR>
+</B>在访问实时时钟寄存器时, 推荐在每个单独的访问之间, 执行一个 4 毫秒的延迟 (普速模式下的 4 个周期).<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="huc1mbcwithinfraredcontroller"></A><FONT SIZE=+2>&nbsp;HuC1 (MBC with Infrared Controller)</FONT></TD></TR></TABLE><BR>
-This controller (made by Hudson Soft) appears to be very similar to an 
-MBC1 with the main difference being that it supports infrared LED input 
-/ output. (Similiar to the infrared port that has been later invented in 
-CGBs.)<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="mbc5max8mbyteromandor128kbyteramandrumble"></A><FONT SIZE=+2>&nbsp;MBC5 (最大 8M 字节 ROM, 可选最大 128K 字节 RAM, 可选震动)</FONT></TD></TR></TABLE><BR>
+用于支持 CGB 倍速模式, 任天堂特别提到了这款 MBC 对 MBC1 的高兼容性 (虽然可能需要修改程序). 除了可以访问最大 8MB ROM (512 个 Bank) 以及 32KB (4 个 Bank, 带震动) / 128KB RAM (16 个 Bank, 不带震动), MBC5 还可附带由一节 AAA 电池驱动的震动(RUMBLE).<BR>
 <BR>
-The Japanese cart "Fighting Phoenix" (internal cart name: SUPER B DAMAN) 
-is known to contain this chip.<BR>
+<B>0000-3FFF - ROM Bank 00 (只读)<BR>
+</B>与 MBC1 相同.<BR>
+<BR>
+<B>4000-7FFF - ROM Bank 001-1FF (只读)<BR>
+</B>与 MBC1 相同, 但支持访问 Bank 20h, 40h, 60h. 最大可访问 Bank 号扩充到 1FFh.<BR>
+<BR>
+<B>A000-BFFF - RAM Bank 00-0F (震动版范围 00-03), 如果有的话 (读写)<BR>
+</B>与 MBC1 相同. 但是最大可访问 Bank 号扩充到 0Fh (非震动版).<BR>
+<BR>
+<B>0000-1FFF - 启用 RAM (只写)<BR>
+</B>基本与 MBC1 相同, 写入值 0Ah 将启用读写外部 RAM 和实时时钟寄存器! 写入 00h 也将禁用读写.<BR>
+<BR>
+<B>2000-2FFF - ROM Bank 号低 8 位 (只写)<BR>
+</B>与 MBC1 相同, 但是 MBC5 的 ROM Bank 号最大支持 9 位, 只有其中低 8 位写入这个地址.<BR>
+<BR>
+<B>3000-3FFF - ROM Bank 号高 1 位 (只写)<BR>
+</B>9 位 Rom Bank 号的最高位写入这个地址. 另外, 在 MBC5 中, 当写入 Bank 号是 000h 时, 访问的是 000h 号 Bank, 而不是 001h 号 Bank. 已知 "电车 Go2" 使用全部 8M ROM, 其余游戏多是清除或忽略 ROM Bank 号的最高位.<BR>
+<BR>
+<B>4000-5FFF - RAM Bank 号 - 或 - 启用震动 (只写)<BR>
+</B>如同 MBC1 的 RAM 切页模式, 非震动版写入范围在 00-0Fh (震动版 00-03h) 的值将映射对应的 RAM Bank (如果有的话) 到内存 A000-BFFF.<BR>
+震动版的 Bit 3 为震动控制, 设置时启用震动, 清除时停止震动. 通过不同的占空比可以实现不同力度的震动.<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="mbctimingissues"></A><FONT SIZE=+2>&nbsp;MBC Timing Issues</FONT></TD></TR></TABLE><BR>
-<B>Using MBCs with CGB Double Speed Mode<BR>
-</B>The MBC5 has been designed to support CGB Double Speed Mode.<BR>
-There have been rumours that older MBCs (like MBC1-3) wouldn't be fast 
-enough in that mode. If so, it might be nethertheless possible to use 
-Double Speed during periods which use only code and data which is 
-located in internal RAM.<BR>
-However, despite of the above, my own good old selfmade MBC1-EPROM card 
-appears to work stable and fine even in Double Speed Mode though.<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="huc1mbcwithinfraredcontroller"></A><FONT SIZE=+2>&nbsp;HuC1 (带有红外控制器的 MBC)</FONT></TD></TR></TABLE><BR>
+这款哈德森软件 (Hudson Soft) 生产的控制器看起来与 MBC1 非常相似, 主要的不同是它支持红外 LED 的输入输出. (与后来加入到 CGB 的红外端口类似.)<BR>
+<BR>
+已知日本卡带 "弹珠人" (内部卡带名: SUPER B DAMAN) 使用这个芯片.<BR>
+<BR>
+<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="mbctimingissues"></A><FONT SIZE=+2>&nbsp;MBC 时间问题</FONT></TD></TR></TABLE><BR>
+<B>在 CGB 倍速模式下使用 MBC<BR>
+</B>MBC5 设计成支持 CGB 的倍速模式.<BR>
+有传闻说早期的 MBC (像 MBC1-3) 在那个模式下不够快. 若真是如此, 在倍速模式时只使用位于内部 RAM 的代码和数据依旧是可行的.<BR>
+然而, 虽然有上述传闻, 我自己自制的 MBC1-EPROM 卡带在倍速模式下工作依旧稳定正常.<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="gamegeniesharkcheats"></A><FONT SIZE=+2>&nbsp;Gamegenie/Shark Cheats</FONT></TD></TR></TABLE><BR>
