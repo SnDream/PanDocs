@@ -701,15 +701,8 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
 </B>当上述任何一个输入线从高位变成低位时，会请求一个手柄中断。通常情况下，这应该发生在按键被按下之时（之前按钮键/方向键已通过上述的比特位4/5启用）。然而由于开关弹跳，按下或释放按键时，高位到低位的转变会发生一次或数次。<BR>
 <BR>
 <B>使用手柄中断<BR>
-</B>It's more or less useless for programmers, even when selecting both 
-buttons and direction keys simultaneously it still cannot recognize all 
-keystrokes, because in that case a bit might be already held low by a 
-button key, and pressing the corresponding direction key would thus 
-cause no difference. The only meaningful purpose of the keystroke 
-interrupt would be to terminate STOP (low power) standby state.<BR>
-Also, the joypad interrupt does not appear to work with CGB and GBA 
-hardware (the STOP function can be still terminated by joypad keystrokes 
-though).<BR>
+</B>对于程序员来说并没什么用处，就算同时按下按钮键和方向键它依然无法识别出所有按键操作。因为有可能某比特位已被别的按键置低位，这个时候再按下相关方向键就不会有什么区别。按键操作中断唯一有用的地方是终止STOP （低功耗）待机状态。<BR>
+    另外，手柄中断在CGB和GBA硬件下不工作（但STOP功能依然可被按键操作终止）<BR>
 <BR>
 <BR>
 <TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="serialdatatransferlinkcable"></A><FONT SIZE=+2>&nbsp;Serial Data Transfer (Link Cable)</FONT></TD></TR></TABLE><BR>
