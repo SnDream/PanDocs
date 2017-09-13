@@ -678,38 +678,29 @@ Gameboy 的电路允许以四种不同的方式产生声音：<BR>
     减少到无声的声音包络线不会使得声音标志位关闭。<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="joypadinput"></A><FONT SIZE=+2>&nbsp;Joypad Input</FONT></TD></TR></TABLE><BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="joypadinput"></A><FONT SIZE=+2>&nbsp;手柄输入</FONT></TD></TR></TABLE><BR>
 <B>FF00 - P1/JOYP - 手柄 (读/写)<BR>
-</B>The eight gameboy buttons/direction keys are arranged in form of a 2x4 
-matrix. Select either button or direction keys by writing to this 
-register, then read-out bit 0-3.<BR>
-<TABLE><TR><TD><PRE>  Bit 7 - Not used
-  Bit 6 - Not used
-  Bit 5 - P15 Select Button Keys      (0=Select)
-  Bit 4 - P14 Select Direction Keys   (0=Select)
-  Bit 3 - P13 Input Down  or Start    (0=Pressed) (Read Only)
-  Bit 2 - P12 Input Up    or Select   (0=Pressed) (Read Only)
-  Bit 1 - P11 Input Left  or Button B (0=Pressed) (Read Only)
-  Bit 0 - P10 Input Right or Button A (0=Pressed) (Read Only)
-</TD></TR></TABLE>Note: Most programs are repeatedly reading from this port several times 
-(the first reads used as short delay, allowing the inputs to stabilize, 
-and only the value from the last read actually used).<BR>
+</B>Gameboy的八个按钮键/方向键以 2x4 矩阵的形式排列。
+    写入该寄存器来选择按钮键或者方向键，具体键位可在比特位0-3读出。<BR>
+<TABLE><TR><TD><PRE>  Bit 7 - 未使用
+  Bit 6 - 未使用
+  Bit 5 - P15 选择按钮键      (0=选择)
+  Bit 4 - P14 选择方向键   (0=选择)
+  Bit 3 - P13 输入下或开始    (0=已按下) (只读)
+  Bit 2 - P12 输入上或选择   (0=已按下) (只读)
+  Bit 1 - P11 输入左或按钮B (0=已按下) (只读)
+  Bit 0 - P10 输入右或按钮A (0=已按下) (只读)
+</TD></TR></TABLE>提示：大部分程序反复读取该端口数次 
+（刚开始的读取作为短暂延迟，以便让输入稳定下来。只有最后一次读取的值才会被真正使用）。<BR>
 <BR>
-<B>Usage in SGB software<BR>
-</B>Beside for normal joypad input, SGB games mis-use the joypad register to 
-output SGB command packets to the SNES, also, SGB programs may read out 
-gamepad states from up to four different joypads which can be connected 
-to the SNES.<BR>
-See SGB description for details.<BR>
+<B>在SGB软件中的使用<BR>
+</B>除过正常的手柄输入，SGB游戏也复用手柄寄存器来发送SGB命令包给SNES。另外，SGB程序也从接入到SNES，至多四个不同的手柄处读取游戏手柄状态。<BR>
+详情在SGB描述一节。<BR>
 <BR>
-<B>INT 60 - Joypad Interrupt<BR>
-</B>Joypad interrupt is requested when any of the above Input lines changes 
-from High to Low. Generally this should happen when a key becomes 
-pressed (provided that the button/direction key is enabled by above 
-Bit4/5), however, because of switch bounce, one or more High to Low 
-transitions are usually produced both when pressing or releasing a key.<BR>
+<B>INT 60 - 手柄中断<BR>
+</B>当上述任何一个输入线从高位变成低位时，会请求一个手柄中断。通常情况下，这应该发生在按键被按下之时（之前按钮键/方向键已通过上述的比特位4/5启用）。然而由于开关弹跳，按下或释放按键时，高位到低位的转变会发生一次或数次。<BR>
 <BR>
-<B>Using the Joypad Interrupt<BR>
+<B>使用手柄中断<BR>
 </B>It's more or less useless for programmers, even when selecting both 
 buttons and direction keys simultaneously it still cannot recognize all 
 keystrokes, because in that case a bit might be already held low by a 
