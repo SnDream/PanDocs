@@ -828,8 +828,8 @@ byte to be shifted into $FF01:<BR>
 </B>上述定时器指的是Gameboy内建的定时器。它和MBC3型卡带的电池驱动真实时钟（RTC）无关。实际上，RTC是一个完全不同的东西，将会在存储容组控制器（MBC）一章中讲到。（bank暂译为容组，译注）<BR>
 <BR>
 <BR>
-<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="interrupts"></A><FONT SIZE=+2>&nbsp;Interrupts</FONT></TD></TR></TABLE><BR>
-<B>IME - Interrupt Master Enable Flag (Write Only)<BR>
+<TABLE WIDTH=100%><TR bgcolor="#cccccc"><TD><A NAME="interrupts"></A><FONT SIZE=+2>&nbsp;中断</FONT></TD></TR></TABLE><BR>
+<B>IME - 全局中断使能标志 (只写)<BR>
 </B><TABLE><TR><TD><PRE>  0 - Disable all Interrupts
   1 - Enable all Interrupts that are enabled in IE Register (FFFF)
 </TD></TR></TABLE>The IME flag is used to disable all interrupts, overriding any enabled 
@@ -843,14 +843,14 @@ the following opcodes/operations:<BR>
 </TD></TR></TABLE>Whereas &lt;INT&gt; means the operation which is automatically executed by the 
 CPU when it executes an interrupt.<BR>
 <BR>
-<B>FFFF - IE - Interrupt Enable (R/W)<BR>
+<B>FFFF - IE - 中断使能 (读/写)<BR>
 </B><TABLE><TR><TD><PRE>  Bit 0: V-Blank  Interrupt Enable  (INT 40h)  (1=Enable)
   Bit 1: LCD STAT Interrupt Enable  (INT 48h)  (1=Enable)
   Bit 2: Timer    Interrupt Enable  (INT 50h)  (1=Enable)
   Bit 3: Serial   Interrupt Enable  (INT 58h)  (1=Enable)
   Bit 4: Joypad   Interrupt Enable  (INT 60h)  (1=Enable)
 </TD></TR></TABLE><BR>
-<B>FF0F - IF - Interrupt Flag (R/W)<BR>
+<B>FF0F - IF - 中断标识 (读/写)<BR>
 </B><TABLE><TR><TD><PRE>  Bit 0: V-Blank  Interrupt Request (INT 40h)  (1=Request)
   Bit 1: LCD STAT Interrupt Request (INT 48h)  (1=Request)
   Bit 2: Timer    Interrupt Request (INT 50h)  (1=Request)
@@ -860,13 +860,13 @@ CPU when it executes an interrupt.<BR>
 corresponding bit in the IF register becomes set. For example, Bit 0 
 becomes set when the LCD controller enters into the V-Blank period.<BR>
 <BR>
-<B>Interrupt Requests<BR>
+<B>中断请求<BR>
 </B>Any set bits in the IF register are only &lt;requesting&gt; an interrupt to be 
 executed. The actual &lt;execution&gt; happens only if both the IME flag, and 
 the corresponding bit in the IE register are set, otherwise the 
 interrupt 'waits' until both IME and IE allow its execution.<BR>
 <BR>
-<B>Interrupt Execution<BR>
+<B>中断执行<BR>
 </B>When an interrupt gets executed, the corresponding bit in the IF 
 register becomes automatically reset by the CPU, and the IME flag 
 becomes cleared (disabeling any further interrupts until the program 
@@ -875,14 +875,14 @@ the corresponding Interrupt Vector (that are the addresses in range
 0040h-0060h, as shown in IE and IF register decriptions above) becomes 
 called.<BR>
 <BR>
-<B>Manually Requesting/Discarding Interrupts<BR>
+<B>手动请求/放弃中断<BR>
 </B>As the CPU automatically sets and cleares the bits in the IF register it 
 is usually not required to write to the IF register. However, the user 
 may still do that in order to manually request (or discard) interrupts. 
 As for real interrupts, a manually requested interrupt isn't executed 
 unless/until IME and IE allow its execution.<BR>
 <BR>
-<B>Interrupt Priorities<BR>
+<B>中断优先级<BR>
 </B>In the following three situations it might happen that more than 1 bit 
 in the IF register are set, requesting more than one interrupt at once:<BR>
 <TABLE><TR><TD><PRE>  1) More than one interrupt signal changed from Low
@@ -898,7 +898,7 @@ becomes executed first. The priorities are ordered as the bits in the IE
 and IF registers, Bit 0 (V-Blank) having the highest priority, and Bit 4 
 (Joypad) having the lowest priority.<BR>
 <BR>
-<B>Nested Interrupts<BR>
+<B>中断嵌套<BR>
 </B>The CPU automatically disables all other interrupts by setting IME=0 
 when it executes an interrupt. Usually IME remains zero until the 
 interrupt procedure returns (and sets IME=1 by the RETI instruction). 
